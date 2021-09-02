@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:report_visita_danilo/AccountEmpty.dart';
 import 'package:report_visita_danilo/costanti.dart';
 
 import 'Models/Nota.dart';
@@ -311,7 +312,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Row(
             children: <Widget>[
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountEmpty()));
+                },
                 icon: Icon(Icons.perm_identity_outlined),
                 color: Colors.white,
               ),
