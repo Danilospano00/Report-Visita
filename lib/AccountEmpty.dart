@@ -35,17 +35,22 @@ class AccountEmptyState extends State<AccountEmpty> {
                   child: ColoredBox(
                     color: Colors.red,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                      padding: const EdgeInsets.only(left: 20.0, bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CircleAvatar(
+                            backgroundColor: Colors.red[900],
                             radius: 50,
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.perm_identity_outlined,
-                              size: 48,
-                              color: Colors.grey[700],
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 45,
+                              child: Icon(
+                                Icons.perm_identity_outlined,
+                                size: 48,
+                                color: Colors.grey[700],
+                              ),
                             ),
                           ),
                           Padding(
@@ -71,7 +76,8 @@ class AccountEmptyState extends State<AccountEmpty> {
                 textAlign: TextAlign.start,
                 text: TextSpan(
                   text: "Scopri tutti i vantaggi di un account registrato\n\n",
-                  style: TextStyle(fontSize: 20,
+                  style: TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -79,7 +85,7 @@ class AccountEmptyState extends State<AccountEmpty> {
                     TextSpan(
                       text:
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
-                    style: TextStyle(fontWeight: FontWeight.normal),
+                      style: TextStyle(fontWeight: FontWeight.normal),
                     )
                   ],
                 ),
@@ -88,6 +94,20 @@ class AccountEmptyState extends State<AccountEmpty> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+        items: [
+          BottomNavigationBarItem(
+            title: Text('Favorites'),
+            icon: Icon(Icons.favorite),
+          ),
+          BottomNavigationBarItem(
+            title: Text('Music'),
+            icon: Icon(Icons.music_note),
+          ),
+        ],
+    ),
     );
   }
 }

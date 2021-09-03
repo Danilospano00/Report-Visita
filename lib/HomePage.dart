@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:report_visita_danilo/AccountEmpty.dart';
 import 'package:report_visita_danilo/costanti.dart';
 
+import 'Account.dart';
 import 'Models/Nota.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -313,7 +314,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountEmpty()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Account()));
                 },
                 icon: Icon(Icons.perm_identity_outlined),
                 color: Colors.white,
