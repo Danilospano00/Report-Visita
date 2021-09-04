@@ -26,11 +26,11 @@ class AccountState extends State<Account> {
               children: [
                 ShapeOfView(
                   elevation: 4,
-                  height: 180,
+                  height: 160,
                   shape: DiagonalShape(
                     position: DiagonalPosition.Bottom,
                     direction: DiagonalDirection.Left,
-                    angle: DiagonalAngle.deg(angle: 10),
+                    angle: DiagonalAngle.deg(angle: 5),
                   ),
                   child: ColoredBox(
                     color: Colors.red,
@@ -63,18 +63,21 @@ class AccountState extends State<Account> {
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
-                          Transform.rotate(
-                            angle: 10.5,
-                            origin: Offset.fromDirection(1000),
-                            alignment: AlignmentDirectional.bottomEnd,
-                            child: FloatingActionButton(
-                              onPressed: () {},
-                              backgroundColor: Colors.grey[700],
-                              child: Icon(Icons.add),
-                            ),
-                          ),
+
                         ],
                       ),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 160,
+                  decoration: BoxDecoration(color: Colors.transparent),
+                  child: Align(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    child: FloatingActionButton(
+                      onPressed: () {},
+                      backgroundColor: Colors.grey[700],
+                      child: Icon(Icons.add),
                     ),
                   ),
                 ),
@@ -237,7 +240,7 @@ class AccountState extends State<Account> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 110.5, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 110.5, vertical: 50),
                   child: ElevatedButton.icon(
                     icon: Icon(
                       Icons.tune_outlined,
