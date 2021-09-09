@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "447008297834",
+    "project_id": "reportvisita-9d293",
+    "storage_bucket": "reportvisita-9d293.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447008297834:android:fdbd470c9fbf8ca1754b13",
+        "android_client_info": {
+          "package_name": "it.report_visita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447008297834-c8imibrb5on38rggj02dru09jdegjnm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1uYNMz0CsdRtS1Y9UdCzMu9_-qo8QOCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447008297834-c8imibrb5on38rggj02dru09jdegjnm9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "447008297834-r8h3124cdk06grvqd2dcm5atfki7hcau.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "it.reportvisita"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

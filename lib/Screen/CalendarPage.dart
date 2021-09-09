@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../Models/Eventi.dart';
 import 'AccountEmpty.dart';
-import 'Models/Eventi.dart';
 
 class CalendarPage extends StatefulWidget {
   @override

@@ -1,10 +1,18 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:report_visita_danilo/HomePage.dart';
+import 'package:report_visita_danilo/Screen/HomePage.dart';
 
-void main() {
+import 'Screen/splashScreen.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runZonedGuarded(() {
   runApp(MyApp());
+  }, FirebaseCrashlytics.instance.recordError);
 }
 
 class MyApp extends StatelessWidget {
@@ -18,33 +26,5 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashPage(),
     );
-  }
-}
-
-class SplashPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    startTimer(context);
-    return Stack(children: [
-      Image.asset(
-        'assets/splashpage_background1.png',
-        fit: BoxFit.cover,
-        height: double.infinity,
-        width: double.infinity,
-      ),
-      Align(
-          alignment: Alignment.center,
-          child: Image.asset('assets/logo_splash.png')),
-    ]);
-  }
-
-  void startTimer(context) {
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute<void>(builder: (context) => MyHomePage()),
-        (route) => false,
-      );
-    });
   }
 }

@@ -1,4 +1,4 @@
-package com.example.report_visita_danilo
+package it.report_visita
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,10 +1,11 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:report_visita_danilo/AccountEmpty.dart';
-import 'package:report_visita_danilo/CalendarPage.dart';
+import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/costanti.dart';
 
 import 'Account.dart';
-import 'Models/Nota.dart';
+import '../Models/Nota.dart';
+import 'AccountEmpty.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -22,6 +23,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       body: SingleChildScrollView(
         child: Form(
           child: Padding(
@@ -339,7 +342,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.archive_rounded),
-        onPressed: () {},
+        onPressed: () {
+         // FirebaseCrashlytics.instance.crash();
+        },
         backgroundColor: Colors.grey.shade700,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
