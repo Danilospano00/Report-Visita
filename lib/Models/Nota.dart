@@ -1,6 +1,12 @@
-class Nota{
-   String? titolo;
-   String? testo;
+import 'package:objectbox/objectbox.dart';
 
-  Nota(this.titolo, this.testo);
+@Entity()
+class Nota {
+  @Id()
+  int? id;
+
+  String? titolo;
+  String? testo;
+
+  Nota({this.id, this.titolo, this.testo});
 }

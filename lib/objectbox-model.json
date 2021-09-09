@@ -1,0 +1,176 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:3138899131742898812",
+      "lastPropertyId": "9:5279237058025492374",
+      "name": "Azienda",
+      "properties": [
+        {
+          "id": "1:5551351502668826253",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2889104212203136962",
+          "name": "nome",
+          "type": 9
+        },
+        {
+          "id": "3:2613881134958763434",
+          "name": "indirizzo",
+          "type": 9
+        },
+        {
+          "id": "4:7327450284482912913",
+          "name": "cap",
+          "type": 9
+        },
+        {
+          "id": "5:7494618641111035513",
+          "name": "citta",
+          "type": 9
+        },
+        {
+          "id": "6:8275051880509170183",
+          "name": "partitaIva",
+          "type": 9
+        },
+        {
+          "id": "7:6830332390664123324",
+          "name": "codiceFiscale",
+          "type": 9
+        },
+        {
+          "id": "8:5392407183097939609",
+          "name": "lat",
+          "type": 8
+        },
+        {
+          "id": "9:5279237058025492374",
+          "name": "lng",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:9010118104071840998",
+      "lastPropertyId": "3:1275198843792946196",
+      "name": "Nota",
+      "properties": [
+        {
+          "id": "1:6771886556609393582",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4977382038095430839",
+          "name": "titolo",
+          "type": 9
+        },
+        {
+          "id": "3:1275198843792946196",
+          "name": "testo",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:1724050477393436024",
+      "lastPropertyId": "7:2380123224548529367",
+      "name": "Referente",
+      "properties": [
+        {
+          "id": "1:2749362504261456340",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:614674080790275592",
+          "name": "nome",
+          "type": 9
+        },
+        {
+          "id": "3:4744237264499700664",
+          "name": "cognome",
+          "type": 9
+        },
+        {
+          "id": "4:2939920344380470164",
+          "name": "ruolo",
+          "type": 9
+        },
+        {
+          "id": "5:1465063992318852548",
+          "name": "telefono",
+          "type": 9
+        },
+        {
+          "id": "6:3943749822707307598",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "7:2380123224548529367",
+          "name": "lng",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:6399944043336873268",
+      "lastPropertyId": "3:7371815368849573335",
+      "name": "Report",
+      "properties": [
+        {
+          "id": "1:2695679673933592744",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2167568013007333385",
+          "name": "aziendaId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:7175251592518024657",
+          "relationTarget": "Azienda"
+        },
+        {
+          "id": "3:7371815368849573335",
+          "name": "referenteId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:1194400844658538239",
+          "relationTarget": "Referente"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:1145918004155875744",
+          "name": "note",
+          "targetId": "2:9010118104071840998"
+        }
+      ]
+    }
+  ],
+  "lastEntityId": "4:6399944043336873268",
+  "lastIndexId": "2:1194400844658538239",
+  "lastRelationId": "1:1145918004155875744",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

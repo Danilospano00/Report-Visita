@@ -1,9 +1,11 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:report_visita_danilo/Models/Azienda.dart';
+import 'package:report_visita_danilo/Models/Referente.dart';
+import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/costanti.dart';
 
-import 'Account.dart';
+import '../objectbox.g.dart';
 import '../Models/Nota.dart';
 import 'AccountEmpty.dart';
 
@@ -20,11 +22,36 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController noteController = TextEditingController();
   TextEditingController formFieldController = TextEditingController();
 
+  late Store _store;
+  bool hasBeenInitialized=false;
+  late Report _report;
+
+  @override
+  void initState() {
+    super.initState();
+    /*getApplicationDocumentsDirectory().then((dir) {
+      _store =
+          Store(getObjectBoxModel(), directory: "${dir.path}/objectbox");
+      setState(() {
+        hasBeenInitialized=true;
+      });
+    });*/
+    openStore().then((Store store) {
+      _store = store;
+    });
+
+  }
+
+  @override
+  void dispose() {
+    _store.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       body: SingleChildScrollView(
         child: Form(
           child: Padding(
@@ -276,14 +303,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () {
                       showDialog(
                           context: context,
-                          builder: (BuildContext context) => showPopUp());
+                          builder: (BuildContext context) =>
+                              showPopUp(context));
                     },
                     child: Container(
                       height: 58,
                       width: double.infinity,
                       color: Colors.grey.shade300,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 12.0, right: 12,),
+                        padding: const EdgeInsets.only(
+                          left: 12.0,
+                          right: 12,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -318,7 +349,8 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountEmpty()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AccountEmpty()));
                 },
                 icon: Icon(Icons.perm_identity_outlined),
                 color: Colors.white,
@@ -326,7 +358,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Spacer(),
               IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> CalendarPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CalendarPage()));
                 },
                 icon: Icon(Icons.move_to_inbox_rounded),
                 color: Colors.white,
@@ -343,7 +376,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.archive_rounded),
         onPressed: () {
-         // FirebaseCrashlytics.instance.crash();
+          // FirebaseCrashlytics.instance.crash();
+          addReport();
         },
         backgroundColor: Colors.grey.shade700,
       ),
@@ -351,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget showPopUp() {
+  Widget showPopUp(context) {
     return new AlertDialog(
       actions: [
         Padding(
@@ -392,7 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Argomenti/Problemi/Opportunità/Dubbi", 1);
+            showError("Argomenti/Problemi/Opportunità/Dubbi", 1, context);
           },
         ),
         Divider(),
@@ -403,7 +437,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Criteri primari e secondari cliente", 1);
+            showError("Criteri primari e secondari cliente", 1, context);
           },
         ),
         Divider(),
@@ -414,7 +448,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Punti di forza concorrenza", 1);
+            showError("Punti di forza concorrenza", 1, context);
           },
         ),
         Divider(),
@@ -425,7 +459,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Punti deboli concorrenza", 1);
+            showError("Punti deboli concorrenza", 1, context);
           },
         ),
         Divider(),
@@ -436,7 +470,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Prossime azioni/Assegnazione Task/Tempi", 1);
+            showError("Prossime azioni/Assegnazione Task/Tempi", 1, context);
           },
         ),
         Divider(),
@@ -447,7 +481,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Prossimi step", 1);
+            showError("Prossimi step", 1, context);
           },
         ),
         Divider(),
@@ -458,7 +492,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           onTap: () {
             Navigator.pop(context);
-            showError("Note amministrazione", 1);
+            showError("Note amministrazione", 1, context);
           },
         ),
         Divider(),
@@ -466,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void showError(String mess, int pop) {
+  void showError(String mess, int pop, context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -572,12 +606,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void addReport(){
+
+    _report.azienda.target=Azienda()..nome="roma";
+    _report.referente.target=Referente(nome: "Giuseppe",cognome: "Scalesse",telefono: "3290611539");
+    _report.note.addAll(listaNote);
+
+    _store.box<Report>().put(_report);
+
+
+    List<Report> lista=_store.box<Report>().getAll();
+    print("Report add -------------"+lista.toString());
+
   }
 
   Future<void> addNote(String titolo, String testo) async {
-    listaNote.add(Nota(titolo, testo));
+    listaNote.add(Nota(titolo: titolo, testo: testo));
   }
 }
