@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:report_visita_danilo/AccountEmpty.dart';
+import 'package:report_visita_danilo/CalendarPage.dart';
 import 'package:report_visita_danilo/costanti.dart';
 
 import 'Account.dart';
@@ -314,14 +315,16 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Account()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AccountEmpty()));
                 },
                 icon: Icon(Icons.perm_identity_outlined),
                 color: Colors.white,
               ),
               Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> CalendarPage()));
+                },
                 icon: Icon(Icons.move_to_inbox_rounded),
                 color: Colors.white,
               ),
