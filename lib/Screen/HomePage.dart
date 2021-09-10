@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
+      body: !hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):SingleChildScrollView(
         child: Form(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
