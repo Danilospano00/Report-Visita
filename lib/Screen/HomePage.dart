@@ -38,6 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });*/
     openStore().then((Store store) {
       _store = store;
+      setState(() {
+        hasBeenInitialized=true;
+      });
     });
 
   }
@@ -608,6 +611,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void addReport(){
 
+    _report=Report();
     _report.azienda.target=Azienda()..nome="roma";
     _report.referente.target=Referente(nome: "Giuseppe",cognome: "Scalesse",telefono: "3290611539");
     _report.note.addAll(listaNote);
@@ -616,7 +620,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     List<Report> lista=_store.box<Report>().getAll();
-    print("Report add -------------"+lista.toString());
+
+    lista.forEach((element) {
+      print("Report add -------------"+element.id.toString());
+      print("Report add -------------"+element.azienda.target!.nome.toString());
+      print("Report add -------------"+element.referente.target!.nome.toString());
+
+
+    });
+
 
   }
 
