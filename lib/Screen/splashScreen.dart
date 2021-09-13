@@ -1,8 +1,7 @@
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
-
-import 'HomePage.dart';
+import 'package:report_visita_danilo/Screen/CalendarPage.dart';
+import 'package:report_visita_danilo/Screen/ViewPage.dart';
 
 class SplashPage extends StatelessWidget {
 
@@ -36,17 +35,11 @@ class SplashPage extends StatelessWidget {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute<void>(builder: (context) => MyHomePage()),
+        MaterialPageRoute<void>(builder: (context) => ViewPage()),
             (route) => false,
       );
     } catch (e) {
       print("ERROR");
     }
-
-
-
-
-
-
   }
 }

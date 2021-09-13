@@ -4,6 +4,7 @@ import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/costanti.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../objectbox.g.dart';
 import '../Models/Nota.dart';
@@ -13,17 +14,22 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
+  List<Azienda> listaAziende = [
+    Azienda(nome: "Azienda 1", indirizzo: "via casa mia"),
+    Azienda(nome: "Azienda 1", indirizzo: "via casa tua")
+  ];
+
   final formGlobalKey = GlobalKey<FormState>();
 
   TextEditingController noteController = TextEditingController();
   TextEditingController formFieldController = TextEditingController();
 
   late Store _store;
-  bool hasBeenInitialized=false;
+  bool hasBeenInitialized = false;
   late Report _report;
 
   @override
@@ -39,10 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
     openStore().then((Store store) {
       _store = store;
       setState(() {
-        hasBeenInitialized=true;
+        hasBeenInitialized = true;
       });
     });
-
   }
 
   @override
@@ -55,7 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: !hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):SingleChildScrollView(
+      body: //!hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):
+          SingleChildScrollView(
         child: Form(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -75,27 +81,40 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    controller: formFieldController,
-                    decoration: InputDecoration(
-                      labelText: "Nome Azienda",
-                      fillColor: Colors.grey.shade300,
-                      filled: true,
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red)),
-                      labelStyle: TextStyle(
+                  child: TypeAheadField<Azienda?>(
+                    onSuggestionSelected: (azienda){
+                      print(azienda?.nome);
+                    },
+                    hideSuggestionsOnKeyboardHide: false,
+                    suggestionsCallback: getSuggestion,
+                    itemBuilder: (context, Azienda? suggestion){
+                      final azienda = suggestion!;
+                      return ListTile(
+                        title: Text(azienda.nome.toString()),
+                      );
+                    },
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: formFieldController,
+                      decoration: InputDecoration(
+                        labelText: "Nome Azienda",
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red)),
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.business_outlined,
+                          color: Colors.black,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.cancel_outlined),
                         color: Colors.black,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.business_outlined,
-                        color: Colors.black,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.cancel_outlined),
-                        color: Colors.black,
-                        onPressed: () {
-                          formFieldController.clear();
-                        },
+                          onPressed: () {
+                            formFieldController.clear();
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -343,48 +362,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        color: Colors.red,
-        child: IconTheme(
-          data: IconThemeData(),
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AccountEmpty()));
-                },
-                icon: Icon(Icons.perm_identity_outlined),
-                color: Colors.white,
-              ),
-              Spacer(),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CalendarPage()));
-                },
-                icon: Icon(Icons.move_to_inbox_rounded),
-                color: Colors.white,
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.event_rounded),
-                color: Colors.white,
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.archive_rounded),
-        onPressed: () {
-          // FirebaseCrashlytics.instance.crash();
-          addReport();
-        },
-        backgroundColor: Colors.grey.shade700,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -503,6 +480,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Azienda> getSuggestion(String query) =>
+      List.of(listaAziende).where((aziende) {
+        final aziendaLower = aziende.nome.toString().toLowerCase();
+        final queryLower = query.toLowerCase();
+
+        return aziendaLower.contains(queryLower);
+      }).toList();
+
   void showError(String mess, int pop, context) {
     showDialog(
       context: context,
@@ -609,27 +594,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void addReport(){
-
-    _report=Report();
-    _report.azienda.target=Azienda()..nome="roma";
-    _report.referente.target=Referente(nome: "Giuseppe",cognome: "Scalesse",telefono: "3290611539");
+  void addReport() {
+    _report = Report();
+    _report.azienda.target = Azienda()..nome = "roma";
+    _report.referente.target = Referente(
+        nome: "Giuseppe", cognome: "Scalesse", telefono: "3290611539");
     _report.note.addAll(listaNote);
 
     _store.box<Report>().put(_report);
 
-
-    List<Report> lista=_store.box<Report>().getAll();
+    List<Report> lista = _store.box<Report>().getAll();
 
     lista.forEach((element) {
-      print("Report add -------------"+element.id.toString());
-      print("Report add -------------"+element.azienda.target!.nome.toString());
-      print("Report add -------------"+element.referente.target!.nome.toString());
-
-
+      print("Report add -------------" + element.id.toString());
+      print(
+          "Report add -------------" + element.azienda.target!.nome.toString());
+      print("Report add -------------" +
+          element.referente.target!.nome.toString());
     });
-
-
   }
 
   Future<void> addNote(String titolo, String testo) async {

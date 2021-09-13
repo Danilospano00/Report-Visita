@@ -120,37 +120,6 @@ class CalendarPageState extends State<CalendarPage> {
             );
           },
         ),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          color: Colors.red,
-          child: IconTheme(
-            data: IconThemeData(),
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AccountEmpty()));
-                  },
-                  icon: Icon(Icons.perm_identity_outlined),
-                  color: Colors.white,
-                ),
-                Spacer(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> CalendarPage()));
-                  },
-                  icon: Icon(Icons.move_to_inbox_rounded),
-                  color: Colors.white,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.event_rounded),
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
