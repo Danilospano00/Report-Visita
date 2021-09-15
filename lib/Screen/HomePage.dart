@@ -122,6 +122,7 @@ class MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: EdgeInsets.all(6.0),
                   child: TextFormField(
+
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade300,
                       filled: true,
