@@ -5,7 +5,8 @@ import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:contacts_service/contacts_service.dart';
+
+import 'package:contacts_service/contacts_service.dart';
 
 import '../objectbox.g.dart';
 import '../Models/Nota.dart';
@@ -37,7 +38,7 @@ class MyHomePageState extends State<MyHomePage> {
     Azienda(nome: "Azienda 1", indirizzo: "via casa tua")
   ];
 
-  //List<Contact> contacts = [];
+  List<Contact> contacts = [];
   final formGlobalKey = GlobalKey<FormState>();
 
   TextEditingController noteController = TextEditingController();
@@ -50,7 +51,7 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    //getAllContacts();
+    getAllContacts();
 
     /*getApplicationDocumentsDirectory().then((dir) {
       _store =
@@ -94,8 +95,7 @@ class MyHomePageState extends State<MyHomePage> {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontSize: 24.151785.sp, color: Colors.grey[700])),
-                    ],
-                  ),
+
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 6.w),
                     child: TypeAheadField<Azienda?>(
@@ -143,6 +143,7 @@ class MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
+
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 6.w),
                     child: TextFormField(
@@ -327,6 +328,8 @@ class MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+              ],
+            ),
           ),
         ),
       ),
@@ -334,117 +337,119 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Widget showPopUp(context) {
-    return new AlertDialog(
-      actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      "Aggiungi nota",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Align(
+    return Center(
+      child: AlertDialog(
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(left: 16.0.w),
+            child: Column(
+              children: [
+                Align(
                   alignment: Alignment.topRight,
-                  child: CircleAvatar(
-                    radius: 14.0,
-                    backgroundColor: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: Icon(Icons.cancel_rounded, color: Colors.black),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(bottom: 32.0.w),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        "Aggiungi nota",
+                        style: stileLabel,
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Argomenti/Problemi/Opportunità/Dubbi",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError(
+                        "Argomenti/Problemi/Opportunità/Dubbi", 1, context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Criteri primari e secondari cliente",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError(
+                        "Criteri primari e secondari cliente", 1, context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Punti di forza concorrenza",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError("Punti di forza concorrenza", 1, context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Punti deboli concorrenza",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError("Punti deboli concorrenza", 1, context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Prossime azioni/Assegnazione Task/Tempi",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError(
+                        "Prossime azioni/Assegnazione Task/Tempi", 1, context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Prossimi step",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError("Prossimi step", 1, context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    "Note amministrazione",
+                    style: stileLabel,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showError("Note amministrazione", 1, context);
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-        ListTile(
-          title: Text(
-            "Argomenti/Problemi/Opportunità/Dubbi",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Argomenti/Problemi/Opportunità/Dubbi", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Criteri primari e secondari cliente",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Criteri primari e secondari cliente", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Punti di forza concorrenza",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Punti di forza concorrenza", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Punti deboli concorrenza",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Punti deboli concorrenza", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Prossime azioni/Assegnazione Task/Tempi",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Prossime azioni/Assegnazione Task/Tempi", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Prossimi step",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Prossimi step", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Note amministrazione",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Note amministrazione", 1, context);
-          },
-        ),
-        Divider(),
-      ],
+        ],
+      ),
     );
   }
 
@@ -473,6 +478,7 @@ class MyHomePageState extends State<MyHomePage> {
                       flex: 3,
                       child: Text(
                         mess,
+                        style: stileLabel,
                       ),
                     ),
                   ),
@@ -562,6 +568,49 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  showPopUpReferente(BuildContext context) {
+    return AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(20.0.w),
+            child: Text(
+              "Scegli un referente",
+              style: stileLabel,
+            ),
+          ),
+          Row(
+            children: [
+              FlatButton(
+                child: Text(
+                  "Aggiungi",
+                  style: stileLabel,
+                ),
+                onPressed: () {
+                  setState(() {
+                    mostraFormReferente = true;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              Spacer(),
+              FlatButton(
+                child: Text(
+                  "Rubrica",
+                  style: stileLabel,
+                ),
+                onPressed: () {
+                  showPopUpScegliReferente();
+                },
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   void addReport() {
     _report = Report();
     _report.azienda.target = Azienda()..nome = "roma";
@@ -584,5 +633,130 @@ class MyHomePageState extends State<MyHomePage> {
 
   Future<void> addNote(String titolo, String testo) async {
     listaNote.add(Nota(titolo: titolo, testo: testo));
+  }
+
+  void cancellaTesto(TextEditingController textEditingController) {
+    textEditingController.clear();
+  }
+
+  getAllContacts() async {
+    List<Contact> _contacts = (await ContactsService.getContacts()).toList();
+    setState(() {
+      contacts = _contacts;
+    });
+  }
+
+  Widget showPopUpScegliReferente() {
+    return AlertDialog(
+      content: ListView.builder(
+        itemBuilder: (context, index) {
+          Contact contact = contacts[index];
+          return ListTile(
+            title: Text(contact.displayName.toString()),
+            subtitle: Text(contact.phones!.elementAt(0).value.toString()),
+          );
+        },
+        itemCount: contacts.length,
+      ),
+    );
+  }
+}
+
+class WidgetReferente extends StatefulWidget {
+  const WidgetReferente({
+    Key? key,
+    required this.stileLabel,
+  }) : super(key: key);
+
+  final TextStyle stileLabel;
+
+  @override
+  _WidgetReferenteState createState() => _WidgetReferenteState();
+}
+
+class _WidgetReferenteState extends State<WidgetReferente> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          child: Row(
+            children: <Widget>[
+              Text("Referente"),
+              Expanded(
+                child: new Container(
+                  margin: const EdgeInsets.only(left: 20, right: 10),
+                  child: Divider(
+                    color: Colors.black,
+                    thickness: 3,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          child: TextFormField(
+            decoration: InputDecoration(
+              fillColor: Colors.grey.shade300,
+              filled: true,
+              border: InputBorder.none,
+              labelText: "Nome",
+              labelStyle: widget.stileLabel,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          child: TextFormField(
+            decoration: InputDecoration(
+              fillColor: Colors.grey.shade300,
+              filled: true,
+              border: InputBorder.none,
+              labelText: "Cognome",
+              labelStyle: widget.stileLabel,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          child: TextFormField(
+            decoration: InputDecoration(
+              fillColor: Colors.grey.shade300,
+              filled: true,
+              border: InputBorder.none,
+              labelText: "Ruolo",
+              labelStyle: widget.stileLabel,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          child: TextFormField(
+            decoration: InputDecoration(
+              fillColor: Colors.grey.shade300,
+              filled: true,
+              border: InputBorder.none,
+              labelText: "Telefono",
+              labelStyle: widget.stileLabel,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.w),
+          child: TextFormField(
+            decoration: InputDecoration(
+              fillColor: Colors.grey.shade300,
+              filled: true,
+              border: InputBorder.none,
+              labelText: "E-mail",
+              labelStyle: widget.stileLabel,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -11,6 +11,8 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
+		<key>NSContactsUsageDescription</key>
+        <string>This app requires contacts access to function properly.</string>
 		<string>report_visita_danilo</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
