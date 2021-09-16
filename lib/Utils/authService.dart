@@ -20,7 +20,7 @@ class AuthService{
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context,snapshot){
           if(snapshot.hasData){
-            Navigator.pop(context);
+
             dynamic user=snapshot.data;
             return Card(
               margin: EdgeInsets.all(10),
@@ -367,15 +367,16 @@ class AuthService{
     FirebaseAuth.instance.signOut();
   }
 
-  signIn(String email,String password,context){
+  signIn(String email,String password,context) async {
 
-    FirebaseAuth.instance.
-    signInWithEmailAndPassword(email: email, password: password).
-    then((value) => (){
-      //Navigator.pop(context);
+    return await FirebaseAuth.instance.
+    signInWithEmailAndPassword(email: email, password: password);
+    /*.
+    then((value) => (value){
+      UserCredential res=value;
     }).catchError((e){
       showError(e.toString(), context);
-    });
+    });*/
 
 
 

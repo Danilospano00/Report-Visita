@@ -26,6 +26,18 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.grey,
+          shadowColor: Colors.grey,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            color: Colors.black,
+          ),
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.grey,
         body: Padding(
@@ -274,14 +286,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void animateButton() {
+  Future<void> animateButton() async {
     setState(() {
       _isLoading = true;
     });
     User user =
     User.init(_formKey.currentState!.fields);
 
-    AuthService().signIn(user.email!.replaceAll(new RegExp(r"\s+"), ""), user.password!, context);
+   dynamic res= await AuthService().signIn(user.email!.replaceAll(new RegExp(r"\s+"), ""), user.password!, context);
+   if(res!=null)
+     Navigator.pop(context);
+
     setState(() {
       _isLoading=false;
     });
