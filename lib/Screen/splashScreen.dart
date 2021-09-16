@@ -1,8 +1,7 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
-import 'package:report_visita_danilo/Screen/CalendarPage.dart';
-import 'package:report_visita_danilo/Screen/ViewPage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:report_visita_danilo/Screen/ViewPage.dart';
 
 class SplashPage extends StatelessWidget {
 
@@ -33,14 +32,33 @@ class SplashPage extends StatelessWidget {
       String urlremote = remoteConfig.getString("url");
       print(urlremote);
 
+      final PermissionStatus permissionStatus = await _getPermission();
+      if (permissionStatus == PermissionStatus.granted) {
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute<void>(builder: (context) => ViewPage()),
-            (route) => false,
-      );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<void>(builder: (context) => ViewPage()),
+              (route) => false,
+        );
+
+      }
+
     } catch (e) {
       print("ERROR");
     }
   }
+
+  Future<PermissionStatus> _getPermission() async {
+    final PermissionStatus permission = await Permission.contacts.status;
+    if (permission != PermissionStatus.granted ) {
+      final Map<Permission, PermissionStatus> permissionStatus =
+      await [Permission.contacts].request();
+      return permissionStatus[Permission.contacts] ??
+          PermissionStatus.restricted;
+    } else {
+      return permission;
+    }
+  }
+
+
 }

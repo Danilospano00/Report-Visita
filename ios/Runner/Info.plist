@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+	    <key>NSAppleMusicUsageDescription</key>
+        <string>Musica!</string>
+        <key>kTCCServiceMediaLibrary</key>
+        <string>media</string>
+        <key>NSCalendarsUsageDescription</key>
+        <string>Calendari</string>
+        <key>NSCameraUsageDescription</key>
+        <string>fotocamera</string>
+        <key>NSContactsUsageDescription</key>
+        <string>contatti</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>microfono</string>
+        <key> NSspeechRecognitionUsageDescription</key>
+        <string>discorso</string>
+        <key>NSMotionUsageDescription</key>
+        <string>movimento</string>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>foto</string>
+        <key>NSRemindersUsageDescription</key>
+        <string>promemoria</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleExecutable</key>
