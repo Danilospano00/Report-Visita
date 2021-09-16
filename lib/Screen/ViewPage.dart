@@ -32,6 +32,8 @@ class ViewPageState extends State<ViewPage> {
         children: screens,
       ),
       bottomNavigationBar: BottomAppBar(
+
+        elevation: 10,
         shape: CircularNotchedRectangle(),
         color: Colors.red,
         child: IconTheme(

@@ -1,14 +1,16 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
-import 'package:report_visita_danilo/Screen/CalendarPage.dart';
+import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../objectbox.g.dart';
 import '../Models/Nota.dart';
-import 'AccountEmpty.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -19,18 +21,29 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
   List<Azienda> listaAziende = [
-    Azienda(nome: "Azienda 1", indirizzo: "via casa mia"),
-    Azienda(nome: "Azienda 1", indirizzo: "via casa tua")
+    Azienda(nome: "Azienda 1", indirizzo: "via casa mia",cap: "04040",partitaIva: "jhsonasdo",codiceFiscale: "dsnflksdnflk",citta: "priverno"),
+    Azienda(nome: "Azienda 1", indirizzo: "via casa tua",cap: "0400",partitaIva: "jhsonasdo",codiceFiscale: "dsnflksdnflk",citta: "roma")
   ];
 
   final formGlobalKey = GlobalKey<FormState>();
+  final formKeyBody = GlobalKey<FormBuilderState>();
+
 
   TextEditingController noteController = TextEditingController();
   TextEditingController formFieldController = TextEditingController();
+  TextEditingController formFieldControllerIndirizzo = TextEditingController();
+  TextEditingController formFieldControllerCap = TextEditingController();
+  TextEditingController formFieldControllerCitta = TextEditingController();
+  TextEditingController formFieldControllerIva = TextEditingController();
+  TextEditingController formFieldControllerCodicefiscale = TextEditingController();
+
 
   late Store _store;
   bool hasBeenInitialized = false;
   late Report _report;
+  late  Iterable<Contact> _contacts;
+  Azienda? aziendaSelezionata;
+
 
   @override
   void initState() {
@@ -42,6 +55,7 @@ class MyHomePageState extends State<MyHomePage> {
         hasBeenInitialized=true;
       });
     });*/
+    getContacts();
     openStore().then((Store store) {
       _store = store;
       setState(() {
@@ -62,7 +76,8 @@ class MyHomePageState extends State<MyHomePage> {
       resizeToAvoidBottomInset: false,
       body: //!hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):
       SingleChildScrollView(
-        child: Form(
+        child: FormBuilder(
+          key: formKeyBody,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Column(
@@ -82,8 +97,12 @@ class MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: EdgeInsets.all(6.0),
                   child: TypeAheadField<Azienda?>(
+
                     onSuggestionSelected: (azienda){
-                      print(azienda?.nome);
+                      setState(() {
+                        aziendaSelezionata=azienda;
+
+                      });
                     },
                     hideSuggestionsOnKeyboardHide: false,
                     suggestionsCallback: getSuggestion,
@@ -94,7 +113,8 @@ class MyHomePageState extends State<MyHomePage> {
                       );
                     },
                     textFieldConfiguration: TextFieldConfiguration(
-                      controller: formFieldController,
+
+                      controller: formFieldController..text=aziendaSelezionata!=null?aziendaSelezionata!.nome!:"",
                       decoration: InputDecoration(
                         labelText: "Nome Azienda",
                         fillColor: Colors.grey.shade300,
@@ -113,6 +133,14 @@ class MyHomePageState extends State<MyHomePage> {
                           color: Colors.black,
                           onPressed: () {
                             formFieldController.clear();
+                            formFieldControllerIndirizzo.clear();
+                            formFieldControllerCap.clear();
+                            formFieldControllerCitta.clear();
+                            formFieldControllerIva.clear();
+
+                            formFieldControllerCodicefiscale.clear();
+                            aziendaSelezionata=null;
+
                           },
                         ),
                       ),
@@ -121,7 +149,10 @@ class MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
+                  child: FormBuilderTextField(
+                    name: "indirizzo",
+                    controller: formFieldControllerIndirizzo..text=aziendaSelezionata!=null?aziendaSelezionata!.indirizzo!:"",
+
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade300,
                       filled: true,
@@ -132,7 +163,10 @@ class MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
+                  child: FormBuilderTextField(
+                    name: "cap",
+                    controller: formFieldControllerCap..text=aziendaSelezionata!=null?aziendaSelezionata!.cap!:"",
+
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade300,
                       filled: true,
@@ -143,7 +177,10 @@ class MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
+                  child: FormBuilderTextField(
+                    name: "citta",
+                    controller: formFieldControllerCitta..text=aziendaSelezionata!=null?aziendaSelezionata!.citta!:"",
+
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade300,
                       filled: true,
@@ -154,7 +191,10 @@ class MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
+                  child: FormBuilderTextField(
+                    name: "iva",
+                    controller: formFieldControllerIva..text=aziendaSelezionata!=null?aziendaSelezionata!.partitaIva!:"",
+
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade300,
                       filled: true,
@@ -165,7 +205,10 @@ class MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
+                  child: FormBuilderTextField(
+                    name: "codicefiscale",
+                    controller: formFieldControllerCodicefiscale..text=aziendaSelezionata!=null?aziendaSelezionata!.codiceFiscale!:"",
+
                     decoration: InputDecoration(
                       fillColor: Colors.grey.shade300,
                       filled: true,
@@ -191,7 +234,7 @@ class MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-                Padding(
+             /*   Padding(
                   padding: EdgeInsets.all(6.0),
                   child: TextFormField(
                     decoration: InputDecoration(
@@ -240,7 +283,7 @@ class MyHomePageState extends State<MyHomePage> {
                         border: InputBorder.none,
                         labelText: "E-mail"),
                   ),
-                ),
+                ),*/
                 Padding(
                   padding: EdgeInsets.all(6.0),
                   child: Row(
@@ -254,7 +297,10 @@ class MyHomePageState extends State<MyHomePage> {
                         splashRadius: 1,
                         icon: Icon(Icons.add_circle_outlined),
                         color: Colors.red,
-                        onPressed: () {},
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          showReferente();
+                        },
                       ),
                     ],
                   ),
@@ -282,40 +328,56 @@ class MyHomePageState extends State<MyHomePage> {
                   itemCount: listaNote.length,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, i) {
-                    return Column(
-                      children: [
-                        Container(
-                          height: 55,
-                          width: double.infinity,
-                          color: Colors.grey.shade300,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 12),
-                            child: Text(
-                              listaNote[i].titolo.toString(),
-                              style: TextStyle(
-                                  color: Colors.grey[700], fontSize: 15),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24.0,
-                              vertical: 12,
-                            ),
-                            child: Text(
-                              listaNote[i].testo.toString(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[700],
+                    return Padding(
+                      padding: EdgeInsets.only(
+
+
+                          bottom: ScreenUtil().setHeight(16)
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 55,
+                            //width: double.infinity,
+                            color: Colors.grey.shade300,
+                            child: ListTile(
+                              title:Text(
+                                listaNote[i].titolo.toString(),
+                                style: TextStyle(
+                                    color: Colors.grey[700], fontSize: 15),
                               ),
-                              overflow: TextOverflow.clip,
-                              textAlign: TextAlign.justify,
+                              trailing: IconButton(onPressed: (){
+
+                                setState(() {
+                                  listaNote.removeAt(i);
+                                });
+
+                              },icon:Icon(Icons.cancel_rounded, color: Colors.black)),
+
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            width: double.infinity,
+                            child: Padding(
+                              padding:  EdgeInsets.only(
+                                left: ScreenUtil().setWidth(16),
+                                right: ScreenUtil().setWidth(16),
+                                top: ScreenUtil().setHeight(8),
+                                bottom: ScreenUtil().setHeight(8)
+                              ),
+                              child: Text(
+                                listaNote[i].testo.toString(),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[700],
+                                ),
+                                overflow: TextOverflow.clip,
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -323,6 +385,7 @@ class MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.only(right: 6.0, left: 6, bottom: 6),
                   child: GestureDetector(
                     onTap: () {
+                      FocusScope.of(context).unfocus();
                       showDialog(
                           context: context,
                           builder: (BuildContext context) =>
@@ -477,6 +540,106 @@ class MyHomePageState extends State<MyHomePage> {
         ),
         Divider(),
       ],
+    );
+  }
+
+
+  Future<void> getContacts() async {
+
+    final Iterable<Contact> contacts = await ContactsService.getContacts();
+    setState(() {
+      _contacts = contacts;
+    });
+  }
+
+
+  void showReferente() {
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          title: Text(
+            "Aggiungi/Seleziona Referenete",
+            textAlign: TextAlign.center,
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width*.10,
+              height: MediaQuery.of(context).size.height*.70,
+            child: /*Column(
+              children: [
+            ,
+*/
+                _contacts != null
+                //Build a list view of all contacts, displaying their avatar and
+                // display name
+                    ? ListView.builder(
+                   shrinkWrap: false,
+
+                  scrollDirection: Axis.vertical,
+                  itemCount: _contacts.length ,
+                  itemBuilder: (BuildContext context, int index) {
+                    late Contact contact = _contacts.elementAt(index);
+                    return ListTile(
+                      contentPadding:
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
+                      leading: (contact.avatar != null && contact.avatar!.isNotEmpty)
+                          ? CircleAvatar(
+                        backgroundImage: MemoryImage(contact.avatar!),
+                      )
+                          : CircleAvatar(
+                        child: Text(contact.initials(),style: TextStyle(color: rvTheme.canvasColor),),
+                        backgroundColor: rvTheme.primaryColor,
+                      ),
+                      title: Text(contact.displayName ?? ''),
+                      //This can be further expanded to showing contacts detail
+                      // onPressed().
+                    );
+                  },
+                )
+                    : Center(child: Text("Nessun Contatto Presente")),
+            /*  ],
+            ),*/
+          ),
+          actions: [
+            ButtonTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              child: RaisedButton(
+                color: rvTheme.primaryColor,
+                elevation: 2,
+                child: Text(
+                  "Annulla",
+                  style: TextStyle(color: rvTheme.canvasColor),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  //Navigator.pop(context);
+                },
+              ),
+            ),
+            ButtonTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              child: RaisedButton(
+                color: rvTheme.primaryColor,
+                elevation: 2,
+                child: Text(
+                  "Nuovo",
+                  style: TextStyle(color: rvTheme.canvasColor),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  //Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+
+        );
+      },
     );
   }
 
