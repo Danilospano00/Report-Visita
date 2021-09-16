@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                       ),
                       SizedBox(
+
                         height: ScreenUtil().setSp(8),
                       ),
                       FormBuilderTextField(
