@@ -23,8 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-
-
   bool _isLoading = false;
 
   @override
@@ -76,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           labelText: "email non valida",
                           prefixIcon:
-                          Icon(Icons.account_box, color: rvTheme.hintColor),
+                              Icon(Icons.account_box, color: rvTheme.hintColor),
                         ),
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context),
@@ -138,11 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     //logInToFb();
                                     animateButton();
                                   });
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              Preferences()));
                                   print('Valid');
                                 } else {
                                   print('Invalid');
@@ -214,12 +207,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       Divider(
                         color: rvTheme.unselectedWidgetColor,
                         height: ScreenUtil().setHeight(1),
-                      ) ,
+                      ),
                       SizedBox(
                         height: ScreenUtil().setHeight(12),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(ScreenUtil().setHeight(8)),
+                        padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
                         child: AutoSizeText(
                           "non hai un account?",
                           maxLines: 1,
@@ -238,12 +231,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 builder: (context) => RegistrationScreen()),
                           );
                         },
-                        child:  setUpButtonChild("Registrati"),
+                        child: setUpButtonChild("Registrati"),
                         elevation: 4.0,
                         minWidth: double.infinity,
                         height: 48.0,
                       ),
-                      
                     ])),
               ],
             ),
@@ -252,7 +244,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void logInToFb() {
-
     /*FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
@@ -306,20 +297,35 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    User user =
-    User.init(_formKey.currentState!.fields);
+    User user = User.init(_formKey.currentState!.fields);
 
-   dynamic res= await AuthService().signIn(user.email!.replaceAll(new RegExp(r"\s+"), ""), user.password!, context);
-   if(res!=null)
-     Navigator.pop(context);
+    dynamic res = await AuthService().signIn(
+        user.email!.replaceAll(new RegExp(r"\s+"), ""),
+        user.password!,
+        context);
+    if (res != null) Navigator.pop(context);
 
     setState(() {
-      _isLoading=false;
+      _isLoading = false;
     });
   }
 
   Future<void> _setFirstAccess() async {
     final SharedPreferences prefs = await _prefs;
-
+    if (!(prefs.containsKey("isFirstAccess") ||
+        prefs.getBool("isFirstAccess") == false)) {
+      prefs.setBool("isFirstAccess", true);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Preferences()),
+        );
+    }
+    else{
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyHomePage()),
+      );    }
   }
 }
