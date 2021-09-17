@@ -236,40 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  void logInToFb() {
 
-    /*FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((result) {
-      isLoading = false;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Home(uid: result.user!.uid)),
-      );
-    }).catchError((err) {
-      print(err.message);
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Error"),
-              content: Text(err.message),
-              actions: [
-                FlatButton(
-                  child: Text("Ok"),
-                  onPressed: () {
-                    setState(() {
-                      isLoading = false;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
-    });*/
-  }
 
   Widget setUpButtonChild(String _text) {
     if (!_isLoading) {
@@ -301,6 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading=false;
     });
+    
   }
 
 }

@@ -1,5 +1,11 @@
 
+
 import 'package:objectbox/objectbox.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:report_visita_danilo/Models/Referente.dart';
+
+import 'Report.dart';
+
 
 @Entity()
 class Azienda{
@@ -14,6 +20,14 @@ class Azienda{
   String? codiceFiscale;
   double? lat;
   double? lng;
+
+
+  final referenti=ToMany<Referente>();
+  final reports=ToMany<Report>();
+  final events=ToMany<Event>();
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 import 'package:objectbox/objectbox.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
 
 @Entity()
 class Referente{
@@ -12,6 +13,8 @@ class Referente{
   String? email;
 
   double? lng;
+  final events=ToMany<Event>();
+
 
   Referente({this.id, this.nome,this.cognome,this.ruolo,this.telefono,this.email});
 }

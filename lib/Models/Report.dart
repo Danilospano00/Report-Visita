@@ -7,6 +7,9 @@ import 'Nota.dart';
 class Report{
   @Id()
   int? id;
+  //configurazione presa da fire base da salvare per eventuali modifiche per retro compatibiltà
+  String? configurationJson;
+
 
    final azienda=ToOne<Azienda>();
    final referente=ToOne<Referente>();
