@@ -56,6 +56,7 @@ class MyHomePageState extends State<MyHomePage> {
   late Report _report;
   late Iterable<Contact> _contacts;
   Azienda? aziendaSelezionata;
+  Contact? contattoSelezionato;
 
   @override
   void initState() {
@@ -326,6 +327,38 @@ class MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
+                contattoSelezionato!=null? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 2, horizontal: 18),
+                  leading: (contattoSelezionato!.avatar != null &&
+                      contattoSelezionato!.avatar!.isNotEmpty)
+                      ? CircleAvatar(
+                    backgroundImage:
+                    MemoryImage(contattoSelezionato!.avatar!),
+                  )
+                      : CircleAvatar(
+                    child: Text(
+                      contattoSelezionato!.initials(),
+                      style:
+                      TextStyle(color: rvTheme.canvasColor),
+                    ),
+                    backgroundColor: rvTheme.primaryColor,
+                  ),
+                  title: Text(contattoSelezionato!.displayName ?? ''),
+                  //This can be further expanded to showing contacts detail
+                  onTap:(){
+
+                    setState(() {
+                      contattoSelezionato=null;
+
+                    });
+
+
+                  }
+              ),
+            ):Container(),
                 Padding(
                   padding: EdgeInsets.only(top: 6.0),
                   child: Row(
@@ -613,7 +646,12 @@ class MyHomePageState extends State<MyHomePage> {
                                   ),
                             title: Text(contact.displayName ?? ''),
                             //This can be further expanded to showing contacts detail
-                            // onPressed().
+                              onTap:(){
+
+                              contattoSelezionato=contact;
+                              Navigator.pop(context);
+
+                              }
                           );
                         },
                       )
@@ -641,7 +679,13 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         );
       },
-    );
+    ).then((value) {
+
+      setState(() {
+
+      });
+
+    });
   }
 
   void showSolutionReferente() {
@@ -855,6 +899,7 @@ class MyHomePageState extends State<MyHomePage> {
                         emails: [Item(label: "email", value: email)] ,
                         phones: [Item(label: "telefono", value: telefono)]);
                     await ContactsService.addContact(contatto);
+                    contattoSelezionato=contatto;
                     Navigator.pop(context);
                   }
                 },
@@ -863,7 +908,13 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         );
       },
-    );
+    ).then((value) {
+
+      setState(() {
+
+      });
+
+    });
   }
 
   List<Azienda> getSuggestion(String query) =>
