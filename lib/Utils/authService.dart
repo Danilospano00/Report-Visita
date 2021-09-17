@@ -5,23 +5,22 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 //import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';
+import 'package:report_visita_danilo/Screen/Preferences.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-
-class AuthService{
-
-  handleAuth(){
+class AuthService {
+  handleAuth() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context,snapshot){
-          if(snapshot.hasData){
-
-            dynamic user=snapshot.data;
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData) {
+            dynamic user = snapshot.data;
             return Card(
               margin: EdgeInsets.all(10),
               child: Column(
@@ -39,7 +38,8 @@ class AuthService{
                         child: ColoredBox(
                           color: Colors.red,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0, bottom: 20),
+                            padding:
+                                const EdgeInsets.only(left: 20.0, bottom: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,7 +67,6 @@ class AuthService{
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),
@@ -79,7 +78,12 @@ class AuthService{
                         child: Align(
                           alignment: AlignmentDirectional.bottomEnd,
                           child: FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Preferences()));
+                            },
                             backgroundColor: Colors.grey[700],
                             child: Icon(Icons.add),
                           ),
@@ -108,11 +112,12 @@ class AuthService{
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18),
                               ),
-                              Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2)),
                               Text(
                                 "Controlla il planner",
-                                style:
-                                TextStyle(fontSize: 18, color: Colors.grey[700]),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.grey[700]),
                               ),
                             ],
                           ),
@@ -149,7 +154,8 @@ class AuthService{
                                   Text(
                                     "Allerte attive",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 18),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
                                   )
                                 ],
                               ),
@@ -167,8 +173,8 @@ class AuthService{
                     ),
                   ),
                   Padding(
-                    padding:
-                    const EdgeInsets.only(top: 40.0, right: 10, left: 10, bottom: 20),
+                    padding: const EdgeInsets.only(
+                        top: 40.0, right: 10, left: 10, bottom: 20),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +199,9 @@ class AuthService{
                                     ),
                                   ],
                                 ),
-                                Padding(padding: const EdgeInsets.symmetric(vertical: 2)),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2)),
                                 Text(
                                   "è passato olte un mese dall'ultimo incontro...",
                                   textAlign: TextAlign.start,
@@ -244,7 +252,8 @@ class AuthService{
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 110.5, vertical: 50),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 110.5, vertical: 50),
                         child: ElevatedButton.icon(
                           icon: Icon(
                             Icons.tune_outlined,
@@ -270,7 +279,7 @@ class AuthService{
                 ],
               ),
             );
-          }else{
+          } else {
             return Card(
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
@@ -288,7 +297,8 @@ class AuthService{
                         child: ColoredBox(
                           color: Colors.red,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0, bottom: 20),
+                            padding:
+                                const EdgeInsets.only(left: 20.0, bottom: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -307,10 +317,11 @@ class AuthService{
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Navigator.pushReplacement(
                                       context,
-                                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()),
                                     );
                                   },
                                   child: Padding(
@@ -338,7 +349,7 @@ class AuthService{
                       textAlign: TextAlign.start,
                       text: TextSpan(
                         text:
-                        "Scopri tutti i vantaggi di un account registrato\n\n",
+                            "Scopri tutti i vantaggi di un account registrato\n\n",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -347,7 +358,7 @@ class AuthService{
                         children: [
                           TextSpan(
                             text:
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
                             style: TextStyle(fontWeight: FontWeight.normal),
                           )
                         ],
@@ -358,45 +369,33 @@ class AuthService{
               ),
             );
           }
-
         });
   }
 
-
-  singOut(){
+  singOut() {
     FirebaseAuth.instance.signOut();
   }
 
-  signIn(String email,String password,context) async {
-
-    return await FirebaseAuth.instance.
-    signInWithEmailAndPassword(email: email, password: password);
+  signIn(String email, String password, context) async {
+    return await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
     /*.
     then((value) => (value){
       UserCredential res=value;
     }).catchError((e){
       showError(e.toString(), context);
     });*/
-
-
-
-
   }
 
-
-  singUp(String email,String password){
-
+  singUp(String email, String password) {
     //ritorna le credensiali o un errore da catturare
-    return FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-
+    return FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
   }
 
-  resetPassword(String email){
+  resetPassword(String email) {
     FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
-
-
-
 
   // apple metodi
 
@@ -414,10 +413,7 @@ class AuthService{
     return digest.toString();
   }
 
-
-
   appleLogIn() async {
-
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
@@ -442,7 +438,7 @@ class AuthService{
       // Sign in the user with Firebase. If the nonce we generated earlier does
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
       final authResult =
-      await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
 
       final displayName =
           '${appleCredential.givenName} ${appleCredential.familyName}';
@@ -457,13 +453,9 @@ class AuthService{
     } catch (exception) {
       print(exception);
     }
-
   }
 
-
-
   fbLogIn() async {
-
     /* final fb = FacebookLogin();
 
 // Log in
@@ -507,9 +499,7 @@ class AuthService{
     }*/
   }
 
-
   googleLogIn() async {
-
     /* GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
 
     GoogleSignInAuthentication googleSignInAuthentication =
@@ -523,34 +513,24 @@ class AuthService{
       idToken: googleSignInAuthentication.idToken,
 
     );*/
-    var googleSignIn=GoogleSignIn();
+    var googleSignIn = GoogleSignIn();
     GoogleSignInAccount? googleAccount;
     GoogleSignInAuthentication googleSignInAuthentication;
 
-
-    googleAccount= await googleSignIn.signIn();
+    googleAccount = await googleSignIn.signIn();
 
     googleSignInAuthentication = await googleAccount!.authentication;
 
     AuthCredential credential = GoogleAuthProvider.credential(
-
       accessToken: googleSignInAuthentication.accessToken,
-
       idToken: googleSignInAuthentication.idToken,
-
     );
 
-
-
-
-    UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
-
+    UserCredential authResult =
+        await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
-
-
-  void showError(String mess,context) {
+  void showError(String mess, context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -584,7 +564,4 @@ class AuthService{
       },
     );
   }
-
-
-
 }

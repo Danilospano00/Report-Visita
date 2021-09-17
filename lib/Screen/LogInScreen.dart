@@ -1,14 +1,16 @@
-
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/User.dart';
+import 'package:report_visita_danilo/Screen/AccountEmpty.dart';
 import 'package:report_visita_danilo/Utils/authService.dart';
 import 'package:report_visita_danilo/Utils/horizontaldivider.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'HomePage.dart';
+import 'Preferences.dart';
 import 'Registration.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,6 +20,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
+
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 
 
@@ -47,9 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
               right: ScreenUtil().setWidth(16),
               bottom: ScreenUtil().setHeight(60)),
           child: Container(
-
-            padding:EdgeInsets.only(
-              top: ScreenUtil().setWidth(16),
+            padding: EdgeInsets.only(
+                top: ScreenUtil().setWidth(16),
                 left: ScreenUtil().setWidth(16),
                 right: ScreenUtil().setWidth(16)),
             //height: ScreenUtil().screenHeight,
@@ -57,9 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding:  EdgeInsets.all(ScreenUtil().setHeight(8)),
+                  padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
                   child: AutoSizeText(
-                   "Effettua il logIn",
+                    "Effettua il logIn",
                     maxLines: 1,
                     style: TextStyle(fontSize: ScreenUtil().setSp(24)),
                   ),
@@ -82,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                       ),
                       SizedBox(
-
                         height: ScreenUtil().setSp(8),
                       ),
                       FormBuilderTextField(
@@ -124,32 +126,35 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Container(
                             // width: ScreenUtil().setWidth(100),
-                              child: MaterialButton(
-                                child: setUpButtonChild("Accedi"),
-                                color: rvTheme.primaryColorDark,
-
-                                onPressed: () {
-
-                                  if (_formKey.currentState?.validate() ?? false) {
-                                    setState(() {
-                                      _isLoading = true;
-                                      //logInToFb();
-                                      animateButton();
-                                    });
-                                    print('Valid');
-                                  } else {
-                                    print('Invalid');
-                                  }
-                                },
-                                elevation: 4.0,
-                                minWidth: ScreenUtil().setWidth(100),
-                                height: 48.0,
-
-                              )
-                          )
+                            child: MaterialButton(
+                              child: setUpButtonChild("Accedi"),
+                              color: rvTheme.primaryColorDark,
+                              onPressed: () async {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  _setFirstAccess();
+                                  setState(() {
+                                    _isLoading = true;
+                                    //logInToFb();
+                                    animateButton();
+                                  });
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Preferences()));
+                                  print('Valid');
+                                } else {
+                                  print('Invalid');
+                                }
+                              },
+                              elevation: 4.0,
+                              minWidth: ScreenUtil().setWidth(100),
+                              height: 48.0,
+                            ),
+                          ),
                         ],
                       ),
-
                       SizedBox(
                         height: ScreenUtil().setSp(16),
                       ),
@@ -160,39 +165,49 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: ScreenUtil().setHeight(16),
                       ),
-
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.blue,
-                            child:
-                          IconButton(onPressed: (){
-                            AuthService().googleLogIn();
-                          }, icon: Image.asset("assets/icons8-google-24.png",color: Colors.white,)
-                          )),
-                        CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.blue[800],
-                            child:
-                            IconButton(onPressed: (){}, icon: Image.asset("assets/icons8-facebook-f-24.png",color: Colors.white,)
-                            )),
-                        CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.black,
-                            child:
-                            IconButton(onPressed: (){}, icon: Image.asset("assets/icons8-apple-logo-24.png",color: Colors.white,)
-                            )),
-                        CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.blue,
-                            child:
-                            IconButton(onPressed: (){}, icon: Image.asset("assets/icons8-linkedin-24.png",color: Colors.white,)
-                            )),
-                      ],
-                    ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.blue,
+                              child: IconButton(
+                                  onPressed: () {
+                                    AuthService().googleLogIn();
+                                  },
+                                  icon: Image.asset(
+                                    "assets/icons8-google-24.png",
+                                    color: Colors.white,
+                                  ))),
+                          CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.blue[800],
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/icons8-facebook-f-24.png",
+                                    color: Colors.white,
+                                  ))),
+                          CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.black,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/icons8-apple-logo-24.png",
+                                    color: Colors.white,
+                                  ))),
+                          CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.blue,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/icons8-linkedin-24.png",
+                                    color: Colors.white,
+                                  ))),
+                        ],
+                      ),
                       SizedBox(
                         height: ScreenUtil().setHeight(12),
                       ),
@@ -236,7 +251,40 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
+  void logInToFb() {
 
+    /*FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((result) {
+      isLoading = false;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home(uid: result.user!.uid)),
+      );
+    }).catchError((err) {
+      print(err.message);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text(err.message),
+              actions: [
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    });*/
+  }
 
   Widget setUpButtonChild(String _text) {
     if (!_isLoading) {
@@ -268,7 +316,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading=false;
     });
-    
   }
 
+  Future<void> _setFirstAccess() async {
+    final SharedPreferences prefs = await _prefs;
+
+  }
 }

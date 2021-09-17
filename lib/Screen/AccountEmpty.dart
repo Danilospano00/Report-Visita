@@ -27,7 +27,6 @@ class AccountEmptyState extends State<AccountEmpty> {
           ),
         ),
         body: AuthService().handleAuth(),
-
       );
 
   }

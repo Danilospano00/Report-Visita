@@ -3,8 +3,10 @@ import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/HomePage.dart';
 import 'package:report_visita_danilo/Screen/whitePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'AccountEmpty.dart';
+import 'Preferences.dart';
 
 class ViewPage extends StatefulWidget {
   @override
@@ -16,16 +18,20 @@ class ViewPageState extends State<ViewPage> {
   MyHomePageState myHomePage = new MyHomePageState();
 
   final PageController controller = PageController(initialPage: 0);
-  List<Widget> screens = [MyHomePage(),  WhitePage(),CalendarPage(),];
+  List<Widget> screens = [
+    MyHomePage(),
+    //Preferences(),
+    CalendarPage(),
+  ];
   int _selectedIndex = 0;
   final PageStorageBucket bucket = PageStorageBucket();
 
   late Report _report;
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomInset: false,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: controller,
@@ -65,8 +71,9 @@ class ViewPageState extends State<ViewPage> {
                 icon: Icon(Icons.event_rounded),
                 color: Colors.white,
                 onPressed: () {
-                  _selectedIndex=2;
-                  controller.jumpToPage(_selectedIndex);},
+                  _selectedIndex = 2;
+                  controller.jumpToPage(_selectedIndex);
+                },
               ),
             ],
           ),
@@ -76,11 +83,10 @@ class ViewPageState extends State<ViewPage> {
         child: Icon(Icons.archive_rounded),
         backgroundColor: Colors.grey.shade700,
         onPressed: () {
-          if(_selectedIndex==0){
+          if (_selectedIndex == 0) {
             myHomePage.addReport();
-          }
-          else {
-            _selectedIndex=0;
+          } else {
+            _selectedIndex = 0;
             controller.jumpToPage(_selectedIndex);
           }
         },
@@ -88,4 +94,6 @@ class ViewPageState extends State<ViewPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+
+
 }
