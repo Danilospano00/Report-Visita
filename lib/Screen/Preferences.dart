@@ -23,11 +23,15 @@ class PreferencesState extends State<Preferences> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text("Seleziona la tipologia di configurazione che vuoi usare",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey[700],
+            Padding(
+              padding:  EdgeInsets.all(ScreenUtil().setHeight(16)),
+              child: AutoSizeText("Seleziona la tipologia di configurazione che vuoi usare",
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(20),
+                  fontWeight: FontWeight.w400,
+
+                ),
               ),
             ),
             ListView.builder(

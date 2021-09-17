@@ -24,18 +24,18 @@ class MyHomePageState extends State<MyHomePage> {
   List<Azienda> listaAziende = [
     Azienda(
         nome: "Azienda 1",
-        indirizzo: "via casa mia",
+        indirizzo: "via prova 1",
         cap: "04040",
-        partitaIva: "jhsonasdo",
-        codiceFiscale: "dsnflksdnflk",
+        partitaIva: "re3456yf",
+        codiceFiscale: "re3456yf",
         citta: "priverno"),
     Azienda(
-        nome: "Azienda 1",
-        indirizzo: "via casa tua",
+        nome: "Azienda 2",
+        indirizzo: "via prova 2",
         cap: "0400",
-        partitaIva: "jhsonasdo",
-        codiceFiscale: "dsnflksdnflk",
-        citta: "roma")
+        partitaIva: "pt5677po",
+        codiceFiscale: "pt5677po",
+        citta: "Roma")
   ];
 
   final formGlobalKey = GlobalKey<FormState>();
@@ -602,6 +602,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   void showReferente() {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -747,10 +748,17 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   void showAddReferente() {
+
     showDialog(
+      barrierDismissible: false,
+
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+
+        bool saveContact = false;
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
@@ -838,6 +846,32 @@ class MyHomePageState extends State<MyHomePage> {
                                   FormBuilderValidators.email(context),
                                 ]),
                               )),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: ScreenUtil().setHeight(6),
+                                bottom: ScreenUtil().setHeight(6)),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: saveContact,
+                                  activeColor: rvTheme.primaryColor,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      saveContact = value as bool;
+                                    });
+                                  },
+                                ),
+                                Flexible(
+                                  child: Container(
+                                      child: AutoSizeText("Salvere il contatto nella rubrica",
+                                          style: new TextStyle(
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(12),),
+                                      maxLines: 2,),
+                                )
+                                )],
+                            ),
+                          ),
                         ])))),
           ),
           actionsAlignment: MainAxisAlignment.center,
@@ -898,6 +932,7 @@ class MyHomePageState extends State<MyHomePage> {
                         company: ruolo ,
                         emails: [Item(label: "email", value: email)] ,
                         phones: [Item(label: "telefono", value: telefono)]);
+                    if(saveContact)
                     await ContactsService.addContact(contatto);
                     contattoSelezionato=contatto;
                     Navigator.pop(context);
@@ -906,7 +941,7 @@ class MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ],
-        );
+        );});
       },
     ).then((value) {
 

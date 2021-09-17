@@ -26,7 +26,10 @@ class AccountEmptyState extends State<AccountEmpty> {
                   color: Colors.grey[700]),
           ),
         ),
-        body: AuthService().handleAuth(),
+        body: Padding(
+          padding: EdgeInsets.only(
+              top: ScreenUtil().setWidth(24),),
+          child:AuthService().handleAuth(),)
       );
 
   }

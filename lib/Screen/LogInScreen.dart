@@ -130,10 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () async {
                                 if (_formKey.currentState?.validate() ??
                                     false) {
-                                  _setFirstAccess();
+                                  // _setFirstAccess();
                                   setState(() {
                                     _isLoading = true;
-                                    //logInToFb();
                                     animateButton();
                                   });
                                   print('Valid');
@@ -243,40 +242,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  void logInToFb() {
-    /*FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((result) {
-      isLoading = false;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Home(uid: result.user!.uid)),
-      );
-    }).catchError((err) {
-      print(err.message);
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Error"),
-              content: Text(err.message),
-              actions: [
-                FlatButton(
-                  child: Text("Ok"),
-                  onPressed: () {
-                    setState(() {
-                      isLoading = false;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
-    });*/
-  }
-
   Widget setUpButtonChild(String _text) {
     if (!_isLoading) {
       return new Text(
@@ -294,38 +259,47 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> animateButton() async {
-    setState(() {
-      _isLoading = true;
-    });
     User user = User.init(_formKey.currentState!.fields);
 
     dynamic res = await AuthService().signIn(
         user.email!.replaceAll(new RegExp(r"\s+"), ""),
         user.password!,
         context);
-    if (res != null) Navigator.pop(context);
+    if (res != null) {
+      final SharedPreferences prefs = await _prefs;
+      if (!(prefs.containsKey("isFirstAccess") ||
+          prefs.getBool("isFirstAccess") == false)) {
+        prefs.setBool("isFirstAccess", true);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Preferences()),
+        );
+      } else {
+        Navigator.pop(context);
+      }
+    } else {
+      //errore log in
+    }
 
     setState(() {
       _isLoading = false;
     });
   }
 
-  Future<void> _setFirstAccess() async {
+ /* Future<void> _setFirstAccess() async {
     final SharedPreferences prefs = await _prefs;
     if (!(prefs.containsKey("isFirstAccess") ||
         prefs.getBool("isFirstAccess") == false)) {
       prefs.setBool("isFirstAccess", true);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Preferences()),
-        );
-    }
-    else{
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-            builder: (context) => MyHomePage()),
-      );    }
-  }
+        MaterialPageRoute(builder: (context) => Preferences()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyHomePage()),
+      );
+    }
+  }*/
 }

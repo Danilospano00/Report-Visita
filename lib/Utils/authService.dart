@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -280,93 +282,134 @@ class AuthService {
               ),
             );
           } else {
-            return Card(
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      ShapeOfView(
-                        elevation: 4,
-                        height: 180,
-                        shape: DiagonalShape(
-                          position: DiagonalPosition.Bottom,
-                          direction: DiagonalDirection.Left,
-                          angle: DiagonalAngle.deg(angle: 10),
-                        ),
-                        child: ColoredBox(
-                          color: Colors.red,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, bottom: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.red[900],
-                                  radius: 50,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 45,
-                                    child: Icon(
-                                      Icons.perm_identity_outlined,
-                                      size: 48,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginScreen()),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 20.0),
-                                    child: Text(
-                                      "Ciao\nAccedi al tuo account",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13.9.sp,
-                                        fontWeight: FontWeight.bold,
+            return Column(
+              children: [
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            ShapeOfView(
+                              elevation: 4,
+                              height: 180,
+                              shape: DiagonalShape(
+                                position: DiagonalPosition.Bottom,
+                                direction: DiagonalDirection.Left,
+                                angle: DiagonalAngle.deg(angle: 10),
+                              ),
+                              child: ColoredBox(
+                                color: Colors.red,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 20.0, bottom: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.red[900],
+                                        radius: 50,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 45,
+                                          child: Icon(
+                                            Icons.perm_identity_outlined,
+                                            size: 48,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => LoginScreen()),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 20.0),
+                                          child: Text(
+                                            "Ciao\nAccedi al tuo account",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13.9.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: RichText(
+                            textAlign: TextAlign.start,
+                            text: TextSpan(
+                              text:
+                                  "Scopri tutti i vantaggi di un account registrato\n\n",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text:
+                                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
+                                  style: TextStyle(fontWeight: FontWeight.normal),
+                                )
                               ],
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: RichText(
-                      textAlign: TextAlign.start,
-                      text: TextSpan(
-                        text:
-                            "Scopri tutti i vantaggi di un account registrato\n\n",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text:
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
-                            style: TextStyle(fontWeight: FontWeight.normal),
-                          )
-                        ],
-                      ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+
+                    height: ScreenUtil().setHeight(50),
+                    color: Colors.black,
+                    child:Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            width: 200,
+                            child: AutoSizeText("Vuoi accedere a tutte le funzionalità complete?",
+                            maxLines: 2,
+                            style: TextStyle(color:Colors.white),),
+                          ),
+                          RichText(
+                              text:
+                              TextSpan(
+                                text: 'CONTATTACI',
+                                style: new TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: ScreenUtil().setSp(18),
+                                  fontWeight: FontWeight.bold
+                                ),
+                                recognizer: new TapGestureRecognizer()
+                                  ..onTap = () {
+
+
+
+                                  },
+                              ))
+                        ],
+                      ),
+                    )
+                )
+              ],
             );
           }
         });
