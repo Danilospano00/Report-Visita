@@ -1,5 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+final formUnderlineInputBorder = UnderlineInputBorder(
+  borderSide: BorderSide(color: Colors.black),
+);
+
+final homePageMainTextStyle = TextStyle(
+  color: Colors.grey[700],
+  fontSize: 15.712129.sp,
+  fontWeight: FontWeight.w700,
+  letterSpacing: 0.15,
+);
+final InputDecoration styleTextFormField = InputDecoration(
+  labelText: "Nome Azienda",
+  fillColor: Colors.grey.shade300,
+  filled: true,
+  labelStyle: TextStyle(
+    color: Colors.black,
+  ),
+);
 final ThemeData rvTheme = ThemeData(
   primarySwatch: Colors.red,
   brightness: Brightness.light,
@@ -208,18 +227,18 @@ final ThemeData rvTheme = ThemeData(
     selectedColor: Color(0x3d000000),
     shape: StadiumBorder(
         side: BorderSide(
-      color: Color(0xff000000),
-      width: 0,
-      style: BorderStyle.none,
-    )),
+          color: Color(0xff000000),
+          width: 0,
+          style: BorderStyle.none,
+        )),
   ),
   dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
-    side: BorderSide(
-      color: Color(0xff000000),
-      width: 0,
-      style: BorderStyle.none,
-    ),
-    borderRadius: BorderRadius.all(Radius.circular(0.0)),
-  )),
+        side: BorderSide(
+          color: Color(0xff000000),
+          width: 0,
+          style: BorderStyle.none,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(0.0)),
+      )),
 );

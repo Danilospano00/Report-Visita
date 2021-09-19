@@ -88,389 +88,403 @@ class MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: //!hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):
-          SingleChildScrollView(
-        child: FormBuilder(
-          key: formKeyBody,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 6.0, left: 6, right: 6, top: 32),
-                  child: Row(
-                    children: [
-                      Text("Nuovo Report",
+          Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: SingleChildScrollView(
+          child: FormBuilder(
+            key: formKeyBody,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 22.h),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Nuovo Report",
                           textAlign: TextAlign.left,
-                          style:
-                              TextStyle(fontSize: 28, color: Colors.grey[700])),
-                    ],
+                          style: TextStyle(
+                            fontSize: 24.151785.sp,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: TypeAheadField<Azienda?>(
-                    onSuggestionSelected: (azienda) {
-                      setState(() {
-                        aziendaSelezionata = azienda;
-                      });
-                    },
-                    hideSuggestionsOnKeyboardHide: false,
-                    suggestionsCallback: getSuggestion,
-                    itemBuilder: (context, Azienda? suggestion) {
-                      final azienda = suggestion!;
-                      return ListTile(
-                        title: Text(azienda.nome.toString()),
-                      );
-                    },
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: formFieldController
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: TypeAheadField<Azienda?>(
+                      onSuggestionSelected: (azienda) {
+                        setState(() {
+                          aziendaSelezionata = azienda;
+                        });
+                      },
+                      hideSuggestionsOnKeyboardHide: false,
+                      suggestionsCallback: getSuggestion,
+                      itemBuilder: (context, Azienda? suggestion) {
+                        final azienda = suggestion!;
+                        return ListTile(
+                          title: Text(azienda.nome.toString()),
+                        );
+                      },
+                      textFieldConfiguration: TextFieldConfiguration(
+                        controller: formFieldController
+                          ..text = aziendaSelezionata != null
+                              ? aziendaSelezionata!.nome!
+                              : "",
+                        decoration: InputDecoration(
+                          labelText: "Nome Azienda",
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          labelStyle: homePageMainTextStyle,
+                          focusedBorder: formUnderlineInputBorder,
+                          prefixIcon: Icon(
+                            Icons.business_outlined,
+                            color: Colors.black,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.cancel_outlined),
+                            color: Colors.black,
+                            onPressed: () {},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: FormBuilderTextField(
+                      name: "indirizzo",
+                      controller: formFieldControllerIndirizzo
                         ..text = aziendaSelezionata != null
-                            ? aziendaSelezionata!.nome!
+                            ? aziendaSelezionata!.indirizzo!
                             : "",
+                      cursorColor: Colors.grey[700],
                       decoration: InputDecoration(
-                        labelText: "Nome Azienda",
                         fillColor: Colors.grey.shade300,
                         filled: true,
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red)),
-                        labelStyle: TextStyle(
-                          color: Colors.black,
+                        border: InputBorder.none,
+                        labelText: "Indirizzo",
+                        focusedBorder: formUnderlineInputBorder,
+                        labelStyle: homePageMainTextStyle,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: FormBuilderTextField(
+                      name: "cap",
+                      controller: formFieldControllerCap
+                        ..text = aziendaSelezionata != null
+                            ? aziendaSelezionata!.cap!
+                            : "",
+                      cursorColor: Colors.grey[700],
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                        labelText: "CAP",
+                        labelStyle: homePageMainTextStyle,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: FormBuilderTextField(
+                      name: "citta",
+                      controller: formFieldControllerCitta
+                        ..text = aziendaSelezionata != null
+                            ? aziendaSelezionata!.citta!
+                            : "",
+                      cursorColor: Colors.grey[700],
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                        labelText: "Città",
+                        focusedBorder: formUnderlineInputBorder,
+                        labelStyle: homePageMainTextStyle,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: FormBuilderTextField(
+                      name: "iva",
+                      controller: formFieldControllerIva
+                        ..text = aziendaSelezionata != null
+                            ? aziendaSelezionata!.partitaIva!
+                            : "",
+                      cursorColor: Colors.grey[700],
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                        labelText: "Partita IVA",
+                        focusedBorder: formUnderlineInputBorder,
+                        labelStyle: homePageMainTextStyle,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: FormBuilderTextField(
+                      name: "codicefiscale",
+                      controller: formFieldControllerCodicefiscale
+                        ..text = aziendaSelezionata != null
+                            ? aziendaSelezionata!.codiceFiscale!
+                            : "",
+                      cursorColor: Colors.grey[700],
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                        labelText: "Codice fiscale",
+                        focusedBorder: formUnderlineInputBorder,
+                        labelStyle: homePageMainTextStyle,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          "Referente",
+                          style: homePageMainTextStyle,
                         ),
-                        prefixIcon: Icon(
-                          Icons.business_outlined,
-                          color: Colors.black,
+                        Expanded(
+                          child: new Container(
+                            margin: EdgeInsets.only(left: 20),
+                            child: Divider(
+                              color: Colors.grey[700],
+                              thickness: 3,
+                            ),
+                          ),
                         ),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.cancel_outlined),
-                          color: Colors.black,
+                      ],
+                    ),
+                  ),
+                  /*   Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          border: InputBorder.none,
+                          labelText: "Nome"),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          border: InputBorder.none,
+                          labelText: "Cogome"),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          border: InputBorder.none,
+                          labelText: "Ruolo"),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          border: InputBorder.none,
+                          labelText: "Telefono"),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          border: InputBorder.none,
+                          labelText: "E-mail"),
+                    ),
+                  ),*/
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Referente",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 15.712129.sp,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.15,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        IconButton(
+                          splashRadius: 1,
+                          icon: Icon(Icons.add_circle_outlined),
+                          color: Colors.red,
                           onPressed: () {
-                            formFieldController.clear();
-                            formFieldControllerIndirizzo.clear();
-                            formFieldControllerCap.clear();
-                            formFieldControllerCitta.clear();
-                            formFieldControllerIva.clear();
-
-                            formFieldControllerCodicefiscale.clear();
-                            aziendaSelezionata = null;
+                            FocusScope.of(context).unfocus();
+                            showSolutionReferente();
                           },
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: FormBuilderTextField(
-                    name: "indirizzo",
-                    controller: formFieldControllerIndirizzo
-                      ..text = aziendaSelezionata != null
-                          ? aziendaSelezionata!.indirizzo!
-                          : "",
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade300,
-                      filled: true,
-                      border: InputBorder.none,
-                      labelText: "Indirizzo",
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: FormBuilderTextField(
-                    name: "cap",
-                    controller: formFieldControllerCap
-                      ..text = aziendaSelezionata != null
-                          ? aziendaSelezionata!.cap!
-                          : "",
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade300,
-                      filled: true,
-                      border: InputBorder.none,
-                      labelText: "CAP",
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: FormBuilderTextField(
-                    name: "citta",
-                    controller: formFieldControllerCitta
-                      ..text = aziendaSelezionata != null
-                          ? aziendaSelezionata!.citta!
-                          : "",
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade300,
-                      filled: true,
-                      border: InputBorder.none,
-                      labelText: "Città",
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: FormBuilderTextField(
-                    name: "iva",
-                    controller: formFieldControllerIva
-                      ..text = aziendaSelezionata != null
-                          ? aziendaSelezionata!.partitaIva!
-                          : "",
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade300,
-                      filled: true,
-                      border: InputBorder.none,
-                      labelText: "Partita IVA",
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: FormBuilderTextField(
-                    name: "codicefiscale",
-                    controller: formFieldControllerCodicefiscale
-                      ..text = aziendaSelezionata != null
-                          ? aziendaSelezionata!.codiceFiscale!
-                          : "",
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade300,
-                      filled: true,
-                      border: InputBorder.none,
-                      labelText: "Codice fiscale",
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text("Referente"),
-                      Expanded(
-                        child: new Container(
-                          margin: const EdgeInsets.only(left: 20, right: 10),
-                          child: Divider(
-                            color: Colors.black,
-                            thickness: 3,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                /*   Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Nome"),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Cogome"),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Ruolo"),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Telefono"),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "E-mail"),
-                  ),
-                ),*/
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Referente",
-                        style: TextStyle(color: Colors.red),
-                        textAlign: TextAlign.left,
-                      ),
-                      IconButton(
-                        splashRadius: 1,
-                        icon: Icon(Icons.add_circle_outlined),
-                        color: Colors.red,
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          showSolutionReferente();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                contattoSelezionato!=null? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 2, horizontal: 18),
-                  leading: (contattoSelezionato!.avatar != null &&
-                      contattoSelezionato!.avatar!.isNotEmpty)
-                      ? CircleAvatar(
-                    backgroundImage:
-                    MemoryImage(contattoSelezionato!.avatar!),
-                  )
-                      : CircleAvatar(
-                    child: Text(
-                      contattoSelezionato!.initials(),
-                      style:
-                      TextStyle(color: rvTheme.canvasColor),
-                    ),
-                    backgroundColor: rvTheme.primaryColor,
-                  ),
-                  title: Text(contattoSelezionato!.displayName ?? ''),
-                  //This can be further expanded to showing contacts detail
-                  onTap:(){
-
-                    setState(() {
-                      contattoSelezionato=null;
-
-                    });
-
-
-                  }
-              ),
-            ):Container(),
-                Padding(
-                  padding: EdgeInsets.only(top: 6.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text("Note"),
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 20, right: 10),
-                          child: Divider(
-                            color: Colors.black,
-                            thickness: 3,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ListView.builder(
-                  addAutomaticKeepAlives: true,
-                  shrinkWrap: true,
-                  itemCount: listaNote.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, i) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.only(bottom: ScreenUtil().setHeight(16)),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 55,
-                            //width: double.infinity,
-                            color: Colors.grey.shade300,
-                            child: ListTile(
-                              title: Text(
-                                listaNote[i].titolo.toString(),
-                                style: TextStyle(
-                                    color: Colors.grey[700], fontSize: 15),
+                  contattoSelezionato != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 18),
+                              leading: (contattoSelezionato!.avatar != null &&
+                                      contattoSelezionato!.avatar!.isNotEmpty)
+                                  ? CircleAvatar(
+                                      backgroundImage: MemoryImage(
+                                          contattoSelezionato!.avatar!),
+                                    )
+                                  : CircleAvatar(
+                                      child: Text(
+                                        contattoSelezionato!.initials(),
+                                        style: TextStyle(
+                                            color: rvTheme.canvasColor),
+                                      ),
+                                      backgroundColor: rvTheme.primaryColor,
+                                    ),
+                              title:
+                                  Text(contattoSelezionato!.displayName ?? ''),
+                              //This can be further expanded to showing contacts detail
+                              onTap: () {
+                                setState(() {
+                                  contattoSelezionato = null;
+                                });
+                              }),
+                        )
+                      : Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12.h),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                "Note",
+                                style: homePageMainTextStyle,
                               ),
-                              trailing: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      listaNote.removeAt(i);
-                                    });
-                                  },
-                                  icon: Icon(Icons.cancel_rounded,
-                                      color: Colors.black)),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: ScreenUtil().setWidth(16),
-                                  right: ScreenUtil().setWidth(16),
-                                  top: ScreenUtil().setHeight(8),
-                                  bottom: ScreenUtil().setHeight(8)),
-                              child: Text(
-                                listaNote[i].testo.toString(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[700],
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 20),
+                                  child: Divider(
+                                    color: Colors.grey[700],
+                                    thickness: 3,
+                                  ),
                                 ),
-                                overflow: TextOverflow.clip,
-                                textAlign: TextAlign.justify,
+                              ),
+                            ],
+                          ),
+                        ),
+                  ListView.builder(
+                    addAutomaticKeepAlives: true,
+                    shrinkWrap: true,
+                    itemCount: listaNote.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, i) {
+                      return Padding(
+                        padding:
+                            EdgeInsets.only(bottom: ScreenUtil().setHeight(16)),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 55,
+                              //width: double.infinity,
+                              color: Colors.grey.shade300,
+                              child: ListTile(
+                                title: Text(
+                                  listaNote[i].titolo.toString(),
+                                  style: TextStyle(
+                                      color: Colors.grey[700], fontSize: 15),
+                                ),
+                                trailing: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        listaNote.removeAt(i);
+                                      });
+                                    },
+                                    icon: Icon(Icons.cancel_rounded,
+                                        color: Colors.black)),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 6.0, left: 6, bottom: 6),
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              showPopUp(context));
-                    },
-                    child: Container(
-                      height: 58,
-                      width: double.infinity,
-                      color: Colors.grey.shade300,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 12.0,
-                          right: 12,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Aggiungi nota",
-                              style: TextStyle(
-                                  color: Colors.grey[700], fontSize: 15),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Icons.unfold_more_outlined,
-                              color: Colors.grey[700],
+                            Container(
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: ScreenUtil().setWidth(16),
+                                    right: ScreenUtil().setWidth(16),
+                                    top: ScreenUtil().setHeight(8),
+                                    bottom: ScreenUtil().setHeight(8)),
+                                child: Text(
+                                  listaNote[i].testo.toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[700],
+                                  ),
+                                  overflow: TextOverflow.clip,
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ),
                             ),
                           ],
                         ),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 3.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                showPopUp(context));
+                      },
+                      child: Container(
+                        height: 56.w,
+                        width: 328.w,
+                        color: Colors.grey.shade300,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 12.0,
+                            right: 12,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Aggiungi nota",
+                                  style: homePageMainTextStyle),
+                              Spacer(),
+                              Icon(
+                                Icons.unfold_more_outlined,
+                                color: Colors.grey[700],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -479,29 +493,18 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Widget showPopUp(context) {
-    return new AlertDialog(
-      actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
+    return Padding(
+      padding: EdgeInsets.only(top: 35.0.h),
+      child: Column(
+        children: [
+          Stack(
             children: [
               Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      "Aggiungi nota",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Align(
-                  alignment: Alignment.topRight,
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: CircleAvatar(
                     radius: 14.0,
                     backgroundColor: Colors.white,
@@ -509,87 +512,130 @@ class MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
+              AlertDialog(
+                title: Text(
+                  "Aggiungi nota",
+                ),
+                titlePadding:
+                    EdgeInsets.only(top: 26.w, left: 16.w, bottom: 16.w),
+                titleTextStyle: homePageMainTextStyle,
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    /*Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: CircleAvatar(
+                              radius: 14.0,
+                              backgroundColor: Colors.white,
+                              child: Icon(Icons.cancel_rounded, color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),*/
+                    ListTile(
+                      title: Text(
+                        "Argomenti/Problemi/Opportunità/Dubbi",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError(
+                            "Argomenti/Problemi/Opportunità/Dubbi", 1, context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text(
+                        "Criteri primari e secondari cliente",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError(
+                            "Criteri primari e secondari cliente", 1, context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text(
+                        "Punti di forza concorrenza",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError("Punti di forza concorrenza", 1, context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text(
+                        "Punti deboli concorrenza",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError("Punti deboli concorrenza", 1, context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text(
+                        "Prossime azioni/Assegnazione Task/Tempi",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError("Prossime azioni/Assegnazione Task/Tempi", 1,
+                            context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text(
+                        "Prossimi step",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError("Prossimi step", 1, context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text(
+                        "Note amministrazione",
+                        textAlign: TextAlign.left,
+                        style: homePageMainTextStyle,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        showError("Note amministrazione", 1, context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        ),
-        ListTile(
-          title: Text(
-            "Argomenti/Problemi/Opportunità/Dubbi",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Argomenti/Problemi/Opportunità/Dubbi", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Criteri primari e secondari cliente",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Criteri primari e secondari cliente", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Punti di forza concorrenza",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Punti di forza concorrenza", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Punti deboli concorrenza",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Punti deboli concorrenza", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Prossime azioni/Assegnazione Task/Tempi",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Prossime azioni/Assegnazione Task/Tempi", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Prossimi step",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Prossimi step", 1, context);
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            "Note amministrazione",
-            textAlign: TextAlign.left,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-            showError("Note amministrazione", 1, context);
-          },
-        ),
-        Divider(),
-      ],
+        ],
+      ),
     );
   }
 
@@ -629,31 +675,28 @@ class MyHomePageState extends State<MyHomePage> {
                         itemBuilder: (BuildContext context, int index) {
                           late Contact contact = _contacts.elementAt(index);
                           return ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 18),
-                            leading: (contact.avatar != null &&
-                                    contact.avatar!.isNotEmpty)
-                                ? CircleAvatar(
-                                    backgroundImage:
-                                        MemoryImage(contact.avatar!),
-                                  )
-                                : CircleAvatar(
-                                    child: Text(
-                                      contact.initials(),
-                                      style:
-                                          TextStyle(color: rvTheme.canvasColor),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 18),
+                              leading: (contact.avatar != null &&
+                                      contact.avatar!.isNotEmpty)
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          MemoryImage(contact.avatar!),
+                                    )
+                                  : CircleAvatar(
+                                      child: Text(
+                                        contact.initials(),
+                                        style: TextStyle(
+                                            color: rvTheme.canvasColor),
+                                      ),
+                                      backgroundColor: rvTheme.primaryColor,
                                     ),
-                                    backgroundColor: rvTheme.primaryColor,
-                                  ),
-                            title: Text(contact.displayName ?? ''),
-                            //This can be further expanded to showing contacts detail
-                              onTap:(){
-
-                              contattoSelezionato=contact;
-                              Navigator.pop(context);
-
-                              }
-                          );
+                              title: Text(contact.displayName ?? ''),
+                              //This can be further expanded to showing contacts detail
+                              onTap: () {
+                                contattoSelezionato = contact;
+                                Navigator.pop(context);
+                              });
                         },
                       )
                     : Center(child: Text("Nessun Contatto Presente")),
@@ -681,11 +724,7 @@ class MyHomePageState extends State<MyHomePage> {
         );
       },
     ).then((value) {
-
-      setState(() {
-
-      });
-
+      setState(() {});
     });
   }
 
@@ -748,207 +787,197 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   void showAddReferente() {
-
     showDialog(
       barrierDismissible: false,
-
       context: context,
       builder: (BuildContext context) {
-
         bool saveContact = false;
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          title: Text(
-            "Aggiungi Referenete",
-            textAlign: TextAlign.center,
-          ),
-          content: Container(
-            width: MediaQuery.of(context).size.width * .80,
-            height: MediaQuery.of(context).size.height * .50,
-            child: SingleChildScrollView(
-                child: FormBuilder(
-                    key: formKeyAddReferente,
-                    child: Padding(
-                        padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
-                        child: Column(children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: ScreenUtil().setHeight(6)),
-                            child: FormBuilderTextField(
-                              name: "nome",
-                              decoration: InputDecoration(
-                                  fillColor: Colors.grey.shade300,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  labelText: "Nome"),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(context),
-                              ]),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: ScreenUtil().setHeight(6)),
-                            child: FormBuilderTextField(
-                              name: "cognome",
-                              decoration: InputDecoration(
-                                  fillColor: Colors.grey.shade300,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  labelText: "Cognome"),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(context),
-                              ]),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: ScreenUtil().setHeight(6)),
-                            child: FormBuilderTextField(
-                              name: "ruolo",
-                              decoration: InputDecoration(
-                                  fillColor: Colors.grey.shade300,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  labelText: "Ruolo"),
-                             
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: ScreenUtil().setHeight(6)),
-                            child: FormBuilderTextField(
-                              name: "telefono",
-                              decoration: InputDecoration(
-                                  fillColor: Colors.grey.shade300,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  labelText: "Telefono"),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(context),
-                              ]),
-                            ),
-                          ),
-                          Padding(
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            title: Text(
+              "Aggiungi Referenete",
+              textAlign: TextAlign.center,
+            ),
+            content: Container(
+              width: MediaQuery.of(context).size.width * .80,
+              height: MediaQuery.of(context).size.height * .50,
+              child: SingleChildScrollView(
+                  child: FormBuilder(
+                      key: formKeyAddReferente,
+                      child: Padding(
+                          padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
+                          child: Column(children: [
+                            Padding(
                               padding: EdgeInsets.only(
                                   bottom: ScreenUtil().setHeight(6)),
                               child: FormBuilderTextField(
-                                name: "email",
+                                name: "nome",
                                 decoration: InputDecoration(
                                     fillColor: Colors.grey.shade300,
                                     filled: true,
                                     border: InputBorder.none,
-                                    labelText: "E-mail"),
+                                    labelText: "Nome"),
                                 validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.email(context),
+                                  FormBuilderValidators.required(context),
                                 ]),
-                              )),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: ScreenUtil().setHeight(6),
-                                bottom: ScreenUtil().setHeight(6)),
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  value: saveContact,
-                                  activeColor: rvTheme.primaryColor,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      saveContact = value as bool;
-                                    });
-                                  },
-                                ),
-                                Flexible(
-                                  child: Container(
-                                      child: AutoSizeText("Salvere il contatto nella rubrica",
-                                          style: new TextStyle(
-                                        color: Colors.black,
-                                        fontSize: ScreenUtil().setSp(12),),
-                                      maxLines: 2,),
-                                )
-                                )],
+                              ),
                             ),
-                          ),
-                        ])))),
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  "Annulla",
-                  style: TextStyle(color: rvTheme.canvasColor),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  //showReferente();
-                },
-              ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "cognome",
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Cognome"),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                ]),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "ruolo",
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Ruolo"),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "telefono",
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Telefono"),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                ]),
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: ScreenUtil().setHeight(6)),
+                                child: FormBuilderTextField(
+                                  name: "email",
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.grey.shade300,
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      labelText: "E-mail"),
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.email(context),
+                                  ]),
+                                )),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(6),
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: saveContact,
+                                    activeColor: rvTheme.primaryColor,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        saveContact = value as bool;
+                                      });
+                                    },
+                                  ),
+                                  Flexible(
+                                      child: Container(
+                                    child: AutoSizeText(
+                                      "Salvere il contatto nella rubrica",
+                                      style: new TextStyle(
+                                        color: Colors.black,
+                                        fontSize: ScreenUtil().setSp(12),
+                                      ),
+                                      maxLines: 2,
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ),
+                          ])))),
             ),
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  "Aggiungi",
-                  style: TextStyle(color: rvTheme.canvasColor),
-                ),
-                onPressed: () async {
-                  if (formKeyAddReferente.currentState?.validate() ?? false) {
-                    String nome = formKeyAddReferente
-                            .currentState?.fields['nome']!.value
-                             ??
-                        " ";
-                    String cognome = formKeyAddReferente
-                            .currentState?.fields['cognome']!.value
-                             ??
-                        " ";
-                    String ruolo = formKeyAddReferente
-                            .currentState?.fields['ruolo']!.value
-                             ??
-                        " ";
-                    String email = formKeyAddReferente
-                            .currentState?.fields['email']!.value
-                             ??
-                        " ";
-                    String telefono = formKeyAddReferente
-                            .currentState?.fields['telefono']!.value
-                             ??
-                        " ";
-
-                    Contact contatto = Contact(
-                        givenName: nome ,
-                        familyName: cognome,
-                        displayName: nome + " " + cognome,
-                        company: ruolo ,
-                        emails: [Item(label: "email", value: email)] ,
-                        phones: [Item(label: "telefono", value: telefono)]);
-                    if(saveContact)
-                    await ContactsService.addContact(contatto);
-                    contattoSelezionato=contatto;
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              ButtonTheme(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                child: RaisedButton(
+                  color: rvTheme.primaryColor,
+                  elevation: 2,
+                  child: Text(
+                    "Annulla",
+                    style: TextStyle(color: rvTheme.canvasColor),
+                  ),
+                  onPressed: () {
                     Navigator.pop(context);
-                  }
-                },
+                    //showReferente();
+                  },
+                ),
               ),
-            ),
-          ],
-        );});
+              ButtonTheme(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                child: RaisedButton(
+                  color: rvTheme.primaryColor,
+                  elevation: 2,
+                  child: Text(
+                    "Aggiungi",
+                    style: TextStyle(color: rvTheme.canvasColor),
+                  ),
+                  onPressed: () async {
+                    if (formKeyAddReferente.currentState?.validate() ?? false) {
+                      String nome = formKeyAddReferente
+                              .currentState?.fields['nome']!.value ??
+                          " ";
+                      String cognome = formKeyAddReferente
+                              .currentState?.fields['cognome']!.value ??
+                          " ";
+                      String ruolo = formKeyAddReferente
+                              .currentState?.fields['ruolo']!.value ??
+                          " ";
+                      String email = formKeyAddReferente
+                              .currentState?.fields['email']!.value ??
+                          " ";
+                      String telefono = formKeyAddReferente
+                              .currentState?.fields['telefono']!.value ??
+                          " ";
+
+                      Contact contatto = Contact(
+                          givenName: nome,
+                          familyName: cognome,
+                          displayName: nome + " " + cognome,
+                          company: ruolo,
+                          emails: [Item(label: "email", value: email)],
+                          phones: [Item(label: "telefono", value: telefono)]);
+                      if (saveContact)
+                        await ContactsService.addContact(contatto);
+                      contattoSelezionato = contatto;
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+            ],
+          );
+        });
       },
     ).then((value) {
-
-      setState(() {
-
-      });
-
+      setState(() {});
     });
   }
 
@@ -973,28 +1002,22 @@ class MyHomePageState extends State<MyHomePage> {
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Flexible(
-                      flex: 3,
-                      child: Text(
-                        mess,
-                      ),
+                    child: Text(
+                      mess,
                     ),
                   ),
                   Spacer(),
-                  Flexible(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: CircleAvatar(
-                          radius: 14.0,
-                          backgroundColor: Colors.white,
-                          child:
-                              Icon(Icons.cancel_rounded, color: Colors.black),
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: CircleAvatar(
+                        radius: 14.0,
+                        backgroundColor: Colors.white,
+                        child:
+                            Icon(Icons.cancel_rounded, color: Colors.black),
                       ),
                     ),
                   ),

@@ -79,18 +79,23 @@ class ViewPageState extends State<ViewPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+     floatingActionButton: _selectedIndex==0?
+     FloatingActionButton(
         child: Icon(Icons.archive_rounded),
         backgroundColor: Colors.grey.shade700,
         onPressed: () {
-          if (_selectedIndex == 0) {
             myHomePage.addReport();
-          } else {
-            _selectedIndex = 0;
-            controller.jumpToPage(_selectedIndex);
-          }
         },
-      ),
+      ) :
+     FloatingActionButton(
+       backgroundColor: Colors.red,
+       onPressed: () {
+         setState(() {
+           _selectedIndex = 0;
+           controller.jumpToPage(_selectedIndex);
+         });
+       },
+     ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
