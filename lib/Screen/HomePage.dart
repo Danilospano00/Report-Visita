@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../Models/Nota.dart';
 import '../objectbox.g.dart';
@@ -41,6 +44,7 @@ class MyHomePageState extends State<MyHomePage> {
   final formGlobalKey = GlobalKey<FormState>();
   final formKeyBody = GlobalKey<FormBuilderState>();
   final formKeyAddReferente = GlobalKey<FormBuilderState>();
+  final noteKey = GlobalKey<FormBuilderState>();
 
   TextEditingController noteController = TextEditingController();
   TextEditingController formFieldController = TextEditingController();
@@ -452,10 +456,7 @@ class MyHomePageState extends State<MyHomePage> {
                     child: GestureDetector(
                       onTap: () {
                         FocusScope.of(context).unfocus();
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                showPopUp(context));
+                        showPopUp();
                       },
                       child: Container(
                         height: 56.w,
@@ -492,7 +493,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget showPopUp(context) {
+  /*Widget showPopUp(context) {
     return Padding(
       padding: EdgeInsets.only(top: 35.0.h),
       child: Column(
@@ -551,8 +552,7 @@ class MyHomePageState extends State<MyHomePage> {
                       ),
                       onTap: () {
                         Navigator.pop(context);
-                        showError(
-                            "Argomenti/Problemi/Opportunità/Dubbi", 1, context);
+                       // popUpDialog();
                       },
                     ),
                     Divider(),
@@ -638,7 +638,7 @@ class MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
+*/
   Future<void> getContacts() async {
     final Iterable<Contact> contacts = await ContactsService.getContacts();
     setState(() {
@@ -1016,8 +1016,7 @@ class MyHomePageState extends State<MyHomePage> {
                       child: CircleAvatar(
                         radius: 14.0,
                         backgroundColor: Colors.white,
-                        child:
-                            Icon(Icons.cancel_rounded, color: Colors.black),
+                        child: Icon(Icons.cancel_rounded, color: Colors.black),
                       ),
                     ),
                   ),
@@ -1030,7 +1029,6 @@ class MyHomePageState extends State<MyHomePage> {
                 keyboardType: TextInputType.multiline,
                 minLines: 5,
                 maxLines: 10,
-                controller: noteController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
@@ -1087,6 +1085,239 @@ class MyHomePageState extends State<MyHomePage> {
     ).then((value) {
       setState(() {});
     });
+  }
+
+  void showPopUp() {
+    Alert(
+      context: context,
+      style: AlertStyle(
+        titleTextAlign: TextAlign.left,
+        alertAlignment: Alignment.center,
+        titleStyle: homePageMainTextStyle,
+        isButtonVisible: false,
+      ),
+      closeIcon: Icon(Icons.cancel_rounded, color: Colors.grey[700]),
+      content: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Aggiungi nota\n",
+            style: homePageMainTextStyle,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              showPopUp2("Argomenti/Problemi/\nOpportunità/Dubbi");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Argomenti/Problemi/Opportunità/Dubbi",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+
+              showPopUp2("Criteri primari e\nsecondari cliente");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Criteri primari e secondari cliente",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+
+              showPopUp2("Punti di forza concorrenza");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Punti di forza concorrenza",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              showPopUp2("Punti deboli concorrenza");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Punti deboli concorrenza",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              showPopUp2("Prossime azioni/Assegnazione Task/Tempi");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Prossime azioni/Assegnazione Task/Tempi",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+
+              showPopUp2("Prossimi step");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Prossimi step",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Divider(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+
+              showPopUp2("Note amministrazione");
+            },
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "Note amministrazione",
+                    style: homePageMainTextStyle,
+                    maxLines: 2,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    ).show();
+  }
+
+  void showPopUp2(String mess) {
+    Alert(
+      context: context,
+      buttons: [
+        DialogButton(
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+          child: Text(
+            "ANNULLA",
+            style: TextStyle(
+                color: Colors.red,
+                fontSize: 13.748113.sp,
+                fontWeight: FontWeight.w700),
+          ),
+          color: Colors.transparent,
+        ),
+        DialogButton(
+          color: Colors.transparent,
+          child: Text(
+            "OK",
+            style: TextStyle(
+                color: Colors.red,
+                fontSize: 13.748113.sp,
+                fontWeight: FontWeight.w700),
+          ),
+          onPressed: () async {
+            if(noteKey.currentState!.validate()) {
+              await addNote(mess, noteController.text);
+              noteController.clear();
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ],
+      closeIcon: Icon(
+        Icons.cancel_rounded,
+        color: Colors.grey[700],
+      ),
+      style: AlertStyle(
+        alertAlignment: Alignment.center,
+        buttonAreaPadding: EdgeInsets.only(left: 110.w),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // s.guido@orangee.it
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            mess,
+            style: homePageMainTextStyle,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: FormBuilderTextField(
+              key: noteKey,
+              name: 'popUpForm',
+              keyboardType: TextInputType.multiline,
+              minLines: 5,
+              maxLines: 10,
+              controller: noteController,
+              validator: FormBuilderValidators.required(context),
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                labelStyle: TextStyle(decorationColor: Colors.grey[800]),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                filled: true,
+                fillColor: Colors.grey.shade300,
+                labelText: "Inserisci testo...",
+                border: InputBorder.none,
+                disabledBorder: InputBorder.none,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ).show();
   }
 
   void addReport() {

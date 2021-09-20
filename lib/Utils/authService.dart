@@ -387,7 +387,7 @@ class AuthService {
                             width: 200,
                             child: AutoSizeText("Vuoi accedere a tutte le funzionalità complete?",
                             maxLines: 2,
-                            style: TextStyle(color:Colors.white),),
+                            style: TextStyle(color:Colors.white, fontSize: 14.088542.sp, fontWeight: FontWeight.w400, letterSpacing: 0.25),),
                           ),
                           RichText(
                               text:
@@ -395,8 +395,9 @@ class AuthService {
                                 text: 'CONTATTACI',
                                 style: new TextStyle(
                                   color: Colors.orange,
-                                  fontSize: ScreenUtil().setSp(18),
-                                  fontWeight: FontWeight.bold
+                                  fontSize: ScreenUtil().setSp(13.748113),
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.25,
                                 ),
                                 recognizer: new TapGestureRecognizer()
                                   ..onTap = () {

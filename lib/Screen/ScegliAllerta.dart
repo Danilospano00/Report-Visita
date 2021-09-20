@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScegliAllerta extends StatefulWidget {
@@ -15,10 +16,9 @@ class ScegliAllertaState extends State<ScegliAllerta> {
   String valore2 = "1 settimana";
   String valore3 = "1 settimana";
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return /*Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 52.w),
         child: Card(
@@ -171,6 +171,115 @@ class ScegliAllertaState extends State<ScegliAllerta> {
               ],
             ),
           ),
+        ),
+      ),
+    );*/
+        Scaffold(
+      body: FormBuilder(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(30.0),
+              child: Text(
+                "Definisci le soglie di allerta",textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 0.9092158),
+              ),
+            ),
+            FormBuilderDropdown(
+              name: 'scegliAllerta1',
+              items: <String>[
+                "1 settimana",
+                "2 settimane",
+                "3 settimane",
+                "4 settimane",
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: "Scegli soglia allerta",
+                suffixIcon: Icon(
+                  Icons.circle,
+                  color: Colors.green,
+                ),
+                icon: Icon(
+                  Icons.edit_rounded,
+                ),
+              ),
+            ),
+            FormBuilderDropdown(
+              name: 'scegliAllerta1',
+              items: <String>[
+                "1 settimana",
+                "2 settimane",
+                "3 settimane",
+                "4 settimane",
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: "Scegli soglia allerta",
+                suffixIcon: Icon(
+                  Icons.circle,
+                  color: Colors.yellowAccent,
+                ),
+                icon: Icon(
+                  Icons.edit_rounded,
+                ),
+              ),
+            ),
+            FormBuilderDropdown(
+              name: 'scegliAllerta1',
+              items: <String>[
+                "1 settimana",
+                "2 settimane",
+                "3 settimane",
+                "4 settimane",
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: "Scegli soglia allerta",
+                suffixIcon: Icon(
+                  Icons.circle,
+                  color: Colors.redAccent,
+                ),
+                icon: Icon(
+                  Icons.edit_rounded,
+                ),
+              ),
+            ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
+              alignment: Alignment.bottomRight,
+              child: RichText(
+                text: TextSpan(
+                  text: 'Conferma',
+                  style: new TextStyle(
+                    color: Colors.black,
+                    fontSize: ScreenUtil().setSp(18),
+                  ),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.pop(context);
+                    },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

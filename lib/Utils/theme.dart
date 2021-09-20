@@ -11,14 +11,7 @@ final homePageMainTextStyle = TextStyle(
   fontWeight: FontWeight.w700,
   letterSpacing: 0.15,
 );
-final InputDecoration styleTextFormField = InputDecoration(
-  labelText: "Nome Azienda",
-  fillColor: Colors.grey.shade300,
-  filled: true,
-  labelStyle: TextStyle(
-    color: Colors.black,
-  ),
-);
+
 final ThemeData rvTheme = ThemeData(
   primarySwatch: Colors.red,
   brightness: Brightness.light,
