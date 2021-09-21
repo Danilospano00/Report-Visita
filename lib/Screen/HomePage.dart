@@ -5,6 +5,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
@@ -91,7 +92,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: //!hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):
+      body: !hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):
           Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: SingleChildScrollView(
@@ -117,7 +118,7 @@ class MyHomePageState extends State<MyHomePage> {
                       ],
                     ),
                   ),
-                  Padding(
+                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 3.h),
                     child: TypeAheadField<Azienda?>(
                       onSuggestionSelected: (azienda) {
@@ -151,7 +152,15 @@ class MyHomePageState extends State<MyHomePage> {
                           suffixIcon: IconButton(
                             icon: Icon(Icons.cancel_outlined),
                             color: Colors.black,
-                            onPressed: () {},
+                            onPressed: () {
+                              formFieldController.clear();
+                              formFieldControllerIndirizzo.clear();
+                              formFieldControllerCitta.clear();
+                              formFieldControllerCap.clear();
+                              formFieldControllerIva.clear();
+                              formFieldControllerCodicefiscale.clear();
+                              aziendaSelezionata=null;
+                            },
                           ),
                         ),
                       ),
@@ -321,6 +330,7 @@ class MyHomePageState extends State<MyHomePage> {
                           labelText: "E-mail"),
                     ),
                   ),*/
+
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 3.h),
                     child: Row(
@@ -376,7 +386,8 @@ class MyHomePageState extends State<MyHomePage> {
                                 });
                               }),
                         )
-                      : Padding(
+                      :Container(),
+                  Padding(
                           padding: EdgeInsets.symmetric(vertical: 12.h),
                           child: Row(
                             children: <Widget>[
@@ -1326,24 +1337,38 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void addReport() {
-    _report = Report();
-    _report.azienda.target = Azienda()..nome = "roma";
-    _report.referente.target = Referente(
-        nome: "Giuseppe", cognome: "Scalesse", telefono: "3290611539");
-    _report.note.addAll(listaNote);
+  Future<void> addReport( ) async {
 
-    _store.box<Report>().put(_report);
+  if(formKeyBody.currentState!.saveAndValidate()) {
+    if (aziendaSelezionata == null) {
+      String adress = formFieldControllerIndirizzo.value.text + "," + formFieldControllerCitta.value.text + ","
+          + formFieldControllerCap.value.text;
 
-    List<Report> lista = _store.box<Report>().getAll();
+      List<Location> locations = await locationFromAddress(adress);
+      print(locations.toString());
 
-    lista.forEach((element) {
-      print("Report add -------------" + element.id.toString());
-      print(
-          "Report add -------------" + element.azienda.target!.nome.toString());
-      print("Report add -------------" +
-          element.referente.target!.nome.toString());
-    });
+    }else {
+      _report = Report();
+      _report.azienda.target = Azienda()
+        ..nome = "roma";
+      _report.referente.target = Referente(
+          nome: "Giuseppe", cognome: "Scalesse", telefono: "3290611539");
+      _report.note.addAll(listaNote);
+
+      _store.box<Report>().put(_report);
+
+      List<Report> lista = _store.box<Report>().getAll();
+
+      lista.forEach((element) {
+        print("Report add -------------" + element.id.toString());
+        print(
+            "Report add -------------" +
+                element.azienda.target!.nome.toString());
+        print("Report add -------------" +
+            element.referente.target!.nome.toString());
+      });
+    }
+  }
   }
 
   Future<void> addNote(String titolo, String testo) async {
