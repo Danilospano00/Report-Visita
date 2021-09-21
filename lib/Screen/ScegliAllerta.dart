@@ -11,7 +11,6 @@ class ScegliAllerta extends StatefulWidget {
 }
 
 class ScegliAllertaState extends State<ScegliAllerta> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +28,7 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                         top: ScreenUtil().setHeight(40),
                         left: ScreenUtil().setWidth(16),
                         right: ScreenUtil().setWidth(16)),
-                    child:  AutoSizeText(
+                    child: AutoSizeText(
                       "Definisci le soglie di allerta",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -49,8 +48,8 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                             name: 'scegliAllerta1',
                             style: homePageMainTextStyle,
                             isExpanded: true,
-                            items:
-                            creaListaNumeri(24).map<DropdownMenuItem<String>>((int value) {
+                            items: creaListaNumeri(24)
+                                .map<DropdownMenuItem<String>>((int value) {
                               return DropdownMenuItem<String>(
                                 value: value.toString(),
                                 child: value == 1
@@ -74,8 +73,8 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                             name: 'scegliAllerta2',
                             style: homePageMainTextStyle,
                             isExpanded: true,
-                            items:
-                            creaListaNumeri(24).map<DropdownMenuItem<String>>((int value) {
+                            items: creaListaNumeri(24)
+                                .map<DropdownMenuItem<String>>((int value) {
                               return DropdownMenuItem<String>(
                                 value: value.toString(),
                                 child: value == 1
@@ -99,8 +98,8 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                             name: 'scegliAllerta3',
                             style: homePageMainTextStyle,
                             isExpanded: true,
-                            items:
-                            creaListaNumeri(24).map<DropdownMenuItem<String>>((int value) {
+                            items: creaListaNumeri(24)
+                                .map<DropdownMenuItem<String>>((int value) {
                               return DropdownMenuItem<String>(
                                 value: value.toString(),
                                 child: value == 1
@@ -125,22 +124,22 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                     ),
                   ),
                   Container(
-                      padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
-                      alignment: Alignment.bottomRight,
-                      child:
-                      RichText(
-                          text:
-                          TextSpan(
-                            text: 'Conferma',
-                            style: new TextStyle(
-                              color: Colors.black,
-                              fontSize: ScreenUtil().setSp(18),
-                            ),
-                            recognizer: new TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.pop(context);
-                              },
-                          )))
+                    padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
+                    alignment: Alignment.bottomRight,
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Conferma',
+                        style: new TextStyle(
+                          color: Colors.black,
+                          fontSize: ScreenUtil().setSp(18),
+                        ),
+                        recognizer: new TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pop(context);
+                          },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -149,14 +148,15 @@ class ScegliAllertaState extends State<ScegliAllerta> {
       ),
     );
   }
+
   List<int> creaListaNumeri(int value) {
     List<int> list = [];
     if (value != 0) {
       for (int i = 0; i < value; i++) {
-        list.add(i+1);
+        list.add(i + 1);
       }
       return list;
-    }
-    else throw "Errore";
+    } else
+      throw "Errore";
   }
 }
