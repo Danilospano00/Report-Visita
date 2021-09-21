@@ -1288,7 +1288,6 @@ class MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          // s.guido@orangee.it
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(

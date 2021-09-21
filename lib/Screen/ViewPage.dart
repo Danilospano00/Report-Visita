@@ -39,7 +39,6 @@ class ViewPageState extends State<ViewPage> {
         children: screens,
       ),
       bottomNavigationBar: BottomAppBar(
-
         elevation: 10,
         shape: CircularNotchedRectangle(),
         color: Colors.red,
@@ -80,26 +79,30 @@ class ViewPageState extends State<ViewPage> {
           ),
         ),
       ),
-     floatingActionButton: _selectedIndex==0?
-     FloatingActionButton(
-        child: Icon(Icons.archive_rounded),
-        backgroundColor: Colors.grey.shade700,
-        onPressed: () {
-            myHomePage.addReport();
-        },
-      ) :
-     FloatingActionButton(
-       backgroundColor: Colors.red,
-       onPressed: () {
-         setState(() {
-           _selectedIndex = 0;
-           controller.jumpToPage(_selectedIndex);
-         });
-       },
-     ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              child: Icon(Icons.archive_rounded),
+              backgroundColor: Colors.grey.shade700,
+              onPressed: () {
+                myHomePage.addReport();
+              },
+            )
+          : FloatingActionButton(
+              backgroundColor: Colors.red,
+              child: ImageIcon(
+                AssetImage(
+                  'assets/logo.png',
+                ),
+                size: 40,
+              ),
+              onPressed: () {
+                setState(() {
+                  _selectedIndex = 0;
+                  controller.jumpToPage(_selectedIndex);
+                });
+              },
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
-
-
 }
