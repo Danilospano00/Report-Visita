@@ -1283,41 +1283,47 @@ class MyHomePageState extends State<MyHomePage> {
         alertAlignment: Alignment.center,
         buttonAreaPadding: EdgeInsets.only(left: 110.w),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        // s.guido@orangee.it
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            mess,
-            style: homePageMainTextStyle,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: FormBuilderTextField(
-              key: noteKey,
-              name: 'popUpForm',
-              keyboardType: TextInputType.multiline,
-              minLines: 5,
-              maxLines: 10,
-              controller: noteController,
-              validator: FormBuilderValidators.required(context),
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                labelStyle: TextStyle(decorationColor: Colors.grey[800]),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                filled: true,
-                fillColor: Colors.grey.shade300,
-                labelText: "Inserisci testo...",
-                border: InputBorder.none,
-                disabledBorder: InputBorder.none,
+      content: FormBuilder(
+        key: noteKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          // s.guido@orangee.it
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              mess,
+              style: homePageMainTextStyle,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: FormBuilderTextField(
+                name: 'popUpForm',
+                keyboardType: TextInputType.multiline,
+                minLines: 5,
+                maxLines: 10,
+                controller: noteController,
+                validator: FormBuilderValidators.required(context),
+                decoration: InputDecoration(
+                  alignLabelWithHint: true,
+                  labelStyle: TextStyle(decorationColor: Colors.grey[800]),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  labelText: "Inserisci testo...",
+                  border: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ).show();
+    ).show().then((value) {
+      setState(() {
+
+      });
+    });
   }
 
   void addReport() {
@@ -1341,6 +1347,9 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> addNote(String titolo, String testo) async {
+    setState(() {
+
+    });
     listaNote.add(Nota(titolo: titolo, testo: testo));
   }
 }
