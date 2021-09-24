@@ -7,7 +7,7 @@ final formUnderlineInputBorder = UnderlineInputBorder(
 
 final homePageMainTextStyle = TextStyle(
   color: Colors.grey[700],
-  fontSize: 15.712129.sp,
+  fontSize: 20.sp,
   fontWeight: FontWeight.w700,
   letterSpacing: 0.15,
 );
