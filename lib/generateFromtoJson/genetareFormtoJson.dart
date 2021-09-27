@@ -729,6 +729,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 "field": "name",
 "empty": false,
 "validation": true
+
 }*/
       if (item['type'] == 'autocomplete') {
         listWidget.add(Column(
