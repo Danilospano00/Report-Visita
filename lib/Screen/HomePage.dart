@@ -1095,6 +1095,13 @@ class MyHomePageState extends State<MyHomePage> {
         alertAlignment: Alignment.center,
         titleStyle: homePageMainTextStyle,
         isButtonVisible: false,
+        overlayColor: Color.fromRGBO(255, 255, 255, 100),
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
       ),
       closeIcon: Icon(Icons.cancel_rounded, color: Colors.grey[700]),
       content: Column(
@@ -1282,7 +1289,15 @@ class MyHomePageState extends State<MyHomePage> {
       style: AlertStyle(
         alertAlignment: Alignment.center,
         buttonAreaPadding: EdgeInsets.only(left: 110.w),
+        overlayColor: Color.fromRGBO(255, 255, 255, 100),
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
       ),
+
       content: FormBuilder(
         key: noteKey,
         child: Column(

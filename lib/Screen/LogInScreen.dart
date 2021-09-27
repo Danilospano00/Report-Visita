@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.grey,
         body: Padding(
           padding: EdgeInsets.only(
-              top: ScreenUtil().setHeight(80),
               left: ScreenUtil().setWidth(16),
               right: ScreenUtil().setWidth(16),
               bottom: ScreenUtil().setHeight(60)),
@@ -215,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: AutoSizeText(
                           "non hai un account?",
                           maxLines: 1,
-                          style: TextStyle(fontSize: ScreenUtil().setSp(24)),
+                          style: TextStyle(fontSize: ScreenUtil().setSp(24), letterSpacing: 0.9, fontWeight: FontWeight.w400),
                         ),
                       ),
                       SizedBox(
@@ -233,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: setUpButtonChild("Registrati"),
                         elevation: 4.0,
                         minWidth: double.infinity,
-                        height: 48.0,
+                        height: 48.0.h,
                       ),
                     ])),
               ],
