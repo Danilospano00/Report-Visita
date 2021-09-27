@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -16,6 +17,8 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import 'horizontaldivider.dart';
+
 class AuthService {
   handleAuth() {
     return StreamBuilder(
@@ -24,14 +27,14 @@ class AuthService {
           if (snapshot.hasData) {
             dynamic user = snapshot.data;
             return Card(
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 children: [
                   Stack(
                     children: [
                       ShapeOfView(
                         elevation: 4,
-                        height: 160,
+                        height: 140.h,
                         shape: DiagonalShape(
                           position: DiagonalPosition.Bottom,
                           direction: DiagonalDirection.Left,
@@ -75,7 +78,7 @@ class AuthService {
                         ),
                       ),
                       Container(
-                        height: 160,
+                        height: 140.h,
                         decoration: BoxDecoration(color: Colors.transparent),
                         child: Align(
                           alignment: AlignmentDirectional.bottomEnd,
@@ -94,189 +97,193 @@ class AuthService {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 40,
-                      horizontal: 10.0,
+                    padding:
+                        EdgeInsets.only(top: 20.0.h, left: 16.w, right: 16.w),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Hai 3 meeting oggi",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 2)),
+                                Text(
+                                  "Controlla il planner",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey[700]),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.navigate_next_rounded,
+                              size: 30.sp,
+                              color: Colors.grey[700],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                    ),
+                    child: Divider(indent: 16.w),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          child: AutoSizeText(
+                            "12",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 94.272766.sp,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -1.5,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Allerte attive",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text("Dall'ultimo sync\ndel 03/09 alle 15:30",
+                                    overflow: TextOverflow.visible,
+                                    style: TextStyle(fontSize: 18)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: 14.h, right: 16.w, left: 16.w),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Align(
-                          alignment: Alignment.center,
+                        Flexible(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Hai 3 meeting oggi",
+                                "Nome azienda o contatto",
+                                textAlign: TextAlign.start,
                                 style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
                               ),
                               Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2)),
+                                  padding: EdgeInsets.symmetric(vertical: 2.h)),
                               Text(
-                                "Controlla il planner",
+                                "è passato olte un mese dall'ultimo incontro...",
+                                textAlign: TextAlign.start,
+                                maxLines: 2,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.grey[700]),
                               ),
                             ],
                           ),
                         ),
-                        Spacer(),
-                        Icon(
-                          Icons.navigate_next_rounded,
-                          size: 24,
-                          color: Colors.grey[700],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.open_in_new_outlined,
-                              size: 80,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Allerte attive",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Dall'ultimo sync\ndel 03/09 alle 15:30",
-                                      overflow: TextOverflow.visible,
-                                      style: TextStyle(fontSize: 18)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 40.0, right: 10, left: 10, bottom: 20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 5,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Nome azienda o contatto",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 2)),
-                                Text(
-                                  "è passato olte un mese dall'ultimo incontro...",
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.grey[700]),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Spacer(),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.navigate_next_rounded,
-                                size: 24,
-                                color: Colors.grey[700],
-                              ),
-                            ],
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20.h),
+                          child: Icon(
+                            Icons.navigate_next_rounded,
+                            size: 30.sp,
+                            color: Colors.grey[700],
                           ),
                         ),
                       ],
                     ),
                   ),
                   Row(
-                    children: [
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: ElevatedButton(
-                          child: Text(
-                            "vedi tutti",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        width: 200.w,
+                        margin: EdgeInsets.only(
+                          left: 16.w,
+                        ),
+                        child: Divider(),
+                      ),
+                      ElevatedButton(
+                        child: Text(
+                          "vedi tutti",
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5),
+                        ),
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32.0),
                           ),
                         ),
+                      ),
+                      Expanded(
+                        child: Divider(),
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 110.5, vertical: 50),
-                        child: ElevatedButton.icon(
-                          icon: Icon(
-                            Icons.tune_outlined,
-                          ),
-                          label: Text(
-                            "Setting",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          onPressed: () {
-                            singOut();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 48.h),
+                    child: ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.tune_outlined,
+                      ),
+                      label: Text(
+                        "Settings",
+                        style: TextStyle(
+                            fontSize: 18.748113.sp,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.25,),
+                      ),
+                      onPressed: () {
+                        singOut();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                        fixedSize: Size(163.w, 36.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -302,11 +309,12 @@ class AuthService {
                               child: ColoredBox(
                                 color: Colors.red,
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 20.0, bottom: 20),
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, bottom: 20),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       CircleAvatar(
                                         backgroundColor: Colors.red[900],
@@ -326,17 +334,20 @@ class AuthService {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => LoginScreen()),
+                                                builder: (context) =>
+                                                    LoginScreen()),
                                           );
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 20.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 20.0),
                                           child: Text(
                                             "Ciao\nAccedi al tuo account",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 13.9.sp,
-                                              fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: 1.25,
                                             ),
                                           ),
                                         ),
@@ -364,7 +375,8 @@ class AuthService {
                                 TextSpan(
                                   text:
                                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
-                                  style: TextStyle(fontWeight: FontWeight.normal),
+                                  style:
+                                      homePageMainTextStyle,
                                 )
                               ],
                             ),
@@ -375,41 +387,40 @@ class AuthService {
                   ),
                 ),
                 Container(
-
                     height: ScreenUtil().setHeight(50),
                     color: Colors.black,
-                    child:Padding(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
                             width: 200,
-                            child: AutoSizeText("Vuoi accedere a tutte le funzionalità complete?",
-                            maxLines: 2,
-                            style: TextStyle(color:Colors.white, fontSize: 14.088542.sp, fontWeight: FontWeight.w400, letterSpacing: 0.25),),
+                            child: AutoSizeText(
+                              "Vuoi accedere a tutte le funzionalità complete?",
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.088542.sp,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.25),
+                            ),
                           ),
                           RichText(
-                              text:
-                              TextSpan(
-                                text: 'CONTATTACI',
-                                style: new TextStyle(
-                                  color: Colors.orange,
-                                  fontSize: ScreenUtil().setSp(13.748113),
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.25,
-                                ),
-                                recognizer: new TapGestureRecognizer()
-                                  ..onTap = () {
-
-
-
-                                  },
-                              ))
+                              text: TextSpan(
+                            text: 'CONTATTACI',
+                            style: new TextStyle(
+                              color: Colors.orange,
+                              fontSize: ScreenUtil().setSp(13.748113),
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.25,
+                            ),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () {},
+                          ))
                         ],
                       ),
-                    )
-                )
+                    ))
               ],
             );
           }

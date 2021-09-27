@@ -39,7 +39,7 @@ dependencies:
   contacts_service: ^0.6.1
   rflutter_alert: ^2.0.4
 
-
+  alphabet_list_scroll_view: ^2.0.0
 
   google_sign_in: ^5.0.4
   flutter_facebook_auth: ^3.4.0
