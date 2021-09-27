@@ -9,6 +9,8 @@ class Report{
   int? id;
   //configurazione presa da fire base da salvare per eventuali modifiche per retro compatibiltà
   String? configurationJson;
+  DateTime? compilazione;
+  DateTime? prossimaVisita;
 
 
    final azienda=ToOne<Azienda>();

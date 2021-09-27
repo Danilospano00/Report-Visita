@@ -11,6 +11,8 @@ import 'package:report_visita_danilo/Models/Nota.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../objectbox.g.dart';
+
 /*
 esempio json
 {
@@ -23,8 +25,9 @@ esempio json
 class GeneratorFormToJson extends StatefulWidget {
   final String form;
   final ValueChanged<Map> onChanged;
+  final  Store store;
 
-  GeneratorFormToJson({required this.form, required this.onChanged});
+  GeneratorFormToJson({required this.form, required this.onChanged, required this.store});
 
   @override
   _GeneratorFromToJsonState createState() =>
@@ -45,6 +48,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
   TextEditingController formFieldController = TextEditingController();
   List<TextEditingController> controller = [];
+  List<TextEditingController> controllerNote = [];
+  List<TextEditingController> controllerNoteDesc = [];
+
+
+
   Contact? contattoSelezionato;
 
   bool loadContact = false;
@@ -57,6 +65,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   @override
   void initState() {
     super.initState();
+
     getContacts();
   }
 
@@ -520,8 +529,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           DateTime? picked = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(1880),
-            lastDate: DateTime(2021),
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2050),
+
             builder: (BuildContext context, Widget? child) {
               return child!;
             },
@@ -556,12 +566,19 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   _handleChanged();
                 },
                 decoration: InputDecoration(
+                  //label: Text(item["label"]),
+
+
                   contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   labelText: item["label"],
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red, width: 2.0),
+                      borderRadius: BorderRadius.circular(5)),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0)),
                   suffixIcon: Icon(
                     Icons.calendar_today,
+                    color: Colors.red,
                   ),
                 ),
               )),
@@ -726,8 +743,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               },
               hideSuggestionsOnKeyboardHide: false,
               suggestionsCallback: (String query) {
+
+                dynamic lista=widget.store.box<Azienda>().getAll();
                 // da impostare la chiamata al db in base all entity
-                return List.of(listaAziende).where((aziende) {
+
+                return List.of(lista).where((aziende) {
                   final aziendaLower = aziende.nome.toString().toLowerCase();
                   final queryLower = query.toLowerCase();
 
@@ -840,6 +860,15 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
 
       if (item['type'] == "note") {
+        if(listaNote.isEmpty || listaNote==null){
+          for (var i = 0; i < item['label'].length; i++) {
+      listaNote.add(Nota(titolo: item['label'][i],testo: ""));
+      controllerNote.add(TextEditingController());
+      controllerNoteDesc.add(TextEditingController());
+
+          }
+
+        }
         listWidget.add(Column(
           children: [
             Padding(
@@ -872,43 +901,82 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(16)),
                   child: Column(
                     children: [
-                      Container(
-                        height: 55,
-                        //width: double.infinity,
-                        color: Colors.grey.shade300,
-                        child: ListTile(
-                          title: Text(
-                            listaNote[i].titolo.toString(),
-                            style: TextStyle(
-                                color: Colors.grey[700], fontSize: 15),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(4)),
+                        child: FormBuilderTextField(
+                          name:listaNote[i].titolo!,
+                          controller: controllerNote[i]
+                            ..text = listaNote[i].titolo!,
+                          textInputAction: TextInputAction.done,
+                          onChanged: (value) {
+
+                            listaNote[i].titolo=controllerNote[i].value.text;
+
+                          },
+
+                          onSubmitted: (value) {
+                            formResults[item['title']] = listaNote;
+                            _handleChanged();
+                          },
+                          validator: (String? value) {
+
+                            if (value!.isEmpty) {
+                              return 'Please ${item['title']} cannot be empty';
+                            }
+                            return null;
+                          },
+                          cursorColor: Colors.grey[700],
+                          decoration: InputDecoration(
+                            suffix: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    listaNote.removeAt(i);
+                                    formResults[item['title']] = listaNote;
+                                    _handleChanged();
+                                  });
+                                },
+                                icon: Icon(Icons.cancel_rounded,
+                                    color: Colors.black)),
+                            fillColor: Colors.grey.shade300,
+                            filled: true,
+                            border: InputBorder.none,
+                            //labelText: listaNote[i].titolo==""?"Titolo":listaNote[i].titolo,
+                            focusedBorder: formUnderlineInputBorder,
+                            labelStyle: homePageMainTextStyle,
+
                           ),
-                          trailing: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  listaNote.removeAt(i);
-                                });
-                              },
-                              icon: Icon(Icons.cancel_rounded,
-                                  color: Colors.black)),
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: ScreenUtil().setWidth(16),
-                              right: ScreenUtil().setWidth(16),
-                              top: ScreenUtil().setHeight(8),
-                              bottom: ScreenUtil().setHeight(8)),
-                          child: Text(
-                            listaNote[i].testo.toString(),
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[700],
-                            ),
-                            overflow: TextOverflow.clip,
-                            textAlign: TextAlign.justify,
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: FormBuilderTextField(
+                          name: listaNote[i].titolo!+"desc",
+                          //keyboardType: TextInputType.multiline,
+                          minLines: 3,
+                          maxLines: 10,
+                          textInputAction: TextInputAction.done,
+
+                          controller: controllerNoteDesc[i]..text=  listaNote[i].testo!,
+                          validator: FormBuilderValidators.required(context),
+                          decoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            labelStyle: TextStyle(decorationColor: Colors.grey[800]),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            fillColor: Colors.grey.shade300,
+                            labelText: "Inserisci testo...",
+                            border: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+
                           ),
+                          onSubmitted: (value){
+                            formResults[item['title']] = listaNote;
+                            _handleChanged();
+                          },
+                          onChanged: (value){
+                            listaNote[i].testo=controllerNoteDesc[i].value.text;
+                          },
                         ),
                       ),
                     ],
@@ -919,14 +987,19 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 3.h),
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   FocusScope.of(context).unfocus();
-                  showPopUp(item);
+                  controllerNote.add(TextEditingController());
+                  controllerNoteDesc.add(TextEditingController());
+
+                  await addNote("Titolo");
+                  //noteController.clear();
+
                 },
                 child: Container(
                   height: 56.w,
                   width: 328.w,
-                  color: Colors.grey.shade300,
+                  color: Colors.red,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 12.0,
@@ -936,11 +1009,16 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Aggiungi nota", style: homePageMainTextStyle),
+                        Text("Aggiungi nota", style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.15,
+                        )),
                         Spacer(),
                         Icon(
                           Icons.unfold_more_outlined,
-                          color: Colors.grey[700],
+                          color: Colors.white,
                         ),
                       ],
                     ),
@@ -955,182 +1033,16 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     return listWidget;
   }
 
-  Future<void> addNote(String titolo, String testo, String title) async {
+  Future<void> addNote(String titolo) async {
+    listaNote.add(Nota(titolo: titolo, testo: ""));
     setState(() {});
-    listaNote.add(Nota(titolo: titolo, testo: testo));
-    formResults[title] = listaNote;
-    _handleChanged();
+
   }
 
-  void showPopUp(dynamic item) {
-    Alert(
-      context: context,
-      style: AlertStyle(
-        titleTextAlign: TextAlign.left,
-        alertAlignment: Alignment.center,
-        titleStyle: homePageMainTextStyle,
-        isButtonVisible: false,
-      ),
-      closeIcon: Icon(Icons.cancel_rounded, color: Colors.grey[700]),
-      content: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Aggiungi nota\n",
-            style: homePageMainTextStyle,
-          ),
-          Container(
-            height: 200,
-            width: 300,
-            child: ListView.builder(
-                //addAutomaticKeepAlives: true,
-                shrinkWrap: true,
-                itemCount: item['label'].length,
-                physics: NeverScrollableScrollPhysics(),
-                //scrollDirection: Axis.vertical,
-                itemBuilder: (context, i) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                          showPopUp2(item['label'][i], item['title']);
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                item['label'][i],
-                                style: homePageMainTextStyle,
-                                maxLines: 2,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.only(top: ScreenUtil().setHeight(4)),
-                        child: Divider(),
-                      ),
-                    ],
-                  );
-                }),
-          )
-        ],
-      ),
-    ).show();
-  }
 
-  void showPopUp2(String mess, String title) {
-    Alert(
-      context: context,
-      buttons: [
-        DialogButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            "ANNULLA",
-            style: TextStyle(
-                color: Colors.red,
-                fontSize: 13.748113.sp,
-                fontWeight: FontWeight.w700),
-          ),
-          color: Colors.transparent,
-        ),
-        DialogButton(
-          color: Colors.transparent,
-          child: Text(
-            "OK",
-            style: TextStyle(
-                color: Colors.red,
-                fontSize: 13.748113.sp,
-                fontWeight: FontWeight.w700),
-          ),
-          onPressed: () async {
-            if (noteKey.currentState!.validate()) {
-              await addNote(mess, noteController.text, title);
-              noteController.clear();
-              Navigator.pop(context);
-            }
-          },
-        ),
-      ],
-      closeIcon: Icon(
-        Icons.cancel_rounded,
-        color: Colors.grey[700],
-      ),
-      style: AlertStyle(
-        alertAlignment: Alignment.center,
-        buttonAreaPadding: EdgeInsets.only(left: 110.w),
-      ),
-      content: FormBuilder(
-        key: noteKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              mess,
-              style: homePageMainTextStyle,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: FormBuilderTextField(
-                name: 'popUpForm',
-                keyboardType: TextInputType.multiline,
-                minLines: 5,
-                maxLines: 10,
-                controller: noteController,
-                validator: FormBuilderValidators.required(context),
-                decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  labelStyle: TextStyle(decorationColor: Colors.grey[800]),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  filled: true,
-                  fillColor: Colors.grey.shade300,
-                  labelText: "Inserisci testo...",
-                  border: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ).show().then((value) {
-      setState(() {});
-    });
-  }
 
-  List<Azienda> listaAziende = [
-    Azienda(
-        nome: "Azienda 1",
-        indirizzo: "via prova 1",
-        cap: "04040",
-        partitaIva: "re3456yf",
-        codiceFiscale: "re3456yf",
-        citta: "priverno"),
-    Azienda(
-        nome: "Azienda 2",
-        indirizzo: "via prova 2",
-        cap: "0400",
-        partitaIva: "pt5677po",
-        codiceFiscale: "pt5677po",
-        citta: "Roma")
-  ];
 
-  List<Azienda> getSuggestion(String query) =>
-      List.of(listaAziende).where((aziende) {
-        final aziendaLower = aziende.nome.toString().toLowerCase();
-        final queryLower = query.toLowerCase();
 
-        return aziendaLower.contains(queryLower);
-      }).toList();
 
   dynamic getValueField(String field) {
     Map<String, dynamic> objectMap = selectObject.toMap();

@@ -24,10 +24,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-
-
-
-
   final formGlobalKey = GlobalKey<FormState>();
   final formKeyBody = GlobalKey<FormBuilderState>();
   final formKeyAddReferente = GlobalKey<FormBuilderState>();
@@ -70,250 +66,147 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: !hasBeenInitialized?Center(child:CircularProgressIndicator(color: Colors.red,)):
-          Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: SingleChildScrollView(
-          child: FormBuilder(
-            key: formKeyBody,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 22.h),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    child: Row(
+      resizeToAvoidBottomInset: true,
+      body: !hasBeenInitialized
+          ? Center(
+              child: CircularProgressIndicator(
+              color: Colors.red,
+            ))
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: SingleChildScrollView(
+                child: FormBuilder(
+                  key: formKeyBody,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 22.h),
+                    child: Column(
                       children: [
-                        Text(
-                          "Nuovo Report",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 24.151785.sp,
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.w400,
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12.h),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Nuovo Report",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 24.151785.sp,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GeneratorFormToJson(
+                          store: _store,
+                          form: json.encode([
+                            {
+                              "title": "azienda",
+                              "type": "autocomplete",
+                              "hint": "inserisci la tua azienda",
+                              "entity": "Azienda",
+                              "field": [
+                                {"label": "indirizzo", "required": true},
+                                {"label": "Partita IVA", "required": true},
+                              ],
+                              "empty": false,
+                              "validation": true
+                            },
+                            {
+                              "title": "dateCompilazione",
+                              "label": "compilazione",
+                              "type": "date",
+                              "required": "no"
+                            },
+                            {
+                              "title": "prossimaVisita",
+                              "label": "prossima visita",
+                              "type": "date",
+                              "required": "no"
+                            },
+                            {
+                              "title": "contatto",
+                              "type": "contact",
+                            },
+                            {
+                              "title": "note",
+                              "type": "note",
+                              "label": [
+                                "Scopo della visita/Argomenti discussi",
+                                "Richiste/Prospettive",
+                                "Punti forti concorrenza"
+                              ]
+                            }
+                          ]),
+                          onChanged: (dynamic value) {
+                            print(value);
+                            setState(() {
+                              this.response = value;
+                            });
+                            print(response.toString());
+                          },
+                        ),
+                        Container(
+                          // width: ScreenUtil().setWidth(100),
+                          child: MaterialButton(
+                            child: Text("salva",style: TextStyle(color:Colors.white),),
+                            color: Colors.red,
+                            onPressed: ()  {
+                              addReport();
+                            },
+                            elevation: 4.0,
+                            minWidth: double.infinity,
+                            height: 48.0,
                           ),
                         ),
                       ],
                     ),
                   ),
-                /* Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3.h),
-                    child: TypeAheadField<Azienda?>(
-                      onSuggestionSelected: (azienda) {
-                        setState(() {
-                          aziendaSelezionata = azienda;
-                        });
-                      },
-                      hideSuggestionsOnKeyboardHide: false,
-                      suggestionsCallback: getSuggestion,
-                      itemBuilder: (context, Azienda? suggestion) {
-                        final azienda = suggestion!;
-                        return ListTile(
-                          title: Text(azienda.nome.toString()),
-                        );
-                      },
-                      textFieldConfiguration: TextFieldConfiguration(
-                        controller: formFieldController
-                          ..text = aziendaSelezionata != null
-                              ? aziendaSelezionata!.nome!
-                              : "",
-                        decoration: InputDecoration(
-                          labelText: "Nome Azienda",
-                          fillColor: Colors.grey.shade300,
-                          filled: true,
-                          labelStyle: homePageMainTextStyle,
-                          focusedBorder: formUnderlineInputBorder,
-                          prefixIcon: Icon(
-                            Icons.business_outlined,
-                            color: Colors.black,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.cancel_outlined),
-                            color: Colors.black,
-                            onPressed: () {
-                              formFieldController.clear();
-                              formFieldControllerIndirizzo.clear();
-                              formFieldControllerCitta.clear();
-                              formFieldControllerCap.clear();
-                              formFieldControllerIva.clear();
-                              formFieldControllerCodicefiscale.clear();
-                              aziendaSelezionata=null;
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3.h),
-                    child: FormBuilderTextField(
-                      name: "indirizzo",
-                      controller: formFieldControllerIndirizzo
-                        ..text = aziendaSelezionata != null
-                            ? aziendaSelezionata!.indirizzo!
-                            : "",
-                      cursorColor: Colors.grey[700],
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Indirizzo",
-                        focusedBorder: formUnderlineInputBorder,
-                        labelStyle: homePageMainTextStyle,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3.h),
-                    child: FormBuilderTextField(
-                      name: "cap",
-                      controller: formFieldControllerCap
-                        ..text = aziendaSelezionata != null
-                            ? aziendaSelezionata!.cap!
-                            : "",
-                      cursorColor: Colors.grey[700],
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "CAP",
-                        labelStyle: homePageMainTextStyle,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3.h),
-                    child: FormBuilderTextField(
-                      name: "citta",
-                      controller: formFieldControllerCitta
-                        ..text = aziendaSelezionata != null
-                            ? aziendaSelezionata!.citta!
-                            : "",
-                      cursorColor: Colors.grey[700],
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Città",
-                        focusedBorder: formUnderlineInputBorder,
-                        labelStyle: homePageMainTextStyle,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3.h),
-                    child: FormBuilderTextField(
-                      name: "iva",
-                      controller: formFieldControllerIva
-                        ..text = aziendaSelezionata != null
-                            ? aziendaSelezionata!.partitaIva!
-                            : "",
-                      cursorColor: Colors.grey[700],
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Partita IVA",
-                        focusedBorder: formUnderlineInputBorder,
-                        labelStyle: homePageMainTextStyle,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3.h),
-                    child: FormBuilderTextField(
-                      name: "codicefiscale",
-                      controller: formFieldControllerCodicefiscale
-                        ..text = aziendaSelezionata != null
-                            ? aziendaSelezionata!.codiceFiscale!
-                            : "",
-                      cursorColor: Colors.grey[700],
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        filled: true,
-                        border: InputBorder.none,
-                        labelText: "Codice fiscale",
-                        focusedBorder: formUnderlineInputBorder,
-                        labelStyle: homePageMainTextStyle,
-                      ),
-                    ),
-                  ),*/
-                  GeneratorFormToJson(form: json.encode([
-                    {
-                      "title": "azineda",
-                      "type": "autocomplete",
-                      "hint": "inserisci la tua azienda",
-                      "entity": "Azienda",
-                      "field": [{"label":"indirizzo","required":true},{"label":"cap","required":true},
-                        {"label":"citta","required":true}],
-                      "empty": false,
-                      "validation": true
-                    },
-                    {
-                    "title": "contatto",
-                    "type": "contact",
-                  },
-                    {
-                    "title":"note",
-                    "type":"note",
-                    "label":["q1","q2","q3"]
-                  }
-                  ]),onChanged:(dynamic value) {
-                    print(value);
-                    setState(() {
-                      this.response = value;
-                    });
-                    print(response.toString());
-                  },),
-
-
-
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
+  Future<void> addReport() async {
+    _report = Report();
 
-  Future<void> addReport( ) async {
-
-
-
-  if(formKeyBody.currentState!.saveAndValidate()) {
-    if (aziendaSelezionata == null) {
-      String adress = formFieldControllerIndirizzo.value.text + "," + formFieldControllerCitta.value.text + ","
-          + formFieldControllerCap.value.text;
-
-      List<Location> locations = await locationFromAddress(adress);
-      print(locations.toString());
-
-    }else {
-      _report = Report();
+    if (this.response["azienda"]!=null) {
+      _report.azienda.target = response["azienda"];
+    } else {
+      List<Location> locations =
+          await locationFromAddress(response["indirizzo"]);
       _report.azienda.target = Azienda()
-        ..nome = "roma";
-      _report.referente.target = Referente(
-          nome: "Giuseppe", cognome: "Scalesse", telefono: "3290611539");
-      _report.note.addAll(listaNote);
-
-      _store.box<Report>().put(_report);
-
-      List<Report> lista = _store.box<Report>().getAll();
-
-      lista.forEach((element) {
-        print("Report add -------------" + element.id.toString());
-        print(
-            "Report add -------------" +
-                element.azienda.target!.nome.toString());
-        print("Report add -------------" +
-            element.referente.target!.nome.toString());
-      });
+        ..nome = response["aziendaName"]
+        ..indirizzo = response["indirizzo"]
+        ..partitaIva = response["Partita IVA"]
+        ..lng = locations[0].longitude
+        ..lat = locations[0].latitude;
     }
-  }
-  }
+    if(response["contatto"]!=null){
+      Contact contact=response["contatto"];
+      _report.referente.target = Referente(
+          nome: contact.givenName??" ",
+          cognome: contact.familyName??" ",
+          telefono:  contact.phones!.isNotEmpty? contact.phones!.elementAt(0).value:null,
+      id:int.parse(contact.identifier!),
+          email:contact.emails!.isNotEmpty? contact.emails!.elementAt(0).value:null);
+      
+    }
+
+    if(response["dateCompilazione"]!=null)
+      _report.compilazione= DateTime.parse(response["dateCompilazione"]);
+
+    if(response["prossimaVisita"]!=null)
+      _report.compilazione=DateTime.parse(response["prossimaVisita"]);
+
+    if(response["note"]!=null)
+    _report.note.addAll(response["note"]);
 
 
+
+    int count= await _store.box<Report>().put(_report);
+
+
+  }
 }
