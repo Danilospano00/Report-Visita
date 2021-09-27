@@ -22,8 +22,8 @@ class ViewPageState extends State<ViewPage> {
   final PageController controller = PageController(initialPage: 0);
   List<Widget> screens = [
     MyHomePage(),
-    //Preferences(),
     CalendarPage(),
+    ListaAziende()
   ];
   int _selectedIndex = 0;
   final PageStorageBucket bucket = PageStorageBucket();
@@ -61,8 +61,8 @@ class ViewPageState extends State<ViewPage> {
                 color: Colors.white,
                 onPressed: () {
                   setState(() {
-                    if (_selectedIndex != 1) {
-                      _selectedIndex = 1;
+                    if (_selectedIndex != 2) {
+                      _selectedIndex = 2;
                       controller.jumpToPage(_selectedIndex);
                     }
                   });
@@ -72,8 +72,10 @@ class ViewPageState extends State<ViewPage> {
                 icon: Icon(Icons.event_rounded),
                 color: Colors.white,
                 onPressed: () {
-                  _selectedIndex = 2;
-                  controller.jumpToPage(_selectedIndex);
+                  if (_selectedIndex != 1) {
+                    _selectedIndex = 1;
+                    controller.jumpToPage(_selectedIndex);
+                  }
                 },
               ),
             ],

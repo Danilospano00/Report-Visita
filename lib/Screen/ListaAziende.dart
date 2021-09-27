@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:alphabet_list_scroll_view/alphabet_list_scroll_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:report_visita_danilo/Models/Azienda.dart';
 
 class ListaAziende extends StatefulWidget {
   @override
@@ -8,107 +9,169 @@ class ListaAziende extends StatefulWidget {
 }
 
 class ListaAziendeState extends State<ListaAziende> {
-  List<String> listaAziende = [
-    "Yiv3a",
-    "Q8w5y",
-    "UesNV",
-    "zEj1",
-    "brcIo",
-    "AqgD",
-    "SfPO0",
-    "S6lHj",
-    "DsbJr",
-    "ag7n5",
-    "pnf71",
-    "ZcvS7",
-    "xzYkl",
-    "d6gDj",
-    "ODq8U",
-    "bZzxz",
-    "m5JeQ",
-    "NnfUD",
-    "LBpsR",
+
+  bool viewMap=false;
+  final TextEditingController _controller = new TextEditingController();
+  List<Azienda> searchresult = [];
+
+  List<Azienda> listaAziende = [
+    Azienda(nome: "aaaa"),
+    Azienda(nome: "bbbbb"),
+    Azienda(nome: "ccccc")
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AlphabetListScrollView(
-          indexedHeight: (int i) {
-            return 80;
-          },
-          strList: listaAziende,
-          itemBuilder: (context, index) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          listaAziende[index],
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 12.075892.sp,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 2.w),
-                        ),
-                      ],
+      body: Stack(
+        children: [
+
+          !viewMap?buildBody():buildBodyMap(),
+          Padding(
+            padding: EdgeInsets.only(top: 28.h,left: 4.w,right: 4.w),
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+
+                children: [
+
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width*.80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.h),
-                      child: Text(
-                        listaAziende[index],
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 20.126488.sp,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 0.25,
-                          color: Colors.grey[700],
+                  ]),
+                    child: TextField(
+
+                      controller: _controller,
+                      style: new TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: new InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            BorderSide(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          suffixIcon: Icon(Icons.search, color: Colors.black),
+                          hintText: "cerca",
+                          hintStyle: new TextStyle(color: Colors.black)),
+                      onChanged: searchOperation,
+                    ),
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.only(left: 4.0.w),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.red,
+                      child: IconButton(
+                        icon: Icon(
+                          viewMap?Icons.list_alt:Icons.map_outlined,
+                          color: Colors.white,
                         ),
+                        onPressed: () {
+
+                          setState(() {
+                            viewMap=!viewMap;
+                          });
+
+                        },
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          listaAziende[index],
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 12.075892.sp,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.4,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                        ElevatedButton(
-                          child: Text(
-                            "map",
-                            style: TextStyle(
-                                fontSize: 10.sp, fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(18.w, 25.h),
-                            primary: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 1,
-                  thickness: 2,
-                ),
-              ],
-            );
-          }),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  void searchOperation(String searchText) {
+    searchresult.clear();
+
+    for (int i = 0; i < listaAziende.length; i++) {
+      String data = listaAziende[i].nome!;
+      if (data.toLowerCase().contains(searchText.toLowerCase())) {
+        setState(() {
+          searchresult.add(listaAziende[i]);
+        });
+      }
+      setState(() {});
+    }
+  }
+
+  buildBody() {
+    return  Padding(
+      padding: EdgeInsets.only(top:80.h),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: AlphabetListScrollView(
+            indexedHeight: (int i) {
+              return 80;
+            },
+            strList: List<String>.generate(listaAziende.length, (i) {
+              return "${listaAziende[i].nome}";
+            }),
+            itemBuilder: (context, index) {
+              return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      listaAziende[index].nome!,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 12.075892.sp,
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: 2.w),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                        ]),
+                  ));
+            }),
+      ),
+    );
+  }
+
+  buildBodyMap() {
+    return Container();
   }
 }
