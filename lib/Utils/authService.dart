@@ -186,8 +186,8 @@ class AuthService {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(
-                        top: 14.h, right: 16.w, left: 16.w),
+                    padding:
+                        EdgeInsets.only(top: 14.h, right: 16.w, left: 16.w),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -269,9 +269,10 @@ class AuthService {
                       label: Text(
                         "Settings",
                         style: TextStyle(
-                            fontSize: 18.748113.sp,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.25,),
+                          fontSize: 18.748113.sp,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.25,
+                        ),
                       ),
                       onPressed: () {
                         singOut();
@@ -367,7 +368,7 @@ class AuthService {
                               text:
                                   "Scopri tutti i vantaggi di un account registrato\n\n",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -375,8 +376,11 @@ class AuthService {
                                 TextSpan(
                                   text:
                                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
-                                  style:
-                                      homePageMainTextStyle,
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[700],
+                                  ),
                                 )
                               ],
                             ),
