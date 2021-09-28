@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
@@ -20,6 +21,8 @@ class Azienda{
   String? codiceFiscale;
   double? lat;
   double? lng;
+  String? renderKey;
+
 
 
   final referenti=ToMany<Referente>();
@@ -27,6 +30,14 @@ class Azienda{
   final events=ToMany<Event>();
 
   Azienda({this.id, this.nome,this.indirizzo,this.cap,this.citta,this.partitaIva,this.codiceFiscale,this.lat,this.lng});
+
+  void setKey(Key _key) {
+    renderKey = _key.toString();
+  }
+
+  String? getKey() {
+    return renderKey;
+  }
 
 
   Map<String, dynamic> toMap() {

@@ -1,3 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:alphabet_list_scroll_view/alphabet_list_scroll_view.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -29,26 +31,31 @@ class ListaAziendeState extends State<ListaAziende> {
   late Store _store;
   late List<Azienda> listaAziende = [];
 
-  late bool hasBeenInitialized = false;
+   bool hasBeenInitialized = false;
+  bool locationInitialized = false;
+  bool inizializedMap = false;
+  final key=GlobalKey<ScaffoldState>();
+
   List<Azienda> listaAziende2 = [];
+ late FlutterMap mappa;
 
   @override
   initState() {
     super.initState();
     Azienda azienda1 =
-        Azienda(nome: "Azienda 1", indirizzo: "Via casa mia", citta: "Roma");
+        Azienda(nome: "Azienda 1", indirizzo: "Via casa mia", citta: "Roma",lng: 9.188120,lat:45.463619);
     Event element = new Event();
     element.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda1.events.add(element);
 
     Azienda azienda2 =
-        Azienda(nome: "SS Lazio", indirizzo: "Via casa mia", citta: "Roma");
+        Azienda(nome: "SS Lazio", indirizzo: "Via casa mia", citta: "Roma",lng: -95.903633,lat:36.076637 );
     Event element2 = new Event();
     element2.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda2.events.add(element2);
 
     Azienda azienda3 =
-        Azienda(nome: "Fc Inter", indirizzo: "Via casa mia", citta: "Roma");
+        Azienda(nome: "Fc Inter", indirizzo: "Via casa mia", citta: "Roma",lng:13.181720,lat:41.473430);
     Event element3 = new Event();
     element3.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda3.events.add(element3);
@@ -58,9 +65,10 @@ class ListaAziendeState extends State<ListaAziende> {
       azienda2,
       azienda3,
     ];
-    hasBeenInitialized = true;
+    _prepareMarker();
 
-    _mapController = MapController();
+
+   // _mapController = MapController();
     _getCurrentLocation();
   }
 
@@ -71,8 +79,9 @@ class ListaAziendeState extends State<ListaAziende> {
         .then((Position position) {
       setState(() {
         _currentLocation = position;
-        // _buildBody();
+        locationInitialized=true;
       });
+      _buildFlatterMap();
     }).catchError((e) {
       print(e);
     });
@@ -80,8 +89,11 @@ class ListaAziendeState extends State<ListaAziende> {
 
   void _prepareMarker() {
     if (searchresult.isEmpty) {
-      _markers = listaAziende.map((element) {
+      _markers = listaAziende2.map((element) {
+        Key _key = GlobalKey();
+        element.setKey(_key);
         Marker marker = Marker(
+            key: _key,
             point: LatLng(element.lat!, element.lng!),
             width: ScreenUtil().setWidth(49),
             height: ScreenUtil().setHeight(65),
@@ -98,9 +110,11 @@ class ListaAziendeState extends State<ListaAziende> {
         return marker;
       }).toList();
     } else {
-      void _prepareMarker() {
         _markers = searchresult.map((element) {
+          Key _key = GlobalKey();
+          element.setKey(_key);
           Marker marker = Marker(
+              key: _key,
               point: LatLng(element.lat!, element.lng!),
               width: ScreenUtil().setWidth(49),
               height: ScreenUtil().setHeight(65),
@@ -117,17 +131,25 @@ class ListaAziendeState extends State<ListaAziende> {
           return marker;
         }).toList();
       }
-    }
+    setState(() {
+      hasBeenInitialized = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: !hasBeenInitialized
-          ? CircularProgressIndicator()
+      key: key,
+      body: !hasBeenInitialized && !locationInitialized
+          ? Center(child: CircularProgressIndicator(color:Colors.red))
           : Stack(
               children: [
-                !viewMap ? buildBody() : buildBodyMap(),
+                Visibility(visible: viewMap ,
+                    child: inizializedMap? buildBodyMap():
+                    Center(child: CircularProgressIndicator(color:Colors.red))),
+                Visibility(visible: !viewMap ,
+                    child: buildBody()),
+
                 Padding(
                   padding: EdgeInsets.only(top: 28.h, left: 4.w, right: 4.w),
                   child: Container(
@@ -196,6 +218,8 @@ class ListaAziendeState extends State<ListaAziende> {
                               ),
                               onPressed: () {
                                 setState(() {
+
+
                                   viewMap = !viewMap;
                                 });
                               },
@@ -282,12 +306,14 @@ class ListaAziendeState extends State<ListaAziende> {
 
   buildBodyMap() {
     return SafeArea(
+
         top: false,
         bottom: false,
         child: Padding(
             padding: EdgeInsets.all(0.0),
             child: Column(
-                children: [Flexible(child: _buildFlatterMap(context))])));
+                children: [Flexible(
+                    child: mappa)])));
   }
 
   creaListaAzienda() async {
@@ -298,16 +324,20 @@ class ListaAziendeState extends State<ListaAziende> {
     });
   }
 
-  Widget _buildFlatterMap(BuildContext context) {
+    _buildFlatterMap() {
     late LatLng _location;
     if (_currentLocation != null) {
       _location =
           LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
-    } else {}
+    } else {
+
+      return CircularProgressIndicator();
+    }
 
     FlutterMap _flutterMap = FlutterMap(
-        mapController: _mapController,
+
         options: MapOptions(
+
           center: _location,
           zoom: 8.0,
           interactiveFlags: InteractiveFlag.all - InteractiveFlag.rotate,
@@ -319,6 +349,7 @@ class ListaAziendeState extends State<ListaAziende> {
           TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c'],
+
           ),
 
           MarkerClusterLayerOptions(
@@ -334,7 +365,71 @@ class ListaAziendeState extends State<ListaAziende> {
                 color: Colors.black12,
                 borderStrokeWidth: 2),
             onMarkerTap: (marker) {
-              //_showSheet(marker.key.toString());
+
+              final Azienda _actualAziendaSelected = listaAziende2.firstWhere((element) => element.getKey() == marker.key.toString());
+             key.currentState!.showSnackBar(
+               new SnackBar(duration: Duration(days:1),
+                 padding: EdgeInsets.all(4),
+                 
+                 //width:double.infinity ,
+
+                 backgroundColor: Colors.black,
+                 content: Container(
+                   width: double.infinity,
+                     height: ScreenUtil().setHeight(100),
+                     color: Colors.black,
+                     child: Column(
+                       //mainAxisAlignment:MainAxisAlignment.start ,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+
+                       children: [
+                         Container(
+                          // height: ScreenUtil().setHeight(24),
+                           child: Align(
+                             alignment: Alignment.center,
+                             child: IconButton( icon:Icon(
+                               Icons.arrow_drop_down,
+                               color: Colors.white,
+                               size: 36,
+                             ),
+                             onPressed: (){
+
+                               key.currentState!.hideCurrentSnackBar();
+                             },),
+                           ),
+                         ),
+                         Container(
+                           width: MediaQuery.of(context).size.width*.70,
+                           child: AutoSizeText(
+                             _actualAziendaSelected.nome!+"\n"+_actualAziendaSelected.indirizzo!,
+                             maxLines: 3,
+                             style: TextStyle(
+                                 color: Colors.white,
+                                 fontSize: 14.088542.sp,
+                                 fontWeight: FontWeight.w400,
+                                 letterSpacing: 0.25),
+                           ),
+                         ),
+                         Container(
+                           alignment: Alignment.bottomRight,
+                           child: RichText(
+                               text: TextSpan(
+                                 text: 'REPORT',
+                                 style: new TextStyle(
+                                   color: Colors.orange,
+                                   fontSize: ScreenUtil().setSp(13.748113),
+                                   fontWeight: FontWeight.w700,
+                                   letterSpacing: 1.25,
+                                 ),
+                                 recognizer: new TapGestureRecognizer()
+                                   ..onTap = () {},
+                               )),
+                         )
+
+                       ],
+                     )),
+
+                ));
               //far visualizzare un toast
             },
             builder: (context, markers) {
@@ -360,6 +455,9 @@ class ListaAziendeState extends State<ListaAziende> {
             alignment: Alignment.bottomLeft,
           )
         ]);
-    return _flutterMap;
+    setState(() {
+      mappa= _flutterMap;
+      inizializedMap=true;
+    });
   }
 }
