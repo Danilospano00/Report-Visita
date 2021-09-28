@@ -51,6 +51,7 @@ class MyHomePageState extends State<MyHomePage> {
     super.initState();
     openStore().then((Store store) {
       _store = store;
+      mainStore=_store;
       setState(() {
         hasBeenInitialized = true;
       });
