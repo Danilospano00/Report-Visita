@@ -341,6 +341,8 @@ class ListaAziendeState extends State<ListaAziende> {
 
           center: _location,
           zoom: 8.0,
+          maxZoom: 18,
+          minZoom: 1,
           interactiveFlags: InteractiveFlag.all - InteractiveFlag.rotate,
           plugins: [ZoomButtonsPlugin(), MarkerClusterPlugin()],
           onTap: (tapPosition, point) => null,

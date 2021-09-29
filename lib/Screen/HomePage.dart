@@ -44,7 +44,7 @@ class MyHomePageState extends State<MyHomePage> {
   late Iterable<Contact> _contacts;
   Azienda? aziendaSelezionata;
   Contact? contattoSelezionato;
-  dynamic response;
+
 
   @override
   void initState() {
@@ -142,23 +142,10 @@ class MyHomePageState extends State<MyHomePage> {
                           onChanged: (dynamic value) {
                             print(value);
                             setState(() {
-                              this.response = value;
+                             response = value;
                             });
                             print(response.toString());
                           },
-                        ),
-                        Container(
-                          // width: ScreenUtil().setWidth(100),
-                          child: MaterialButton(
-                            child: Text("salva",style: TextStyle(color:Colors.white),),
-                            color: Colors.red,
-                            onPressed: ()  {
-                              addReport();
-                            },
-                            elevation: 4.0,
-                            minWidth: double.infinity,
-                            height: 48.0,
-                          ),
                         ),
                       ],
                     ),
@@ -172,7 +159,7 @@ class MyHomePageState extends State<MyHomePage> {
   Future<void> addReport() async {
     _report = Report();
 
-    if (this.response["azienda"]!=null) {
+    if (response["azienda"]!=null) {
       _report.azienda.target = response["azienda"];
     } else {
       List<Location> locations =
@@ -206,7 +193,8 @@ class MyHomePageState extends State<MyHomePage> {
 
 
 
-    int count= await _store.box<Report>().put(_report);
+    int count= await mainStore.box<Report>().put(_report);
+    print("aggiunto  $count");
 
 
   }
