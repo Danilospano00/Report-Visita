@@ -88,38 +88,50 @@ class ListaAziendeState extends State<ListaAziende> {
     azienda3.events.add(element3);
 
     Azienda azienda4 = Azienda(
-        nome: "Mc Donald", indirizzo: "Via Flavio Stilicone", citta: "Roma",lng: -95.903633,
+        nome: "Mc Donald",
+        indirizzo: "Via Flavio Stilicone",
+        citta: "Roma",
+        lng: -95.903633,
         lat: 36.076637);
     Event element4 = new Event();
     element4.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda4.events.add(element4);
 
     Azienda azienda5 = Azienda(
-      nome: "Ikea",
-      indirizzo: "Via Roma",
-      citta: "Milano",lng: -95.903633,
-        lat: 36.076637
-    );
+        nome: "Ikea",
+        indirizzo: "Via Roma",
+        citta: "Milano",
+        lng: -95.903633,
+        lat: 36.076637);
     Event element5 = new Event();
     element5.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda5.events.add(element5);
 
-    Azienda azienda6 =
-        Azienda(nome: "5 stelle", indirizzo: "Via tuscolana", citta: "Roma",lng: -95.903633,
-            lat: 36.076637);
+    Azienda azienda6 = Azienda(
+        nome: "5 stelle",
+        indirizzo: "Via tuscolana",
+        citta: "Roma",
+        lng: -95.903633,
+        lat: 36.076637);
     Event element6 = new Event();
     element6.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda6.events.add(element6);
 
-    Azienda azienda7 =
-    Azienda(nome: "Burger King", indirizzo: "Via tuscolana", citta: "Roma",lng: -95.903633,
+    Azienda azienda7 = Azienda(
+        nome: "Burger King",
+        indirizzo: "Via tuscolana",
+        citta: "Roma",
+        lng: -95.903633,
         lat: 36.076637);
     Event element7 = new Event();
     element7.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda7.events.add(element7);
 
-    Azienda azienda8 =
-    Azienda(nome: "Mondo Convenienza", indirizzo: "Via tuscolana", citta: "Roma",lng: -95.903633,
+    Azienda azienda8 = Azienda(
+        nome: "Mondo Convenienza",
+        indirizzo: "Via tuscolana",
+        citta: "Roma",
+        lng: -95.903633,
         lat: 36.076637);
     Event element8 = new Event();
     element8.date = new DateTime.utc(2021, 9, 30, 10, 30);
@@ -312,8 +324,8 @@ class ListaAziendeState extends State<ListaAziende> {
         setState(() {
           searchresult.add(items[i].azienda);
         });
-      }
-      setState(() {});
+      } else
+        setState(() {});
     }
   }
 
@@ -328,8 +340,7 @@ class ListaAziendeState extends State<ListaAziende> {
           needRebuild: true,
           selectItemDecoration: BoxDecoration(
             color: Colors.red,
-            shape:  BoxShape.circle,
-
+            shape: BoxShape.circle,
           ),
           textStyle: TextStyle(color: Colors.white),
           indexHintAlignment: Alignment.centerRight,
@@ -340,9 +351,12 @@ class ListaAziendeState extends State<ListaAziende> {
           ),
         ),
         itemBuilder: (BuildContext context, int index) {
-          return _buildListItem(items[index]);
+          if (searchresult.isEmpty) {
+            return _buildListItem(items[index]);
+          } else
+            return _buildListItem(fromAziendaToAZItem(searchresult[index]));
         },
-        itemCount: items.length,
+        itemCount: searchresult.isEmpty ? items.length : searchresult.length,
       ),
     );
   }
@@ -353,14 +367,14 @@ class ListaAziendeState extends State<ListaAziende> {
 
     return Column(
       children: [
-        Offstage(offstage: offstage, child:_buildHeader(tag)),
+        Offstage(offstage: offstage, child: _buildHeader(tag)),
         Padding(
-          padding: EdgeInsets.only(right: 40.w, left:21.w),
+          padding: EdgeInsets.only(right: 40.w, left: 21.w),
           child: Card(
             elevation: 5,
             shadowColor: Colors.grey,
-            shape:  RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             margin: EdgeInsets.symmetric(vertical: 8.h),
             child: Container(
               height: 60.h,
@@ -383,7 +397,11 @@ class ListaAziendeState extends State<ListaAziende> {
                       Padding(
                         padding: EdgeInsets.only(right: 12.w),
                         child: Text(
-                          item.azienda.events.elementAt(0).date!.day.toString() +
+                          item.azienda.events
+                                  .elementAt(0)
+                                  .date!
+                                  .day
+                                  .toString() +
                               "/" +
                               item.azienda.events
                                   .elementAt(0)
@@ -405,7 +423,8 @@ class ListaAziendeState extends State<ListaAziende> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
+                    padding:
+                        EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: Icon(
@@ -424,17 +443,20 @@ class ListaAziendeState extends State<ListaAziende> {
     );
   }
 
- Widget _buildHeader(String tag){
-  return Padding(
-    padding: EdgeInsets.only(left: 21.w),
-    child: Container(
-      alignment: Alignment.centerLeft,
-      child:Text('$tag', softWrap: false,
-      style: TextStyle(fontSize:  20.126488.sp, fontWeight: FontWeight.w400, color: Colors.red)),
-    ),
-  );
-
- }
+  Widget _buildHeader(String tag) {
+    return Padding(
+      padding: EdgeInsets.only(left: 21.w),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        child: Text('$tag',
+            softWrap: false,
+            style: TextStyle(
+                fontSize: 20.126488.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.red)),
+      ),
+    );
+  }
 
   buildBodyMap() {
     return SafeArea(
@@ -587,6 +609,96 @@ class ListaAziendeState extends State<ListaAziende> {
       mappa = _flutterMap;
       inizializedMap = true;
     });
+  }
+
+  Widget _buildListResearched(_AZItem item) {
+    final tag = item.getSuspensionTag();
+    final offstage = !item.isShowSuspension;
+
+    return Column(
+      children: [
+        Offstage(offstage: offstage, child: _buildHeader(tag)),
+        Padding(
+          padding: EdgeInsets.only(right: 40.w, left: 21.w),
+          child: Card(
+            elevation: 5,
+            shadowColor: Colors.grey,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            margin: EdgeInsets.symmetric(vertical: 8.h),
+            child: Container(
+              height: 60.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 12.w),
+                        child: Text(
+                          item.azienda.nome!,
+                          style: TextStyle(
+                              fontSize: 15.712129,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey[700]),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: Text(
+                          item.azienda.events
+                                  .elementAt(0)
+                                  .date!
+                                  .day
+                                  .toString() +
+                              "/" +
+                              item.azienda.events
+                                  .elementAt(0)
+                                  .date!
+                                  .month
+                                  .toString() +
+                              "/" +
+                              item.azienda.events
+                                  .elementAt(0)
+                                  .date!
+                                  .year
+                                  .toString(),
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 13.748113.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Icon(
+                        Icons.circle,
+                        color: Colors.lightGreenAccent,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _AZItem fromAziendaToAZItem(Azienda azienda) {
+    _AZItem item = new _AZItem(
+        tag: azienda.nome![0].toUpperCase(),
+        azienda: azienda,
+        nomeAzienda: azienda.nome!);
+    return item;
   }
 }
 
