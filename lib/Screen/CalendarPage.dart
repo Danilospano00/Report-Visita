@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
+import 'package:report_visita_danilo/Utils/MyDrawer.dart';
+import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -119,27 +121,7 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
         backgroundColor: Colors.red,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
+      endDrawer: MyDrawer(),
       body: loading
           ? CircularProgressIndicator()
           : Stack(
@@ -286,7 +268,7 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       if (listaEventi[i]
           .date!
           .add(Duration(
-              days: int.parse(prefs.getString("prioritaAlta").toString())))
+              days: int.parse(prefs.getString("prioritaAlta")??"21")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -295,7 +277,7 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       } else if (listaEventi[i]
           .date!
           .add(Duration(
-              days: int.parse(prefs.getString("prioritaMedia").toString())))
+              days: int.parse(prefs.getString("prioritaMedia")??"14")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -349,4 +331,6 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       return SizedBox.shrink();
     }
   }
+
+
 }

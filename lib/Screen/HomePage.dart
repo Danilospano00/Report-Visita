@@ -9,9 +9,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
-import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 
 import '../objectbox.g.dart';

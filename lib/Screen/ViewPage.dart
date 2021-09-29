@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:report_visita_danilo/Screen/ListaAziende1.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/HomePage.dart';
-import 'package:report_visita_danilo/Screen/whitePage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'AccountEmpty.dart';
 import 'ListaAziende.dart';
-import 'Preferences.dart';
 import 'ScegliAllerta.dart';
 
 class ViewPage extends StatefulWidget {
