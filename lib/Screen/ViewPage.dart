@@ -3,6 +3,7 @@ import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/HomePage.dart';
 
+import 'AccountEmpty.dart';
 import 'ListaAziende.dart';
 import 'ScegliAllerta.dart';
 
@@ -48,7 +49,7 @@ class ViewPageState extends State<ViewPage> {
                 color: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ScegliAllerta()));
+                      MaterialPageRoute(builder: (context) => AccountEmpty()));
                 },
               ),
               Spacer(),

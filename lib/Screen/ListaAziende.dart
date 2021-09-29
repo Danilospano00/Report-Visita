@@ -50,6 +50,7 @@ class ListaAziendeState extends State<ListaAziende> {
         .toList();
 
     SuspensionUtil.sortListBySuspensionTag(this.items);
+    SuspensionUtil.setShowSuspensionStatus(this.items);
     setState(() {});
   }
 
@@ -86,10 +87,53 @@ class ListaAziendeState extends State<ListaAziende> {
     element3.date = new DateTime.utc(2021, 9, 30, 10, 30);
     azienda3.events.add(element3);
 
+    Azienda azienda4 = Azienda(
+        nome: "Mc Donald", indirizzo: "Via Flavio Stilicone", citta: "Roma",lng: -95.903633,
+        lat: 36.076637);
+    Event element4 = new Event();
+    element4.date = new DateTime.utc(2021, 9, 30, 10, 30);
+    azienda4.events.add(element4);
+
+    Azienda azienda5 = Azienda(
+      nome: "Ikea",
+      indirizzo: "Via Roma",
+      citta: "Milano",lng: -95.903633,
+        lat: 36.076637
+    );
+    Event element5 = new Event();
+    element5.date = new DateTime.utc(2021, 9, 30, 10, 30);
+    azienda5.events.add(element5);
+
+    Azienda azienda6 =
+        Azienda(nome: "5 stelle", indirizzo: "Via tuscolana", citta: "Roma",lng: -95.903633,
+            lat: 36.076637);
+    Event element6 = new Event();
+    element6.date = new DateTime.utc(2021, 9, 30, 10, 30);
+    azienda6.events.add(element6);
+
+    Azienda azienda7 =
+    Azienda(nome: "Burger King", indirizzo: "Via tuscolana", citta: "Roma",lng: -95.903633,
+        lat: 36.076637);
+    Event element7 = new Event();
+    element7.date = new DateTime.utc(2021, 9, 30, 10, 30);
+    azienda7.events.add(element7);
+
+    Azienda azienda8 =
+    Azienda(nome: "Mondo Convenienza", indirizzo: "Via tuscolana", citta: "Roma",lng: -95.903633,
+        lat: 36.076637);
+    Event element8 = new Event();
+    element8.date = new DateTime.utc(2021, 9, 30, 10, 30);
+    azienda8.events.add(element8);
+
     listaAziende2 = [
       azienda1,
       azienda2,
       azienda3,
+      azienda4,
+      azienda5,
+      azienda6,
+      azienda7,
+      azienda8,
     ];
 
     initList(listaAziende2);
@@ -278,10 +322,15 @@ class ListaAziendeState extends State<ListaAziende> {
       padding: EdgeInsets.only(top: 80.h, left: 4.w, right: 4.w),
       child: AzListView(
         data: items,
-        indexBarHeight: 340.h,
+        indexBarHeight: 380.h,
         indexBarAlignment: Alignment.topRight,
         indexBarOptions: IndexBarOptions(
           needRebuild: true,
+          selectItemDecoration: BoxDecoration(
+            color: Colors.red,
+            shape:  BoxShape.circle,
+
+          ),
           textStyle: TextStyle(color: Colors.white),
           indexHintAlignment: Alignment.centerRight,
           decoration: BoxDecoration(
@@ -299,53 +348,93 @@ class ListaAziendeState extends State<ListaAziende> {
   }
 
   Widget _buildListItem(_AZItem item) {
-    return Padding(
-      padding: EdgeInsets.only(right: 40.w),
-      child: Card(
-        margin: EdgeInsets.all(8.w),
-        child: Container(
-          height: 60.h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final tag = item.getSuspensionTag();
+    final offstage = !item.isShowSuspension;
+
+    return Column(
+      children: [
+        Offstage(offstage: offstage, child:_buildHeader(tag)),
+        Padding(
+          padding: EdgeInsets.only(right: 40.w, left:21.w),
+          child: Card(
+            elevation: 5,
+            shadowColor: Colors.grey,
+            shape:  RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(15)),
+            margin: EdgeInsets.symmetric(vertical: 8.h),
+            child: Container(
+              height: 60.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left:12.w),
-                    child: Text(item.nomeAzienda, style: TextStyle(fontSize: 15.712129, fontWeight: FontWeight.w700, color: Colors.grey[700]),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 12.w),
+                        child: Text(
+                          item.nomeAzienda,
+                          style: TextStyle(
+                              fontSize: 15.712129,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey[700]),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: Text(
+                          item.azienda.events.elementAt(0).date!.day.toString() +
+                              "/" +
+                              item.azienda.events
+                                  .elementAt(0)
+                                  .date!
+                                  .month
+                                  .toString() +
+                              "/" +
+                              item.azienda.events
+                                  .elementAt(0)
+                                  .date!
+                                  .year
+                                  .toString(),
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 13.748113.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right:12.w),
-                    child: Text(
-                      item.azienda.events.elementAt(0).date!.day.toString() +
-                          "/" +
-                          item.azienda.events.elementAt(0).date!.month.toString() +
-                          "/" +
-                          item.azienda.events.elementAt(0).date!.year.toString(),
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 13.748113.sp,
-                          fontWeight: FontWeight.w700),
+                    padding: EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Icon(
+                        Icons.circle,
+                        color: Colors.lightGreenAccent,
+                        size: 16,
+                      ),
                     ),
                   ),
                 ],
-              ),Padding(
-                padding: EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
-                child: Align(alignment: Alignment.bottomRight,
-                  child:Icon(
-                    Icons.circle,
-                    color: Colors.lightGreenAccent,
-                    size: 16,
-                  ),
-                ),
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
+
+ Widget _buildHeader(String tag){
+  return Padding(
+    padding: EdgeInsets.only(left: 21.w),
+    child: Container(
+      alignment: Alignment.centerLeft,
+      child:Text('$tag', softWrap: false,
+      style: TextStyle(fontSize:  20.126488.sp, fontWeight: FontWeight.w400, color: Colors.red)),
+    ),
+  );
+
+ }
 
   buildBodyMap() {
     return SafeArea(
