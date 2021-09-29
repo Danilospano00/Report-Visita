@@ -108,7 +108,7 @@ class MyHomePageState extends State<MyHomePage> {
                               "entity": "Azienda",
                               "field": [
                                 {"label": "indirizzo", "required": true},
-                                {"label": "Partita IVA", "required": true},
+                                {"label": "partitaIva", "required": true},
                               ],
                               "empty": false,
                               "validation": true
@@ -167,7 +167,7 @@ class MyHomePageState extends State<MyHomePage> {
       _report.azienda.target = Azienda()
         ..nome = response["aziendaName"]
         ..indirizzo = response["indirizzo"]
-        ..partitaIva = response["Partita IVA"]
+        ..partitaIva = response["partitaIva"]
         ..lng = locations[0].longitude
         ..lat = locations[0].latitude;
     }

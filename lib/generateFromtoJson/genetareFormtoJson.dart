@@ -1048,7 +1048,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   dynamic getValueField(String field) {
     Map<String, dynamic> objectMap = selectObject.toMap();
 
-    return objectMap[field];
+    return objectMap[field]??"";
   }
 
   void setNewValueObject(String field,String value,String title) {
