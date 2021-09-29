@@ -308,7 +308,10 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
         );
       }
     } else {
-      return Text("Evento passato");
+      return Icon(
+        Icons.circle,
+        color: Colors.greenAccent,
+      );
     }
   }
 

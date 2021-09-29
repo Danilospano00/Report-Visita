@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:report_visita_danilo/Screen/ListaAziende1.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/HomePage.dart';
@@ -52,7 +53,7 @@ class ViewPageState extends State<ViewPage> {
                 color: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AccountEmpty()));
+                      MaterialPageRoute(builder: (context) => ScegliAllerta()));
                 },
               ),
               Spacer(),
