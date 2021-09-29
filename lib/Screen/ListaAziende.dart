@@ -37,6 +37,7 @@ class ListaAziendeState extends State<ListaAziende> {
   final key=GlobalKey<ScaffoldState>();
 
   List<Azienda> listaAziende2 = [];
+
  late FlutterMap mappa;
 
   @override
