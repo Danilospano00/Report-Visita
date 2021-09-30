@@ -2,7 +2,6 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:report_visita_danilo/Screen/ViewPage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatelessWidget {
 

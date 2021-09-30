@@ -15,7 +15,7 @@ import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart'
 import '../objectbox.g.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  MyHomePage({Key? key, }) : super(key: key);
 
   @override
   MyHomePageState createState() => MyHomePageState();
@@ -36,6 +36,9 @@ class MyHomePageState extends State<MyHomePage> {
   TextEditingController formFieldControllerCodicefiscale =
       TextEditingController();
 
+  static final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
   late Store _store;
   bool hasBeenInitialized = false;
   late Report _report;
@@ -43,13 +46,12 @@ class MyHomePageState extends State<MyHomePage> {
   Azienda? aziendaSelezionata;
   Contact? contattoSelezionato;
 
-
   @override
   void initState() {
     super.initState();
     openStore().then((Store store) {
       _store = store;
-      mainStore=_store;
+      mainStore = _store;
       setState(() {
         hasBeenInitialized = true;
       });
@@ -64,7 +66,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
       body: !hasBeenInitialized
           ? Center(
@@ -140,7 +142,7 @@ class MyHomePageState extends State<MyHomePage> {
                           onChanged: (dynamic value) {
                             print(value);
                             setState(() {
-                             response = value;
+                              response = value;
                             });
                             print(response.toString());
                           },
@@ -156,44 +158,58 @@ class MyHomePageState extends State<MyHomePage> {
 
   Future<void> addReport() async {
     _report = Report();
+    if (response != null) {
+      if (response["azienda"] != null) {
+        _report.azienda.target = response["azienda"];
+      } else {
+        List<Location> locations =
+            await locationFromAddress(response["indirizzo"]);
+        _report.azienda.target = Azienda()
+          ..nome = response["aziendaName"]
+          ..indirizzo = response["indirizzo"]
+          ..partitaIva = response["partitaIva"]
+          ..lng = locations[0].longitude
+          ..lat = locations[0].latitude;
+      }
+      if (response["contatto"] != null) {
+        Contact contact = response["contatto"];
+        _report.referente.target = Referente(
+            nome: contact.givenName ?? " ",
+            cognome: contact.familyName ?? " ",
+            telefono: contact.phones!.isNotEmpty
+                ? contact.phones!.elementAt(0).value
+                : null,
+            id: int.parse(contact.identifier!),
+            email: contact.emails!.isNotEmpty
+                ? contact.emails!.elementAt(0).value
+                : null);
+      }
 
-    if (response["azienda"]!=null) {
-      _report.azienda.target = response["azienda"];
+      if (response["dateCompilazione"] != null)
+        _report.compilazione = DateTime.parse(response["dateCompilazione"]);
+
+      if (response["prossimaVisita"] != null)
+        _report.compilazione = DateTime.parse(response["prossimaVisita"]);
+
+      if (response["note"] != null) _report.note.addAll(response["note"]);
+
+      int count = await mainStore.box<Report>().put(_report);
+        _showSnackBar("Numero di report salvati "+count.toString());
     } else {
-      List<Location> locations =
-          await locationFromAddress(response["indirizzo"]);
-      _report.azienda.target = Azienda()
-        ..nome = response["aziendaName"]
-        ..indirizzo = response["indirizzo"]
-        ..partitaIva = response["partitaIva"]
-        ..lng = locations[0].longitude
-        ..lat = locations[0].latitude;
+        _showSnackBar("Report non aggiunti");
     }
-    if(response["contatto"]!=null){
-      Contact contact=response["contatto"];
-      _report.referente.target = Referente(
-          nome: contact.givenName??" ",
-          cognome: contact.familyName??" ",
-          telefono:  contact.phones!.isNotEmpty? contact.phones!.elementAt(0).value:null,
-      id:int.parse(contact.identifier!),
-          email:contact.emails!.isNotEmpty? contact.emails!.elementAt(0).value:null);
-      
-    }
+  }
 
-    if(response["dateCompilazione"]!=null)
-      _report.compilazione= DateTime.parse(response["dateCompilazione"]);
-
-    if(response["prossimaVisita"]!=null)
-      _report.compilazione=DateTime.parse(response["prossimaVisita"]);
-
-    if(response["note"]!=null)
-    _report.note.addAll(response["note"]);
-
-
-
-    int count= await mainStore.box<Report>().put(_report);
-    print("aggiunto  $count");
-
-
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      backgroundColor: Colors.black,
+      padding: EdgeInsets.all(15.0),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      behavior: SnackBarBehavior.floating,
+    );
+    ScaffoldMessenger.of(_scaffoldKey.currentContext!)
+        .showSnackBar(snackBar);
   }
 }

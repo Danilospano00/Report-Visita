@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
-import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/ZoomButtonsPluginOption.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 
@@ -148,9 +147,17 @@ class ListaAziendeState extends State<ListaAziende> {
       azienda8,
     ];
 
+    /*_store.box<Azienda>().put(azienda1);
+    _store.box<Azienda>().put(azienda2);
+    _store.box<Azienda>().put(azienda3);
+    _store.box<Azienda>().put(azienda4);
+    _store.box<Azienda>().put(azienda5);
+    _store.box<Azienda>().put(azienda6);
+    _store.box<Azienda>().put(azienda7);
+    _store.box<Azienda>().put(azienda8);
+    creaListaAzienda();*/
     initList(listaAziende2);
 
-    hasBeenInitialized = true;
     _prepareMarker();
 
     // _mapController = MapController();
@@ -266,26 +273,22 @@ class ListaAziendeState extends State<ListaAziende> {
                         color: Colors.black,
                       ),
                       decoration: new InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          suffixIcon: Icon(Icons.search, color: Colors.black),
-                          hintText: "cerca",
-                          hintStyle: new TextStyle(color: Colors.black)),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 0),
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 0),
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 0),
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        suffixIcon: Icon(Icons.search, color: Colors.black),
+                      ),
                       onChanged: searchOperation,
                     ),
                   ),
@@ -336,8 +339,13 @@ class ListaAziendeState extends State<ListaAziende> {
         data: items,
         indexBarHeight: 380.h,
         indexBarAlignment: Alignment.topRight,
+        indexBarWidth: 12.h,
         indexBarOptions: IndexBarOptions(
           needRebuild: true,
+          indexHintDecoration: BoxDecoration(
+            color: Colors.red,
+            shape: BoxShape.circle,
+          ),
           selectItemDecoration: BoxDecoration(
             color: Colors.red,
             shape: BoxShape.circle,
@@ -373,8 +381,7 @@ class ListaAziendeState extends State<ListaAziende> {
           child: Card(
             elevation: 5,
             shadowColor: Colors.grey,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             margin: EdgeInsets.symmetric(vertical: 8.h),
             child: Container(
               height: 60.h,
@@ -471,7 +478,6 @@ class ListaAziendeState extends State<ListaAziende> {
     final lista = await _store.box<Azienda>().getAll();
     setState(() {
       listaAziende2 = lista;
-      hasBeenInitialized = false;
     });
   }
 
@@ -609,88 +615,6 @@ class ListaAziendeState extends State<ListaAziende> {
       mappa = _flutterMap;
       inizializedMap = true;
     });
-  }
-
-  Widget _buildListResearched(_AZItem item) {
-    final tag = item.getSuspensionTag();
-    final offstage = !item.isShowSuspension;
-
-    return Column(
-      children: [
-        Offstage(offstage: offstage, child: _buildHeader(tag)),
-        Padding(
-          padding: EdgeInsets.only(right: 40.w, left: 21.w),
-          child: Card(
-            elevation: 5,
-            shadowColor: Colors.grey,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            margin: EdgeInsets.symmetric(vertical: 8.h),
-            child: Container(
-              height: 60.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 12.w),
-                        child: Text(
-                          item.azienda.nome!,
-                          style: TextStyle(
-                              fontSize: 15.712129,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey[700]),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 12.w),
-                        child: Text(
-                          item.azienda.events
-                                  .elementAt(0)
-                                  .date!
-                                  .day
-                                  .toString() +
-                              "/" +
-                              item.azienda.events
-                                  .elementAt(0)
-                                  .date!
-                                  .month
-                                  .toString() +
-                              "/" +
-                              item.azienda.events
-                                  .elementAt(0)
-                                  .date!
-                                  .year
-                                  .toString(),
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 13.748113.sp,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Icon(
-                        Icons.circle,
-                        color: Colors.lightGreenAccent,
-                        size: 16,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   _AZItem fromAziendaToAZItem(Azienda azienda) {

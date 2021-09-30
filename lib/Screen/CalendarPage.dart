@@ -2,18 +2,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/MyDrawer.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-import '../Models/Eventi.dart';
-import 'AccountEmpty.dart';
-import 'ScegliAllerta.dart';
+import '../objectbox.g.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -21,15 +20,20 @@ class CalendarPage extends StatefulWidget {
 }
 
 class CalendarPageState extends State<CalendarPage> {
+  DateTime currentDate = DateTime.now();
+
   List<Event> listaEventi = [];
   int contagiorni = 0;
   late SharedPreferences prefs;
 
-GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
+  final _addEvent = GlobalKey<FormBuilderState>();
 
   bool loading = true;
 
   bool dataGiaStampata = false;
+
+  late Store _store;
 
   @override
   initState() {
@@ -108,7 +112,8 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(key: _keyDrawer,
+    return Scaffold(
+      key: _keyDrawer,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print("aperto");
@@ -238,7 +243,9 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
                         Icons.add,
                         color: Colors.red,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        //showAddEvento();
+                      },
                       label: Text(
                         "EVENT",
                         style: TextStyle(
@@ -268,7 +275,7 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       if (listaEventi[i]
           .date!
           .add(Duration(
-              days: int.parse(prefs.getString("prioritaAlta")??"21")))
+              days: int.parse(prefs.getString("prioritaAlta") ?? "21")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -277,7 +284,7 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       } else if (listaEventi[i]
           .date!
           .add(Duration(
-              days: int.parse(prefs.getString("prioritaMedia")??"14")))
+              days: int.parse(prefs.getString("prioritaMedia") ?? "14")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -297,12 +304,163 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
     }
   }
 
+  /*void showAddEvento() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        bool saveContact = false;
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            title: Text(
+              "Aggiungi Referente",
+              textAlign: TextAlign.center,
+            ),
+            content: Container(
+              width: MediaQuery.of(context).size.width * .80,
+              height: MediaQuery.of(context).size.height * .50,
+              child: SingleChildScrollView(
+                child: FormBuilder(
+                  key: _addEvent,
+                  child: Padding(
+                    padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              bottom: ScreenUtil().setHeight(6)),
+                          child: FormBuilderTextField(
+                            name: "azienda",
+                            decoration: InputDecoration(
+                                fillColor: Colors.grey.shade300,
+                                filled: true,
+                                border: InputBorder.none,
+                                labelText: "Azienda"),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              bottom: ScreenUtil().setHeight(6)),
+                          child: FormBuilderTextField(
+                            name: "referente",
+                            decoration: InputDecoration(
+                                fillColor: Colors.grey.shade300,
+                                filled: true,
+                                border: InputBorder.none,
+                                labelText: "Referente "),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              bottom: ScreenUtil().setHeight(6)),
+                          child: GestureDetector(
+                            onTap: () => _selectDate(context),
+                            child: Container(
+                              color: Colors.grey[300],
+                              height: 60,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Scegli data evento",
+                                      textAlign: TextAlign.start,
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              ButtonTheme(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: RaisedButton(
+                  color: rvTheme.primaryColor,
+                  elevation: 2,
+                  child: Text(
+                    "Annulla",
+                    style: TextStyle(color: rvTheme.canvasColor),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    //showReferente();
+                  },
+                ),
+              ),
+              ButtonTheme(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25)),
+                child: RaisedButton(
+                  color: rvTheme.primaryColor,
+                  elevation: 2,
+                  child: Text(
+                    "Aggiungi",
+                    style: TextStyle(color: rvTheme.canvasColor),
+                  ),
+                  onPressed: () async {
+                    if (_addEvent.currentState?.validate() ?? false) {
+                      Azienda azienda =
+                          _addEvent.currentState?.fields['azienda']!.value ?? " ";
+                      Referente referente =
+                          _addEvent.currentState?.fields['referente']!.value ??
+                              " ";
+                      DateTime data = currentDate;
+
+                      Event event = new Event();
+                      event.azienda.target = azienda;
+                      event.referente.target = referente;
+                      event.date = data;
+
+                      _store.box<Event>().put(event);
+                    }
+                  },
+                ),
+              ),
+            ],
+          );
+        });
+      },
+    ).then((value) {
+      setState(() {});
+    });
+  }*/
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: currentDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2050),
+    );
+    if (pickedDate != null && pickedDate != currentDate)
+      setState(() {
+        currentDate = pickedDate;
+      });
+  }
+
   Widget ritornaDataEvento(int i) {
     DateTime date = listaEventi[i].date!;
     if (i == 0) {
       dataGiaStampata = true;
       return Padding(
-        padding: EdgeInsets.only(top: 50.h,bottom: 10.h),
+        padding: EdgeInsets.only(top: 50.h, bottom: 10.h),
         child: AutoSizeText(
           FormatDate.fromDateTimeToString(listaEventi[i].date!, "data"),
           style: TextStyle(
@@ -315,7 +473,7 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       );
     } else if (!dataGiaStampata || date != listaEventi[i - 1].date!) {
       return Padding(
-        padding: EdgeInsets.only(top: 73.h,bottom: 7.h),
+        padding: EdgeInsets.only(top: 73.h, bottom: 7.h),
         child: AutoSizeText(
           FormatDate.fromDateTimeToString(listaEventi[i].date!, "data"),
           style: TextStyle(
@@ -331,6 +489,4 @@ GlobalKey<ScaffoldState> _keyDrawer = GlobalKey<ScaffoldState>();
       return SizedBox.shrink();
     }
   }
-
-
 }

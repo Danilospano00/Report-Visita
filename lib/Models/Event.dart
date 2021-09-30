@@ -17,5 +17,4 @@ class Event{
 
   var azienda=ToOne<Azienda>();
   final referente=ToOne<Referente>();
-
 }

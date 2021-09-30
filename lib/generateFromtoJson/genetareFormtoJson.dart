@@ -9,8 +9,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Nota.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-
 import '../objectbox.g.dart';
 
 /*
@@ -96,7 +94,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "Seleziona Referenete",
+            "Seleziona Referente",
             textAlign: TextAlign.center,
           ),
           content: Container(
@@ -179,7 +177,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "Aggiungi o Seleziona un Referenete",
+            "Aggiungi o Seleziona un Referente",
             textAlign: TextAlign.center,
           ),
           content: Container(
@@ -240,7 +238,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             title: Text(
-              "Aggiungi Referenete",
+              "Aggiungi Referente",
               textAlign: TextAlign.center,
             ),
             content: Container(
@@ -341,7 +339,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   Flexible(
                                       child: Container(
                                     child: AutoSizeText(
-                                      "Salvere il contatto nella rubrica",
+                                      "Salvare il contatto nella rubrica",
                                       style: new TextStyle(
                                         color: Colors.black,
                                         fontSize: ScreenUtil().setSp(12),

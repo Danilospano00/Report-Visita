@@ -5,7 +5,6 @@ import 'package:report_visita_danilo/Screen/HomePage.dart';
 
 import 'AccountEmpty.dart';
 import 'ListaAziende.dart';
-import 'ScegliAllerta.dart';
 
 class ViewPage extends StatefulWidget {
   @override
@@ -105,4 +104,5 @@ class ViewPageState extends State<ViewPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+
 }

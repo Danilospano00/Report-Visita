@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:report_visita_danilo/Screen/LogInScreen.dart';
-import 'package:report_visita_danilo/Screen/Registration.dart';
 import 'package:report_visita_danilo/Utils/authService.dart';
-import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 
 class AccountEmpty extends StatefulWidget {
   @override
