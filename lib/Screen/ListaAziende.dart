@@ -77,8 +77,8 @@ class ListaAziendeState extends State<ListaAziende> {
     azienda2.events.add(element2);
 
     Azienda azienda3 = Azienda(
-        nome: "Fc Inter",
-        indirizzo: "Via casa mia",
+        nome: "ikea",
+        indirizzo: "via di san romano 8,Roma",
         citta: "Roma",
         lng: 13.181720,
         lat: 41.473430);
@@ -492,6 +492,7 @@ class ListaAziendeState extends State<ListaAziende> {
 
     FlutterMap _flutterMap = FlutterMap(
         options: MapOptions(
+
           center: _location,
           zoom: 8.0,
           maxZoom: 18,

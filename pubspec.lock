@@ -377,27 +377,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_facebook_auth:
-    dependency: "direct main"
-    description:
-      name: flutter_facebook_auth
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.5.1"
-  flutter_facebook_auth_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_facebook_auth_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.7.0"
-  flutter_facebook_auth_web:
-    dependency: transitive
-    description:
-      name: flutter_facebook_auth_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.6.0+2"
   flutter_form_builder:
     dependency: "direct main"
     description:
@@ -431,13 +410,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_login_facebook:
-    dependency: "direct main"
-    description:
-      name: flutter_login_facebook
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   flutter_map:
     dependency: "direct main"
     description:
@@ -665,13 +637,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.0"
-  list_ext:
-    dependency: transitive
-    description:
-      name: list_ext
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   lists:
     dependency: transitive
     description:
@@ -1008,13 +973,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  sign_in_with_apple:
-    dependency: "direct main"
-    description:
-      name: sign_in_with_apple
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

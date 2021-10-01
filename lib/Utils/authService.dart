@@ -15,7 +15,7 @@ import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/Preferences.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'horizontaldivider.dart';
 
@@ -476,7 +476,7 @@ class AuthService {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
-    try {
+   /* try {
       // Request credential for the currently signed in Apple account.
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -511,7 +511,7 @@ class AuthService {
       return firebaseUser;
     } catch (exception) {
       print(exception);
-    }
+    }*/
   }
 
   fbLogIn() async {

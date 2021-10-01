@@ -49,21 +49,21 @@ class CalendarPageState extends State<CalendarPage> {
     Event event = new Event();
     event.date = new DateTime.utc(2021, 9, 30, 10, 30);
     var azienda1 = new Azienda(
-        nome: "Azienda brutta", indirizzo: "via dell azienda", citta: "Roma");
+        nome: "Azienda test 1", indirizzo: "via dell azienda", citta: "Roma");
     event.azienda.target = azienda1;
     listaEventi.add(event);
 
     Event event8 = new Event();
     event8.date = new DateTime.utc(2021, 9, 30, 10, 30);
     var azienda8 = new Azienda(
-        nome: "Azienda brutta", indirizzo: "via dell azienda", citta: "Roma");
+        nome: "Azienda test 2", indirizzo: "via dell azienda", citta: "Roma");
     event8.azienda.target = azienda8;
     listaEventi.add(event8);
 
     Event event2 = new Event();
     event2.date = new DateTime.utc(2022, 12, 17, 10, 30);
     var azienda2 = new Azienda(
-        nome: "Azienda bella",
+        nome: "Azienda test 3",
         indirizzo: "Via Nome Lungo o Corto, 123 ",
         citta: "Roma");
     event2.azienda.target = azienda2;
@@ -72,7 +72,7 @@ class CalendarPageState extends State<CalendarPage> {
     Event event3 = new Event();
     event3.date = new DateTime.utc(2021, 9, 24, 10, 30);
     var azienda3 = new Azienda(
-        nome: "Azienda bella",
+        nome: "Azienda test 4",
         indirizzo: "Via Nome Lungo o Corto, 123 ",
         citta: "Roma");
     event3.azienda.target = azienda3;
@@ -81,7 +81,7 @@ class CalendarPageState extends State<CalendarPage> {
     Event event9 = new Event();
     event9.date = new DateTime.utc(2021, 9, 24, 10, 30);
     var azienda9 = new Azienda(
-        nome: "Azienda bella",
+        nome: "Azienda test 5",
         indirizzo: "Via Nome Lungo o Corto, 123 ",
         citta: "Roma");
     event9.azienda.target = azienda9;
@@ -90,7 +90,7 @@ class CalendarPageState extends State<CalendarPage> {
     Event event4 = new Event();
     event4.date = new DateTime.utc(2021, 10, 5, 10, 30);
     var azienda4 = new Azienda(
-        nome: "Azienda bella",
+        nome: "Azienda test 6",
         indirizzo: "Via Nome Lungo o Corto, 123 ",
         citta: "Roma");
     event4.azienda.target = azienda4;
@@ -99,7 +99,7 @@ class CalendarPageState extends State<CalendarPage> {
     Event event5 = new Event();
     event5.date = new DateTime.utc(2021, 10, 23, 10, 30);
     var azienda5 = new Azienda(
-        nome: "Azienda bella",
+        nome: "Azienda test 6",
         indirizzo: "Via Nome Lungo o Corto, 123 ",
         citta: "Roma");
     event5.azienda.target = azienda5;

@@ -864,8 +864,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       listaNote.add(Nota(titolo: item['label'][i],testo: ""));
       controllerNote.add(TextEditingController());
       controllerNoteDesc.add(TextEditingController());
-
           }
+
+
 
         }
         listWidget.add(Column(
@@ -1008,7 +1009,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Aggiungi nota", style: TextStyle(
+                        Text("Aggiungi Campo", style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,

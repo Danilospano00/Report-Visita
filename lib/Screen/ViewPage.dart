@@ -3,6 +3,7 @@ import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/HomePage.dart';
 
+import '../costanti.dart';
 import 'AccountEmpty.dart';
 import 'ListaAziende.dart';
 
@@ -83,6 +84,7 @@ class ViewPageState extends State<ViewPage> {
               child: Icon(Icons.archive_rounded),
               backgroundColor: Colors.grey.shade700,
               onPressed: () {
+                if(response!=null)
                 myHomePage.addReport();
               },
             )

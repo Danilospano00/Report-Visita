@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>447008297834-r8h3124cdk06grvqd2dcm5atfki7hcau.apps.googleusercontent.com</string>
+	<string>447008297834-1qbtkihgh1k23e1ri8lu6qlnhfngr0jo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.447008297834-r8h3124cdk06grvqd2dcm5atfki7hcau</string>
+	<string>com.googleusercontent.apps.447008297834-1qbtkihgh1k23e1ri8lu6qlnhfngr0jo</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDBsUDK9NfRiALIdFhmFNq5FI_GKPiIiZ4</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>it.reportvisita</string>
+	<string>com.reportvisita.rv</string>
 	<key>PROJECT_ID</key>
 	<string>reportvisita-9d293</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:447008297834:ios:14c3335f0cfdd463754b13</string>
+	<string>1:447008297834:ios:8b94c04e44d9ae0a754b13</string>
 </dict>
 </plist>
