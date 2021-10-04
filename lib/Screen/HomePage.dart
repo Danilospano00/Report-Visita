@@ -53,6 +53,8 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    if(mainStore==null){
     openStore().then((Store store) {
       _store = store;
       mainStore = _store;
@@ -60,6 +62,12 @@ class MyHomePageState extends State<MyHomePage> {
         hasBeenInitialized = true;
       });
     });
+    }else{
+      _store = mainStore!;
+      setState(() {
+        hasBeenInitialized = true;
+      });
+    }
     setState(() {
       configurazione = config;
       formKeyBodyMain = formKeyBody;
@@ -68,7 +76,6 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    _store.close();
     super.dispose();
   }
 
@@ -156,7 +163,7 @@ class MyHomePageState extends State<MyHomePage> {
           telefono: contact.phones!.isNotEmpty
               ? contact.phones!.elementAt(0).value
               : null,
-         // id: contact.identifier!=null?int.parse(contact.identifier!):-1,
+          // id: contact.identifier!=null?int.parse(contact.identifier!):-1,
           email: contact.emails!.isNotEmpty
               ? contact.emails!.elementAt(0).value
               : null);
@@ -186,7 +193,7 @@ class MyHomePageState extends State<MyHomePage> {
       return;
     }
 
-    int count = await mainStore.box<Report>().put(_report);
+    int count = await mainStore!.box<Report>().put(_report);
 
     if (count > 0) {
       List<dynamic> mappaJsonConfigurazione = json.decode(config);
@@ -200,8 +207,10 @@ class MyHomePageState extends State<MyHomePage> {
       });
       if (change)
         showSConafigChange(mappaJsonConfigurazione);
-      else
+      else {
+        response = [];
         _showSnackBar("report salvato");
+      }
     } else {
       _showSnackBar("Errore aggiunta Report");
     }
@@ -251,6 +260,7 @@ class MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
+                  response = [];
                   Navigator.pop(context);
                 },
               ),
@@ -276,6 +286,7 @@ class MyHomePageState extends State<MyHomePage> {
                   }
 
                   config = json.encode(mappa);
+                  response = [];
                   _showSnackBar("configurazione sostituita");
 
                   Navigator.pop(context);

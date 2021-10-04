@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/gestures.dart';
@@ -10,6 +12,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Utils/ZoomButtonsPluginOption.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:report_visita_danilo/costanti.dart';
 
 import '../objectbox.g.dart';
 
@@ -26,9 +29,6 @@ class ListaAziendeState extends State<ListaAziende> {
   bool viewMap = false;
   final TextEditingController _controller = new TextEditingController();
   List<Azienda> searchresult = [];
-
-  late Store _store;
-
   bool hasBeenInitialized = false;
   bool locationInitialized = false;
   bool inizializedMap = false;
@@ -56,112 +56,18 @@ class ListaAziendeState extends State<ListaAziende> {
   @override
   initState() {
     super.initState();
-    Azienda azienda1 = Azienda(
-        nome: "Azienda 1",
-        indirizzo: "Via casa mia",
-        citta: "Roma",
-        lng: 9.188120,
-        lat: 45.463619);
-    Event element = new Event();
-    element.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda1.events.add(element);
 
-    Azienda azienda2 = Azienda(
-        nome: "SS Lazio",
-        indirizzo: "Via casa mia",
-        citta: "Roma",
-        lng: -95.903633,
-        lat: 36.076637);
-    Event element2 = new Event();
-    element2.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda2.events.add(element2);
+    creaListaAzienda();
 
-    Azienda azienda3 = Azienda(
-        nome: "ikea",
-        indirizzo: "via di san romano 8,Roma",
-        citta: "Roma",
-        lng: 13.181720,
-        lat: 41.473430);
-    Event element3 = new Event();
-    element3.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda3.events.add(element3);
+    Timer(Duration(seconds: 5), (){
 
-    Azienda azienda4 = Azienda(
-        nome: "Mc Donald",
-        indirizzo: "Via Flavio Stilicone",
-        citta: "Roma",
-        lng: -95.903633,
-        lat: 36.076637);
-    Event element4 = new Event();
-    element4.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda4.events.add(element4);
+      initList(listaAziende2);
+      _prepareMarker();
+      _getCurrentLocation();
 
-    Azienda azienda5 = Azienda(
-        nome: "Ikea",
-        indirizzo: "Via Roma",
-        citta: "Milano",
-        lng: -95.903633,
-        lat: 36.076637);
-    Event element5 = new Event();
-    element5.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda5.events.add(element5);
 
-    Azienda azienda6 = Azienda(
-        nome: "5 stelle",
-        indirizzo: "Via tuscolana",
-        citta: "Roma",
-        lng: -95.903633,
-        lat: 36.076637);
-    Event element6 = new Event();
-    element6.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda6.events.add(element6);
+    });
 
-    Azienda azienda7 = Azienda(
-        nome: "Burger King",
-        indirizzo: "Via tuscolana",
-        citta: "Roma",
-        lng: -95.903633,
-        lat: 36.076637);
-    Event element7 = new Event();
-    element7.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda7.events.add(element7);
-
-    Azienda azienda8 = Azienda(
-        nome: "Mondo Convenienza",
-        indirizzo: "Via tuscolana",
-        citta: "Roma",
-        lng: -95.903633,
-        lat: 36.076637);
-    Event element8 = new Event();
-    element8.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    azienda8.events.add(element8);
-
-    listaAziende2 = [
-      azienda1,
-      azienda2,
-      azienda3,
-      azienda4,
-      azienda5,
-      azienda6,
-      azienda7,
-      azienda8,
-    ];
-
-    /*_store.box<Azienda>().put(azienda1);
-    _store.box<Azienda>().put(azienda2);
-    _store.box<Azienda>().put(azienda3);
-    _store.box<Azienda>().put(azienda4);
-    _store.box<Azienda>().put(azienda5);
-    _store.box<Azienda>().put(azienda6);
-    _store.box<Azienda>().put(azienda7);
-    _store.box<Azienda>().put(azienda8);
-    creaListaAzienda();*/
-    initList(listaAziende2);
-
-    _prepareMarker();
-
-    // _mapController = MapController();
-    _getCurrentLocation();
   }
 
   void _getCurrentLocation() {
@@ -232,7 +138,7 @@ class ListaAziendeState extends State<ListaAziende> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: key,
-      body: //!hasBeenInitialized && !locationInitialized ? Center(child: CircularProgressIndicator(color:Colors.red)):
+      body: !hasBeenInitialized && !locationInitialized ? Center(child: CircularProgressIndicator(color:Colors.red)):
           Stack(
         children: [
           Visibility(
@@ -403,7 +309,7 @@ class ListaAziendeState extends State<ListaAziende> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: Text(
+                        child: Text(item.azienda.events.isNotEmpty?
                           item.azienda.events
                                   .elementAt(0)
                                   .date!
@@ -420,7 +326,7 @@ class ListaAziendeState extends State<ListaAziende> {
                                   .elementAt(0)
                                   .date!
                                   .year
-                                  .toString(),
+                                  .toString():"non ci sono eventi",
                           style: TextStyle(
                               color: Colors.red,
                               fontSize: 13.748113.sp,
@@ -475,7 +381,8 @@ class ListaAziendeState extends State<ListaAziende> {
   }
 
   creaListaAzienda() async {
-    final lista = await _store.box<Azienda>().getAll();
+
+    final lista =   mainStore!.box<Azienda>().getAll();
     setState(() {
       listaAziende2 = lista;
     });

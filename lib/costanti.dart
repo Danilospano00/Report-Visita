@@ -5,7 +5,7 @@ import 'dart:convert';
 
 import 'objectbox.g.dart';
 
-late Store mainStore;
+ Store? mainStore;
 dynamic response;
 dynamic formKeyBodyMain;
 
