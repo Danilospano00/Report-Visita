@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
+import 'package:report_visita_danilo/Screen/AziendaDettaglio.dart';
 import 'package:report_visita_danilo/Utils/ZoomButtonsPluginOption.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/costanti.dart';
@@ -108,6 +109,7 @@ class ListaAziendeState extends State<ListaAziende> {
         return marker;
       }).toList();
     } else {
+
       _markers = searchresult.map((element) {
         Key _key = GlobalKey();
         element.setKey(_key);
@@ -126,9 +128,12 @@ class ListaAziendeState extends State<ListaAziende> {
                       )),
                   opacity: 1.0,
                 ));
+
         return marker;
       }).toList();
     }
+
+
     setState(() {
       hasBeenInitialized = true;
     });
@@ -137,6 +142,10 @@ class ListaAziendeState extends State<ListaAziende> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+
       key: key,
       body: !hasBeenInitialized && !locationInitialized ? Center(child: CircularProgressIndicator(color:Colors.red)):
           Stack(
@@ -286,82 +295,86 @@ class ListaAziendeState extends State<ListaAziende> {
     final tag = item.getSuspensionTag();
     final offstage = !item.isShowSuspension;
 
-    return Column(
-      children: [
-        Offstage(offstage: offstage,
-          child: _buildHeader(tag),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: 40.w, left: 21.w),
-          child: Card(
-            elevation: 5,
-            shadowColor: Colors.grey,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            margin: EdgeInsets.symmetric(vertical: 8.h),
-            child: Container(
-              height: 60.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 12.w),
-                        child: Text(
-                          item.nomeAzienda,
-                          style: TextStyle(
-                              fontSize: 15.712129,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey[700]),
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AziendaDettaglio(azienda: item.azienda)));
+      },
+      child: Column(
+        children: [
+          Offstage(offstage: offstage, child: _buildHeader(tag)),
+          Padding(
+            padding: EdgeInsets.only(right: 40.w, left: 21.w),
+            child: Card(
+              elevation: 5,
+              shadowColor: Colors.grey,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              margin: EdgeInsets.symmetric(vertical: 8.h),
+              child: Container(
+                height: 60.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 12.w),
+                          child: Text(
+                            item.nomeAzienda,
+                            style: TextStyle(
+                                fontSize: 15.712129,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey[700]),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 12.w),
-                        child: Text(item.azienda.events.isNotEmpty?
-                          item.azienda.events
-                                  .elementAt(0)
-                                  .date!
-                                  .day
-                                  .toString() +
-                              "/" +
-                              item.azienda.events
-                                  .elementAt(0)
-                                  .date!
-                                  .month
-                                  .toString() +
-                              "/" +
-                              item.azienda.events
-                                  .elementAt(0)
-                                  .date!
-                                  .year
-                                  .toString():"non ci sono eventi",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 13.748113.sp,
-                              fontWeight: FontWeight.w700),
+                        Padding(
+                          padding: EdgeInsets.only(right: 12.w),
+                          child: Text(item.azienda.events.isNotEmpty?
+                            item.azienda.events
+                                    .elementAt(0)
+                                    .date!
+                                    .day
+                                    .toString() +
+                                "/" +
+                                item.azienda.events
+                                    .elementAt(0)
+                                    .date!
+                                    .month
+                                    .toString() +
+                                "/" +
+                                item.azienda.events
+                                    .elementAt(0)
+                                    .date!
+                                    .year
+                                    .toString():"non ci sono eventi",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 13.748113.sp,
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Icon(
-                        Icons.circle,
-                        color: Colors.lightGreenAccent,
-                        size: 16,
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Icon(
+                          Icons.circle,
+                          color: Colors.lightGreenAccent,
+                          size: 16,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -386,7 +399,7 @@ class ListaAziendeState extends State<ListaAziende> {
         bottom: false,
         child: Padding(
             padding: EdgeInsets.all(0.0),
-            child: Column(children: [Flexible(child: mappa)])));
+            child: Column(children: [Expanded(child: mappa)])));
   }
 
   creaListaAzienda() async {
@@ -407,6 +420,7 @@ class ListaAziendeState extends State<ListaAziende> {
     }
 
     FlutterMap _flutterMap = FlutterMap(
+
         options: MapOptions(
 
           center: _location,
@@ -432,6 +446,8 @@ class ListaAziendeState extends State<ListaAziende> {
               padding: EdgeInsets.all(ScreenUtil().setWidth(50)),
             ),
             markers: _markers,
+            centerMarkerOnClick: true,
+
             polygonOptions: PolygonOptions(
                 borderColor: Colors.blueAccent,
                 color: Colors.black12,

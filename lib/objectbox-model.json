@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:6699721163340380006",
-      "lastPropertyId": "9:7763242583025491130",
+      "lastPropertyId": "10:5082055243777301051",
       "name": "Azienda",
       "properties": [
         {
@@ -53,6 +53,11 @@
           "id": "9:7763242583025491130",
           "name": "lng",
           "type": 8
+        },
+        {
+          "id": "10:5082055243777301051",
+          "name": "renderKey",
+          "type": 9
         }
       ],
       "relations": [
@@ -189,7 +194,7 @@
     },
     {
       "id": "5:8602950264123820003",
-      "lastPropertyId": "4:1276631803658986642",
+      "lastPropertyId": "6:7280516856318507848",
       "name": "Report",
       "properties": [
         {
@@ -218,6 +223,16 @@
           "flags": 520,
           "indexId": "4:7821083838526575426",
           "relationTarget": "Referente"
+        },
+        {
+          "id": "5:6521060363184995711",
+          "name": "compilazione",
+          "type": 10
+        },
+        {
+          "id": "6:7280516856318507848",
+          "name": "prossimaVisita",
+          "type": 10
         }
       ],
       "relations": [

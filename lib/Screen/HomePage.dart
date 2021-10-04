@@ -180,7 +180,7 @@ class MyHomePageState extends State<MyHomePage> {
     }
 
     if (response["prossimaVisita"] != null)
-      _report.compilazione = DateTime.parse(response["prossimaVisita"]);
+      _report.prossimaVisita = DateTime.parse(response["prossimaVisita"]);
     else {
       _showSnackBar("Campi mancanti");
       return;
@@ -194,6 +194,8 @@ class MyHomePageState extends State<MyHomePage> {
     }
 
     int count = await mainStore!.box<Report>().put(_report);
+    print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
+
 
     if (count > 0) {
       List<dynamic> mappaJsonConfigurazione = json.decode(config);
