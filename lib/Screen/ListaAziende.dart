@@ -249,13 +249,16 @@ class ListaAziendeState extends State<ListaAziende> {
       } else
         setState(() {});
     }
+   /* List<_AZItem> lista=List.generate(searchresult.length, (index) => fromAziendaToAZItem(searchresult[index]));
+    SuspensionUtil.sortListBySuspensionTag(lista);
+    SuspensionUtil.setShowSuspensionStatus(lista);*/
   }
 
   buildBody() {
     return Padding(
       padding: EdgeInsets.only(top: 80.h, left: 4.w, right: 8.w),
-      child: AzListView(
-          data: items,
+      child:searchresult.isEmpty? AzListView(
+          data:items,
           indexBarHeight: 340.h,
           indexBarWidth: 12.h,
           indexBarAlignment: Alignment.topRight,
@@ -281,19 +284,49 @@ class ListaAziendeState extends State<ListaAziende> {
             ),
           ),
           itemBuilder: (BuildContext context, int index) {
-            if (searchresult.isEmpty) {
+
               return _buildListItem(items[index]);
-            } else
-              return _buildListItem(fromAziendaToAZItem(searchresult[index]));
+
           },
-          itemCount: searchresult.isEmpty ? items.length : searchresult.length,
+          itemCount: items.length,
+      ):AzListView(
+        data:List.generate(searchresult.length, (index) => fromAziendaToAZItem(searchresult[index])),
+        indexBarHeight: 340.h,
+        indexBarWidth: 12.h,
+        indexBarAlignment: Alignment.topRight,
+        indexBarOptions: IndexBarOptions(
+          needRebuild: true,ignoreDragCancel: false,
+          downColor: Colors.red,
+          selectTextStyle: TextStyle(color: Colors.white),
+          indexHintDecoration: BoxDecoration(
+            color: Colors.red,
+            shape: BoxShape.circle,
+          ),
+          selectItemDecoration: BoxDecoration(
+            color: Colors.red,
+            shape: BoxShape.circle,
+          ),
+          textStyle: TextStyle(color: Colors.white),
+          indexHintAlignment: Alignment.centerRight,
+          decoration: BoxDecoration(
+            color: Colors.red,
+            border: Border.all(color: Colors.red, width: 0.0),
+            borderRadius: new BorderRadius.all(Radius.elliptical(100, 100),
+            ),
+          ),
+        ),
+        itemBuilder: (BuildContext context, int index) {
+
+            return _buildListItem(fromAziendaToAZItem(searchresult[index]));
+        },
+        itemCount:searchresult.length,
       ),
     );
   }
 
   Widget _buildListItem(_AZItem item) {
     final tag = item.getSuspensionTag();
-    final offstage = !item.isShowSuspension;
+    final offstage = false;  //!item.isShowSuspension;
 
     return GestureDetector(
       onTap: (){
