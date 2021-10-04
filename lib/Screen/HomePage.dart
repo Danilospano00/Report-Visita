@@ -143,8 +143,13 @@ class MyHomePageState extends State<MyHomePage> {
     } else if (response["indirizzo"] != null &&
         response["aziendaName"] != null &&
         response["partitaIva"] != null) {
-      List<Location> locations =
-          await locationFromAddress(response["indirizzo"]);
+      List<Location> locations;
+      try{
+        locations= await locationFromAddress(response["indirizzo"]);
+      } on Exception catch(e){
+        _showSnackBar("Indirizzo non valido");
+        return;
+      }
       _report.azienda.target = Azienda()
         ..nome = response["aziendaName"]
         ..indirizzo = response["indirizzo"]

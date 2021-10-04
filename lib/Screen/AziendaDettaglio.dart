@@ -126,54 +126,31 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                               crossAxisAlignment:
                               CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      FormatDate.fromDateTimeToString(
-                                          report[index].compilazione==null?DateTime.now():report[index].compilazione!,
-                                          ""),
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          fontSize: 12.075892.sp,
-                                          fontWeight: FontWeight.w400,
-                                          letterSpacing: 2.w),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 8.0),
-                                      child: Text("prova"),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 8.h),
-                                  child: Text(
-                                    widget.azienda.nome!,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontSize: 20.126488.sp,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 0.25,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ),
+
+
                                 Row(
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "${widget.azienda.indirizzo.toString()}",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontSize: 12.075892.sp,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: 0.4,
-                                        color: Colors.grey[700],
+
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 8.h),
+                                        child: AutoSizeText(
+                                         "Data creazione: "+FormatDate.fromDateTimeToString(
+                                              report[index].compilazione!,
+                                              "data"),
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            letterSpacing: 0.25,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
                                       ),
-                                    ),
                                     ElevatedButton(
                                       child: Text(
-                                        "map",
+                                        "vedi",
                                         style: TextStyle(
                                             fontSize: 10.sp,
                                             fontWeight: FontWeight.bold),
