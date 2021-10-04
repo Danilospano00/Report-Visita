@@ -37,7 +37,7 @@ class ListaAziendeState extends State<ListaAziende> {
 
   List<Azienda> listaAziende2 = [];
 
-  late FlutterMap mappa;
+   FlutterMap?mappa;
 
   List<_AZItem> items = [];
 
@@ -238,17 +238,26 @@ class ListaAziendeState extends State<ListaAziende> {
     );
   }
 
-  void searchOperation(String searchText) {
+   searchOperation(String searchText)  {
     searchresult.clear();
     for (int i = 0; i < items.length; i++) {
       String? data = items[i].nomeAzienda;
       if (data.toLowerCase().contains(searchText.toLowerCase())) {
         setState(() {
           searchresult.add(items[i].azienda);
+          inizializedMap=false;
+          mappa=null;
         });
+
+        _prepareMarker();
+        _buildFlatterMap();
       } else
         setState(() {});
     }
+
+
+
+
    /* List<_AZItem> lista=List.generate(searchresult.length, (index) => fromAziendaToAZItem(searchresult[index]));
     SuspensionUtil.sortListBySuspensionTag(lista);
     SuspensionUtil.setShowSuspensionStatus(lista);*/
@@ -432,7 +441,7 @@ class ListaAziendeState extends State<ListaAziende> {
         bottom: false,
         child: Padding(
             padding: EdgeInsets.all(0.0),
-            child: Column(children: [Expanded(child: mappa)])));
+            child: Column(children: [Expanded(child: mappa!=null?mappa!:CircularProgressIndicator())])));
   }
 
   creaListaAzienda() async {
