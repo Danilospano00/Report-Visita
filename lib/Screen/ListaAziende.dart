@@ -155,47 +155,51 @@ class ListaAziendeState extends State<ListaAziende> {
               width: MediaQuery.of(context).size.width,
               child: Row(
                 children: [
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * .80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25),
-                            topRight: Radius.circular(25),
-                            bottomLeft: Radius.circular(25),
-                            bottomRight: Radius.circular(25)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
+                  Padding(
+                    padding: EdgeInsets.only (left: 20.w),
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * .75,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25),
+                              bottomLeft: Radius.circular(25),
+                              bottomRight: Radius.circular(25),
                           ),
-                        ]),
-                    child: TextField(
-                      controller: _controller,
-                      style: new TextStyle(
-                        color: Colors.black,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            ),
+                          ]),
+                      child: TextField(
+                        controller: _controller,
+                        style: new TextStyle(
+                          color: Colors.black,
+                        ),
+                        decoration: new InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          suffixIcon: Icon(Icons.search, color: Colors.black),
+                        ),
+                        onChanged: searchOperation,
                       ),
-                      decoration: new InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 0),
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 0),
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 0),
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        suffixIcon: Icon(Icons.search, color: Colors.black),
-                      ),
-                      onChanged: searchOperation,
                     ),
                   ),
                   Padding(
@@ -240,37 +244,40 @@ class ListaAziendeState extends State<ListaAziende> {
 
   buildBody() {
     return Padding(
-      padding: EdgeInsets.only(top: 80.h, left: 4.w, right: 4.w),
+      padding: EdgeInsets.only(top: 80.h, left: 4.w, right: 8.w),
       child: AzListView(
-        data: items,
-        indexBarHeight: 380.h,
-        indexBarAlignment: Alignment.topRight,
-        indexBarWidth: 12.h,
-        indexBarOptions: IndexBarOptions(
-          needRebuild: true,
-          indexHintDecoration: BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
+          data: items,
+          indexBarHeight: 340.h,
+          indexBarWidth: 12.h,
+          indexBarAlignment: Alignment.topRight,
+          indexBarOptions: IndexBarOptions(
+            needRebuild: true,ignoreDragCancel: false,
+            downColor: Colors.red,
+            selectTextStyle: TextStyle(color: Colors.white),
+            indexHintDecoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            selectItemDecoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            textStyle: TextStyle(color: Colors.white),
+            indexHintAlignment: Alignment.centerRight,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              border: Border.all(color: Colors.red, width: 0.0),
+              borderRadius: new BorderRadius.all(Radius.elliptical(100, 100),
+              ),
+            ),
           ),
-          selectItemDecoration: BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
-          ),
-          textStyle: TextStyle(color: Colors.white),
-          indexHintAlignment: Alignment.centerRight,
-          decoration: BoxDecoration(
-            color: Colors.red,
-            border: Border.all(color: Colors.red, width: 0.0),
-            borderRadius: new BorderRadius.all(Radius.elliptical(100, 100)),
-          ),
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          if (searchresult.isEmpty) {
-            return _buildListItem(items[index]);
-          } else
-            return _buildListItem(fromAziendaToAZItem(searchresult[index]));
-        },
-        itemCount: searchresult.isEmpty ? items.length : searchresult.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (searchresult.isEmpty) {
+              return _buildListItem(items[index]);
+            } else
+              return _buildListItem(fromAziendaToAZItem(searchresult[index]));
+          },
+          itemCount: searchresult.isEmpty ? items.length : searchresult.length,
       ),
     );
   }
@@ -281,7 +288,9 @@ class ListaAziendeState extends State<ListaAziende> {
 
     return Column(
       children: [
-        Offstage(offstage: offstage, child: _buildHeader(tag)),
+        Offstage(offstage: offstage,
+          child: _buildHeader(tag),
+        ),
         Padding(
           padding: EdgeInsets.only(right: 40.w, left: 21.w),
           child: Card(

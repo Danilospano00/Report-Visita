@@ -65,6 +65,7 @@ Widget build(BuildContext context) {
                           decoration: InputDecoration(
                             labelText: "Scegli soglia allerta",
                             labelStyle: homePageMainTextStyle,
+
                             suffixIcon: Icon(
                               Icons.circle,
                               color: Colors.green,
@@ -135,8 +136,9 @@ Widget build(BuildContext context) {
                     text: TextSpan(
                       text: 'Conferma',
                       style: new TextStyle(
-                        color: Colors.black,
                         fontSize: ScreenUtil().setSp(18),
+                        fontWeight: FontWeight.w700,
+                          color: Colors.grey[700]
                       ),
                       recognizer: new TapGestureRecognizer()
                         ..onTap = () {
