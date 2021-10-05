@@ -84,49 +84,53 @@ class MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          elevation:0,
+        centerTitle: false,
+        title:Text(
+        "Nuovo Report",
+        style: TextStyle(
+          fontSize: 24.151785.sp,
+          color: Colors.grey[700],
+          fontWeight: FontWeight.w400,
+        ),
+      ),backgroundColor: Colors.white,
+
+      ),
       body: !hasBeenInitialized
           ? Center(
               child: CircularProgressIndicator(
               color: Colors.red,
             ))
           : Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.only(top: 4.h,left: 16.w,right: 16.w,bottom: 0),
               child: SingleChildScrollView(
+
                 child: FormBuilder(
                   key: formKeyBody,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 22.h),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Nuovo Report",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 24.151785.sp,
-                                  color: Colors.grey[700],
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
+                  child: Column(
+                    children: [
+                      /*Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        child: Row(
+                          children: [
+                            ,
+                          ],
                         ),
-                        GeneratorFormToJson(
-                          store: _store,
-                          form: configurazione,
-                          onChanged: (dynamic value) {
-                            print(value);
-                            setState(() {
-                              response = value;
-                            });
-                            print(response.toString());
-                          },
-                        ),
-                      ],
-                    ),
+                      ),*/
+                      GeneratorFormToJson(
+                        store: _store,
+                        form: configurazione,
+                        onChanged: (dynamic value) {
+                          print(value);
+                          setState(() {
+                            response = value;
+                          });
+                          print(response.toString());
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),

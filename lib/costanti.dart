@@ -13,7 +13,7 @@ String config=json.encode([
   {
     "title": "azienda",
     "type": "autocomplete",
-    "hint": "inserisci la tua azienda",
+    "hint": "Nome Cliente",
     "entity": "Azienda",
     "field": [
       {"label": "indirizzo", "required": true},
@@ -42,9 +42,14 @@ String config=json.encode([
     "title": "note",
     "type": "note",
     "label": [
-      "Scopo della visita/Argomenti discussi",
-      "Richiste/Prospettive",
-      "Punti forti concorrenza"
+      "Scopo della visita/Argomenti discussi/Problemi riscontrati/Opportunita/Dubbi e domande",
+      "Richieste/Prospettive/Potenzialita/ Future Opportunita e rischi",
+      "Criteri cliente importanti e secondari",
+      "Punti forti concorrenza",
+      "Punti deboli concorrenza",
+      "Prossime azioni/Chi fa cosa/Tempi/Proposte alla direzione",
+      "Prossimi Step",
+      "Note"
     ]
   }
 ]);

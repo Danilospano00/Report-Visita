@@ -48,6 +48,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   List<TextEditingController> controller = [];
   List<TextEditingController> controllerNote = [];
   List<TextEditingController> controllerNoteDesc = [];
+  List<FocusNode> focusList=[];
 
 
 
@@ -428,10 +429,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        top: ScreenUtil().setHeight(30),
-        bottom: ScreenUtil().setHeight(30),
-      ),
+
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: jsonToForm(),
@@ -660,37 +658,22 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 3.h),
-                child: Row(
-                  children: [
-                    Text(
-                      "Referente",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 15.712129.sp,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.15,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    IconButton(
-                      splashRadius: 1,
-                      icon: Icon(Icons.add_circle_outlined),
-                      color: Colors.red,
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        showSolutionReferente(item["title"]);
-                      },
-                    ),
-                  ],
+                padding: EdgeInsets.only(top:4.h,bottom: 4.h,left: 4.w),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    splashRadius: 1,
+                    icon: Icon(Icons.add_circle_outlined),iconSize: 40,
+                    color: Colors.red,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      showSolutionReferente(item["title"]);
+                    },
+                  ),
                 ),
               ),
               contattoSelezionato != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 18),
+                  ? ListTile(
                           leading: (contattoSelezionato!.avatar != null &&
                                   contattoSelezionato!.avatar!.isNotEmpty)
                               ? CircleAvatar(
@@ -705,14 +688,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   ),
                                   backgroundColor: rvTheme.primaryColor,
                                 ),
-                          title: Text(contattoSelezionato!.displayName ?? ''),
+                         // title: Text(contattoSelezionato!.displayName ?? ''),
                           //This can be further expanded to showing contacts detail
                           onTap: () {
                             setState(() {
                               contattoSelezionato = null;
                             });
-                          }),
-                    )
+                          })
                   : Container(),
             ],
           ),
@@ -732,72 +714,75 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       if (item['type'] == 'autocomplete') {
         listWidget.add(Column(
           children: [
-            TypeAheadField<dynamic>(
-              onSuggestionSelected: (select) {
-                formResults[item['title']] = select;
-                _handleChanged();
-                setState(() {
-                  selectObject = select;
-                });
-              },
-              hideSuggestionsOnKeyboardHide: false,
-              suggestionsCallback: (String query) {
-
-                dynamic lista=widget.store.box<Azienda>().getAll();
-                // da impostare la chiamata al db in base all entity
-
-                return List.of(lista).where((aziende) {
-                  final aziendaLower = aziende.nome.toString().toLowerCase();
-                  final queryLower = query.toLowerCase();
-
-                  return aziendaLower.contains(queryLower);
-                }).toList();
-              },
-              itemBuilder: (context, dynamic suggestions) {
-                final suggestion = suggestions!;
-                return ListTile(
-                  title: Text(suggestion.nome.toString()),
-                );
-              },
-              textFieldConfiguration: TextFieldConfiguration(
-                controller: formFieldController
-                  ..text = selectObject != null
-                      ? getValueField("nome")
-                      : formFieldController.value.text,
-                onChanged: (value) {
-                  if(selectObject==null){
-                  formResults[item['title'] + "Name"] =
-                      formFieldController.value.text;
-                  }else if(formResults.containsKey(item['title'] + "Name") ){
-                    formResults.remove(item['title'] + "Name");
-                  }
-                },
-                onSubmitted: (value) {
+            Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: TypeAheadField<dynamic>(
+                onSuggestionSelected: (select) {
+                  formResults[item['title']] = select;
                   _handleChanged();
+                  setState(() {
+                    selectObject = select;
+                  });
                 },
-                decoration: InputDecoration(
-                  labelText: item['hint'],
-                  fillColor: Colors.grey.shade300,
-                  filled: true,
-                  labelStyle: homePageMainTextStyle,
-                  focusedBorder: formUnderlineInputBorder,
-                  prefixIcon: Icon(
-                    Icons.business_outlined,
-                    color: Colors.black,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.cancel_outlined),
-                    color: Colors.black,
-                    onPressed: () {
-                      formFieldController.clear();
-                      controller.forEach((element) {
-                        element.clear();
-                      });
-                      if(formResults.containsKey(item['title']) ){
-                        formResults.remove(item['title']);
-                      }
-                      selectObject = null;
-                    },
+                hideSuggestionsOnKeyboardHide: false,
+                suggestionsCallback: (String query) {
+
+                  dynamic lista=widget.store.box<Azienda>().getAll();
+                  // da impostare la chiamata al db in base all entity
+
+                  return List.of(lista).where((aziende) {
+                    final aziendaLower = aziende.nome.toString().toLowerCase();
+                    final queryLower = query.toLowerCase();
+
+                    return aziendaLower.contains(queryLower);
+                  }).toList();
+                },
+                itemBuilder: (context, dynamic suggestions) {
+                  final suggestion = suggestions!;
+                  return ListTile(
+                    title: Text(suggestion.nome.toString()),
+                  );
+                },
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: formFieldController
+                    ..text = selectObject != null
+                        ? getValueField("nome")
+                        : formFieldController.value.text,
+                  onChanged: (value) {
+                    if(selectObject==null){
+                    formResults[item['title'] + "Name"] =
+                        formFieldController.value.text;
+                    }else if(formResults.containsKey(item['title'] + "Name") ){
+                      formResults.remove(item['title'] + "Name");
+                    }
+                  },
+                  onSubmitted: (value) {
+                    _handleChanged();
+                  },
+                  decoration: InputDecoration(
+                    labelText: item['hint'],
+                    fillColor: Colors.grey.shade300,
+                    filled: true,
+                    labelStyle: homePageMainTextStyle,
+                    focusedBorder: formUnderlineInputBorder,
+                    prefixIcon: Icon(
+                      Icons.business_outlined,
+                      color: Colors.black,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.cancel_outlined),
+                      color: Colors.black,
+                      onPressed: () {
+                        formFieldController.clear();
+                        controller.forEach((element) {
+                          element.clear();
+                        });
+                        if(formResults.containsKey(item['title']) ){
+                          formResults.remove(item['title']);
+                        }
+                        selectObject = null;
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -819,7 +804,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         ..text = selectObject != null
                             ? getValueField(item['field'][i]['label'])
                             : controller[i].value.text,
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.next,
+
                       onChanged: (value) {
 
                         if(selectObject==null){
@@ -830,6 +816,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
                         }
                       },
+
                       onSubmitted: (value) {
                         _handleChanged();
                       },
@@ -872,11 +859,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         listWidget.add(Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.h),
+              padding: EdgeInsets.only(top: 8.h,bottom: 12.h),
               child: Row(
                 children: <Widget>[
                   Text(
-                    "Note",
+                    "Informazioni",
                     style: homePageMainTextStyle,
                   ),
                   Expanded(
@@ -907,6 +894,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           name:listaNote[i].titolo!,
                           controller: controllerNote[i]
                             ..text = listaNote[i].titolo!,
+                          minLines: 2,
+                          maxLines: 6,
                           textInputAction: TextInputAction.done,
                           onChanged: (value) {
 
@@ -953,8 +942,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         child: FormBuilderTextField(
                           name: listaNote[i].titolo!+"desc",
                           //keyboardType: TextInputType.multiline,
-                          minLines: 3,
-                          maxLines: 10,
+                          minLines: 2,
+                          maxLines: 5,
+                          maxLength: 1000,
                           textInputAction: TextInputAction.done,
 
                           controller: controllerNoteDesc[i]..text=  listaNote[i].testo!,
@@ -985,7 +975,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               },
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 3.h),
+              padding: EdgeInsets.only(top:4.h),
               child: GestureDetector(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
