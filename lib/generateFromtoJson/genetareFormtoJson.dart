@@ -526,7 +526,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             firstDate: DateTime(2020),
             lastDate: DateTime(2050),
             builder: (BuildContext context, Widget? child) {
-              return child!;
+
+              return Theme(
+                  data: ThemeData.light().copyWith(
+                primaryColor:  Colors.red,
+                accentColor: const Color(0xFF8CE7F1),
+                colorScheme: ColorScheme.light(primary:  Colors.red),
+                buttonTheme: ButtonThemeData(
+                    textTheme: ButtonTextTheme.primary
+                ),
+              ),
+              child:child!,);
             },
           );
           if (picked != null) {
@@ -538,6 +548,19 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         Future selectTime() async {
           final TimeOfDay? picked = await showTimePicker(
             context: context,
+            builder: (BuildContext context, Widget? child) {
+
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  primaryColor:  Colors.red,
+                  accentColor: const Color(0xFF8CE7F1),
+                  colorScheme: ColorScheme.light(primary:  Colors.red),
+                  buttonTheme: ButtonThemeData(
+                      textTheme: ButtonTextTheme.primary
+                  ),
+                ),
+                child:child!,);
+            },
             initialTime: TimeOfDay.now(),
           );
           if (picked != null)
@@ -1017,7 +1040,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               },
             ),
             Padding(
-              padding: EdgeInsets.only(top: 4.h),
+              padding: EdgeInsets.only(top: 4.h,bottom: 8.h),
               child: GestureDetector(
                 onTap: () async {
                   FocusScope.of(context).unfocus();

@@ -62,6 +62,8 @@ dependencies:
   flutter_map_marker_cluster: any
   latlong2: ^0.8.0
   geolocator: ^7.4.0
+  url_launcher: ^6.0.12
+
 
 
 
