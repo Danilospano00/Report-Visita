@@ -6,6 +6,7 @@ import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 
+import '../costanti.dart';
 import '../objectbox.g.dart';
 
 class AggiungiEvento extends StatefulWidget {
@@ -21,155 +22,171 @@ class AggiungiEventoState extends State<AggiungiEvento> {
 
   bool showDate = false;
 
+  initState(){
+    super.initState();
+    if (mainStore != null) {
+      _store = mainStore!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _keyFormAggiungiEvento,
-        child: Padding(
-          padding: EdgeInsets.only(right: 16.w, left: 16.w, top: 43.w),
-          child: Column(
-            children: [
-              Row(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        shadowColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.grey[700]),
+        title: Text("Aggiungi evento",
+          textAlign: TextAlign.left,
+          style: TextStyle(
+              fontSize: 24.151785.sp,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey[700]),
+        ),
+      ),
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          FormBuilder(
+            key: _keyFormAggiungiEvento,
+            child: Padding(
+              padding: EdgeInsets.only(right: 16.w, left: 16.w, ),
+              child: Column(
                 children: [
-                  Text(
-                    "Aggiungi Evento",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 24.151785.sp,
-                      color: Colors.grey[700],
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.w),
+                    child: FormBuilderTextField(
+                      name: 'azienda',
+                      decoration: InputDecoration(
+                        labelText: "Azienda",
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.required(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.w),
+                    child: FormBuilderTextField(
+                      name: 'posizione',
+                      decoration: InputDecoration(
+                        labelText: "Posizione",
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.required(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.w),
+                    child: GestureDetector(
+                      onTap: () => _selectDate(context),
+                      child: Container(
+                        color: Colors.grey[300],
+                        height: 60,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: !showDate
+                                ? Text(
+                                    "Scegli data evento",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  )
+                                : Text(
+                                    FormatDate.fromDateTimeToString(
+                                        currentDate, "data"),
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(color: Colors.grey[700]),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.w),
+                    child: FormBuilderTextField(
+                      name: 'referente',
+                      decoration: InputDecoration(
+                        labelText: "Referente",
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.required(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.w),
+                    child: FormBuilderTextField(
+                      name: 'descrizione',
+                      minLines: 4,
+                      maxLines: 6,
+                      decoration: InputDecoration(
+                        labelText: "Descrizione evento...",
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        border: InputBorder.none,
+                        alignLabelWithHint: true,
+                      ),
+                      validator: FormBuilderValidators.compose(
+                        [
+                          FormBuilderValidators.required(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: ElevatedButton.icon(
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        aggiungiEvento();
+                      },
+                      label: Text(
+                        "EVENT",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.25,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(125.w, 56.h),
+                        primary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.w),
-                child: FormBuilderTextField(
-                  name: 'azienda',
-                  decoration: InputDecoration(
-                    labelText: "Azienda",
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                    border: InputBorder.none,
-                  ),
-                  validator: FormBuilderValidators.compose(
-                    [
-                      FormBuilderValidators.required(context),
-                    ],
-                  ),
-                ),
-              ),Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.w),
-                child: FormBuilderTextField(
-                  name: 'posizione',
-                  decoration: InputDecoration(
-                    labelText: "Posizione",
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                    border: InputBorder.none,
-                  ),
-                  validator: FormBuilderValidators.compose(
-                    [
-                      FormBuilderValidators.required(context),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.w),
-                child: GestureDetector(
-                  onTap: () => _selectDate(context),
-                  child: Container(
-                    color: Colors.grey[300],
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: !showDate?Text(
-                          "Scegli data evento",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(color: Colors.grey[700]),
-                        ):
-                            Text(FormatDate.fromDateTimeToString(currentDate,"data"),
-                              textAlign: TextAlign.start,
-                              style: TextStyle(color: Colors.grey[700]),
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.w),
-                child: FormBuilderTextField(
-                  name: 'referente',
-                  decoration: InputDecoration(
-                    labelText: "Referente",
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                    border: InputBorder.none,
-                  ),
-                  validator: FormBuilderValidators.compose(
-                    [
-                      FormBuilderValidators.required(context),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.w),
-                child: FormBuilderTextField(
-                  name: 'descrizione',
-                  minLines: 4,
-                  maxLines: 6,
-                  decoration: InputDecoration(
-                    labelText: "Descrizione evento...",
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                    border: InputBorder.none,
-                    alignLabelWithHint: true,
-                  ),
-                  validator: FormBuilderValidators.compose(
-                    [
-                      FormBuilderValidators.required(context),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: ElevatedButton.icon(
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.red,
-                  ),
-                  onPressed: () {
-                    aggiungiEvento();
-                  },
-                  label: Text(
-                    "EVENT",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.25,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(125.w, 56.h),
-                    primary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -184,14 +201,15 @@ class AggiungiEventoState extends State<AggiungiEvento> {
     if (pickedDate != null && pickedDate != currentDate)
       setState(() {
         currentDate = pickedDate;
-        showDate=true;
+        showDate = true;
       });
   }
 
-
   //i dati inseriti nel form sono stringhe ma devo trasformarle in azienda/referente, prima devo cercare
   // di aggiungere le aziende alla DB in modo da non doverle ciclare ogni volta
-  void aggiungiEvento(){
+
+
+    void aggiungiEvento(){
       Azienda azienda =
           _keyFormAggiungiEvento.currentState?.fields['azienda']!.value ?? " ";
       Referente referente =
@@ -211,5 +229,5 @@ class AggiungiEventoState extends State<AggiungiEvento> {
       _store.box<Event>().put(event);
 
 
-  }
+    }
 }

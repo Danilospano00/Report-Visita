@@ -37,7 +37,7 @@ class ListaAziendeState extends State<ListaAziende> {
 
   List<Azienda> listaAziende2 = [];
 
-   FlutterMap?mappa;
+  FlutterMap? mappa;
 
   List<_AZItem> items = [];
 
@@ -57,18 +57,12 @@ class ListaAziendeState extends State<ListaAziende> {
   @override
   initState() {
     super.initState();
-
     creaListaAzienda();
-
-    Timer(Duration(seconds: 5), (){
-
+    Timer(Duration(seconds: 5), () {
       initList(listaAziende2);
       _prepareMarker();
       _getCurrentLocation();
-
-
     });
-
   }
 
   void _getCurrentLocation() {
@@ -109,7 +103,6 @@ class ListaAziendeState extends State<ListaAziende> {
         return marker;
       }).toList();
     } else {
-
       _markers = searchresult.map((element) {
         Key _key = GlobalKey();
         element.setKey(_key);
@@ -133,7 +126,6 @@ class ListaAziendeState extends State<ListaAziende> {
       }).toList();
     }
 
-
     setState(() {
       hasBeenInitialized = true;
     });
@@ -145,108 +137,119 @@ class ListaAziendeState extends State<ListaAziende> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       resizeToAvoidBottomInset: false,
-
       key: key,
-      body: !hasBeenInitialized && !locationInitialized ? Center(child: CircularProgressIndicator(color:Colors.red)):
-          Stack(
-        children: [
-          Visibility(
-              visible: viewMap,
-              child: inizializedMap
-                  ? buildBodyMap()
-                  : Center(
-                      child: CircularProgressIndicator(color: Colors.red))),
-          Visibility(visible: !viewMap, child: buildBody()),
-          Padding(
-            padding: EdgeInsets.only(top: 28.h, left: 4.w, right: 4.w),
-            child: Container(
-              height: 50,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only (left: 20.w),
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * .75,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25),
-                              bottomLeft: Radius.circular(25),
-                              bottomRight: Radius.circular(25),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
+      body: listaAziende2.length == 0
+          ? Center(child: Text("Non ci sono aziende", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),))
+          : !hasBeenInitialized && !locationInitialized
+              ? Center(child: CircularProgressIndicator(color: Colors.red))
+              : Stack(
+                  children: [
+                    Visibility(
+                        visible: viewMap,
+                        child: inizializedMap
+                            ? buildBodyMap()
+                            : Center(
+                                child: CircularProgressIndicator(
+                                    color: Colors.red))),
+                    Visibility(visible: !viewMap, child: buildBody()),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: 28.h, left: 4.w, right: 4.w),
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 20.w),
+                              child: Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width * .75,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(25),
+                                      topRight: Radius.circular(25),
+                                      bottomLeft: Radius.circular(25),
+                                      bottomRight: Radius.circular(25),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 2,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: TextField(
+                                  controller: _controller,
+                                  style: new TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  decoration: new InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 0),
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 0),
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.white, width: 0),
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    suffixIcon:
+                                        Icon(Icons.search, color: Colors.black),
+                                  ),
+                                  onChanged: searchOperation,
+                                ),
+                              ),
                             ),
-                          ]),
-                      child: TextField(
-                        controller: _controller,
-                        style: new TextStyle(
-                          color: Colors.black,
+                            Padding(
+                              padding: EdgeInsets.only(left: 4.0.w),
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.red,
+                                child: IconButton(
+                                  icon: Icon(
+                                    viewMap
+                                        ? Icons.list_alt
+                                        : Icons.map_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      viewMap = !viewMap;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        decoration: new InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          suffixIcon: Icon(Icons.search, color: Colors.black),
-                        ),
-                        onChanged: searchOperation,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 4.0.w),
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.red,
-                      child: IconButton(
-                        icon: Icon(
-                          viewMap ? Icons.list_alt : Icons.map_outlined,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            viewMap = !viewMap;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+                  ],
+                ),
     );
   }
 
-   searchOperation(String searchText)  {
+  searchOperation(String searchText) {
     searchresult.clear();
     for (int i = 0; i < items.length; i++) {
       String? data = items[i].nomeAzienda;
       if (data.toLowerCase().contains(searchText.toLowerCase())) {
         setState(() {
           searchresult.add(items[i].azienda);
-          inizializedMap=false;
-          mappa=null;
+          inizializedMap = false;
+          mappa = null;
         });
 
         _prepareMarker();
@@ -255,10 +258,7 @@ class ListaAziendeState extends State<ListaAziende> {
         setState(() {});
     }
 
-
-
-
-   /* List<_AZItem> lista=List.generate(searchresult.length, (index) => fromAziendaToAZItem(searchresult[index]));
+    /* List<_AZItem> lista=List.generate(searchresult.length, (index) => fromAziendaToAZItem(searchresult[index]));
     SuspensionUtil.sortListBySuspensionTag(lista);
     SuspensionUtil.setShowSuspensionStatus(lista);*/
   }
@@ -266,81 +266,87 @@ class ListaAziendeState extends State<ListaAziende> {
   buildBody() {
     return Padding(
       padding: EdgeInsets.only(top: 80.h, left: 4.w, right: 8.w),
-      child:searchresult.isEmpty? AzListView(
-          data:items,
-          indexBarHeight: 340.h,
-          indexBarWidth: 12.h,
-          indexBarAlignment: Alignment.topRight,
-          indexBarOptions: IndexBarOptions(
-            needRebuild: true,ignoreDragCancel: false,
-            downColor: Colors.red,
-            selectTextStyle: TextStyle(color: Colors.white),
-            indexHintDecoration: BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-            selectItemDecoration: BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-            textStyle: TextStyle(color: Colors.white),
-            indexHintAlignment: Alignment.centerRight,
-            decoration: BoxDecoration(
-              color: Colors.red,
-              border: Border.all(color: Colors.red, width: 0.0),
-              borderRadius: new BorderRadius.all(Radius.elliptical(100, 100),
+      child: searchresult.isEmpty
+          ? AzListView(
+              data: items,
+              indexBarHeight: 340.h,
+              indexBarWidth: 12.h,
+              indexBarAlignment: Alignment.topRight,
+              indexBarOptions: IndexBarOptions(
+                needRebuild: true,
+                ignoreDragCancel: false,
+                downColor: Colors.red,
+                selectTextStyle: TextStyle(color: Colors.white),
+                indexHintDecoration: BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                selectItemDecoration: BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                textStyle: TextStyle(color: Colors.white),
+                indexHintAlignment: Alignment.centerRight,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  border: Border.all(color: Colors.red, width: 0.0),
+                  borderRadius: new BorderRadius.all(
+                    Radius.elliptical(100, 100),
+                  ),
+                ),
               ),
+              itemBuilder: (BuildContext context, int index) {
+                return _buildListItem(items[index]);
+              },
+              itemCount: items.length,
+            )
+          : AzListView(
+              data: List.generate(searchresult.length,
+                  (index) => fromAziendaToAZItem(searchresult[index])),
+              indexBarHeight: 340.h,
+              indexBarWidth: 12.h,
+              indexBarAlignment: Alignment.topRight,
+              indexBarOptions: IndexBarOptions(
+                needRebuild: true,
+                ignoreDragCancel: false,
+                downColor: Colors.red,
+                selectTextStyle: TextStyle(color: Colors.white),
+                indexHintDecoration: BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                selectItemDecoration: BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                textStyle: TextStyle(color: Colors.white),
+                indexHintAlignment: Alignment.centerRight,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  border: Border.all(color: Colors.red, width: 0.0),
+                  borderRadius: new BorderRadius.all(
+                    Radius.elliptical(100, 100),
+                  ),
+                ),
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return _buildListItem(fromAziendaToAZItem(searchresult[index]));
+              },
+              itemCount: searchresult.length,
             ),
-          ),
-          itemBuilder: (BuildContext context, int index) {
-
-              return _buildListItem(items[index]);
-
-          },
-          itemCount: items.length,
-      ):AzListView(
-        data:List.generate(searchresult.length, (index) => fromAziendaToAZItem(searchresult[index])),
-        indexBarHeight: 340.h,
-        indexBarWidth: 12.h,
-        indexBarAlignment: Alignment.topRight,
-        indexBarOptions: IndexBarOptions(
-          needRebuild: true,ignoreDragCancel: false,
-          downColor: Colors.red,
-          selectTextStyle: TextStyle(color: Colors.white),
-          indexHintDecoration: BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
-          ),
-          selectItemDecoration: BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
-          ),
-          textStyle: TextStyle(color: Colors.white),
-          indexHintAlignment: Alignment.centerRight,
-          decoration: BoxDecoration(
-            color: Colors.red,
-            border: Border.all(color: Colors.red, width: 0.0),
-            borderRadius: new BorderRadius.all(Radius.elliptical(100, 100),
-            ),
-          ),
-        ),
-        itemBuilder: (BuildContext context, int index) {
-
-            return _buildListItem(fromAziendaToAZItem(searchresult[index]));
-        },
-        itemCount:searchresult.length,
-      ),
     );
   }
 
   Widget _buildListItem(_AZItem item) {
     final tag = item.getSuspensionTag();
-    final offstage = false;  //!item.isShowSuspension;
+    final offstage = false; //!item.isShowSuspension;
 
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AziendaDettaglio(azienda: item.azienda)));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AziendaDettaglio(azienda: item.azienda)));
       },
       child: Column(
         children: [
@@ -350,7 +356,8 @@ class ListaAziendeState extends State<ListaAziende> {
             child: Card(
               elevation: 5,
               shadowColor: Colors.grey,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               margin: EdgeInsets.symmetric(vertical: 8.h),
               child: Container(
                 height: 60.h,
@@ -372,24 +379,26 @@ class ListaAziendeState extends State<ListaAziende> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(right: 12.w),
-                          child: Text(item.azienda.events.isNotEmpty?
-                            item.azienda.events
-                                    .elementAt(0)
-                                    .date!
-                                    .day
-                                    .toString() +
-                                "/" +
-                                item.azienda.events
-                                    .elementAt(0)
-                                    .date!
-                                    .month
-                                    .toString() +
-                                "/" +
-                                item.azienda.events
-                                    .elementAt(0)
-                                    .date!
-                                    .year
-                                    .toString():"non ci sono eventi",
+                          child: Text(
+                            item.azienda.events.isNotEmpty
+                                ? item.azienda.events
+                                        .elementAt(0)
+                                        .date!
+                                        .day
+                                        .toString() +
+                                    "/" +
+                                    item.azienda.events
+                                        .elementAt(0)
+                                        .date!
+                                        .month
+                                        .toString() +
+                                    "/" +
+                                    item.azienda.events
+                                        .elementAt(0)
+                                        .date!
+                                        .year
+                                        .toString()
+                                : "",
                             style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 13.748113.sp,
@@ -405,7 +414,7 @@ class ListaAziendeState extends State<ListaAziende> {
                         alignment: Alignment.bottomRight,
                         child: Icon(
                           Icons.circle,
-                          color: Colors.lightGreenAccent,
+                          color: item.azienda.events.isNotEmpty? Colors.lightGreenAccent:Colors.blue,
                           size: 16,
                         ),
                       ),
@@ -441,12 +450,14 @@ class ListaAziendeState extends State<ListaAziende> {
         bottom: false,
         child: Padding(
             padding: EdgeInsets.all(0.0),
-            child: Column(children: [Expanded(child: mappa!=null?mappa!:CircularProgressIndicator())])));
+            child: Column(children: [
+              Expanded(
+                  child: mappa != null ? mappa! : CircularProgressIndicator())
+            ])));
   }
 
   creaListaAzienda() async {
-
-    final lista =   mainStore!.box<Azienda>().getAll();
+    final lista = mainStore!.box<Azienda>().getAll();
     setState(() {
       listaAziende2 = lista;
     });
@@ -462,9 +473,7 @@ class ListaAziendeState extends State<ListaAziende> {
     }
 
     FlutterMap _flutterMap = FlutterMap(
-
         options: MapOptions(
-
           center: _location,
           zoom: 8.0,
           maxZoom: 18,
@@ -489,7 +498,6 @@ class ListaAziendeState extends State<ListaAziende> {
             ),
             markers: _markers,
             centerMarkerOnClick: true,
-
             polygonOptions: PolygonOptions(
                 borderColor: Colors.blueAccent,
                 color: Colors.black12,

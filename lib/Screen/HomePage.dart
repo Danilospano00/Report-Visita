@@ -16,6 +16,7 @@ import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import '../objectbox.g.dart';
 
@@ -53,24 +54,34 @@ class MyHomePageState extends State<MyHomePage> {
   Contact? contattoSelezionato;
   late String configurazione;
 
+  bool showSearchBar = false;
+
+  List<dynamic> searchresult = [];
+
+  List<Azienda> listaAziendePerRicerca = [];
+  List<Report> listaReportPerRicerca = [];
+
   @override
   void initState() {
     super.initState();
 
-    if(mainStore==null){
-    openStore().then((Store store) {
-      _store = store;
-      mainStore = _store;
-      setState(() {
-        hasBeenInitialized = true;
+    if (mainStore == null) {
+      openStore().then((Store store) {
+        _store = store;
+        mainStore = _store;
+        setState(() {
+          hasBeenInitialized = true;
+          listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
+          listaReportPerRicerca = mainStore!.box<Report>().getAll();
+        });
       });
-    });
-    }else{
+    } else {
       _store = mainStore!;
       setState(() {
         hasBeenInitialized = true;
       });
     }
+
     setState(() {
       configurazione = config;
       formKeyBodyMain = formKeyBody;
@@ -78,41 +89,22 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-          elevation:0,
-        centerTitle: false,
-        title:Text(
-        "Nuovo Report",
-        style: TextStyle(
-          fontSize: 24.151785.sp,
-          color: Colors.grey[700],
-          fontWeight: FontWeight.w400,
-        ),
-      ),backgroundColor: Colors.white,
-
-      ),
       body: !hasBeenInitialized
           ? Center(
               child: CircularProgressIndicator(
               color: Colors.red,
             ))
           : Padding(
-              padding: EdgeInsets.only(top: 4.h,left: 16.w,right: 16.w,bottom: 0),
+              padding: EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w),
               child: SingleChildScrollView(
-
                 child: FormBuilder(
                   key: formKeyBody,
-                  child: Column(
+                  child: Stack(
                     children: [
                       /*Padding(
                         padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -122,17 +114,22 @@ class MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                       ),*/
-                      GeneratorFormToJson(
-                        store: _store,
-                        form: configurazione,
-                        onChanged: (dynamic value) {
-                          print(value);
-                          setState(() {
-                            response = value;
-                          });
-                          print(response.toString());
-                        },
+
+                      Padding(
+                        padding: EdgeInsets.only(top:100),
+                        child: GeneratorFormToJson(
+                          store: _store,
+                          form: configurazione,
+                          onChanged: (dynamic value) {
+                            print(value);
+                            setState(() {
+                              response = value;
+                            });
+                            print(response.toString());
+                          },
+                        ),
                       ),
+                      cambiaAppBar(),
                     ],
                   ),
                 ),
@@ -151,9 +148,9 @@ class MyHomePageState extends State<MyHomePage> {
         response["aziendaName"] != null &&
         response["partitaIva"] != null) {
       List<Location> locations;
-      try{
-        locations= await locationFromAddress(response["indirizzo"]);
-      } on Exception catch(e){
+      try {
+        locations = await locationFromAddress(response["indirizzo"]);
+      } on Exception catch (e) {
         _showSnackBar("Indirizzo non valido");
         return;
       }
@@ -168,10 +165,9 @@ class MyHomePageState extends State<MyHomePage> {
       return;
     }
     if (response["contatto"] != null) {
-
       List<Contact> contact = response["contatto"];
       contact.forEach((contact) {
-        _report.referente.add( Referente(
+        _report.referente.add(Referente(
             nome: contact.givenName ?? " ",
             cognome: contact.familyName ?? " ",
             telefono: contact.phones!.isNotEmpty
@@ -182,7 +178,6 @@ class MyHomePageState extends State<MyHomePage> {
                 ? contact.emails!.elementAt(0).value
                 : null));
       });
-
     } else {
       _showSnackBar("Campi mancanti");
       return;
@@ -222,7 +217,6 @@ class MyHomePageState extends State<MyHomePage> {
 
     int count = await mainStore!.box<Report>().put(_report);
     print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
-
 
     if (count > 0) {
       List<dynamic> mappaJsonConfigurazione = json.decode(config);
@@ -325,6 +319,165 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         );
       },
+    );
+  }
+
+  Widget cambiaAppBar() {
+    return !showSearchBar ? appBar() : searchBarUI();
+  }
+
+  Widget appBar() {
+    return SafeArea(
+      child: Row(
+        children: [
+          Text(
+            "Nuovo Report",
+            style: TextStyle(
+              fontSize: 24.151785.sp,
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Spacer(),
+          CircularButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.grey[700],
+              ),
+              onPressed: () {
+                setState(() {
+                  showSearchBar = true;
+                });
+              }),
+        ],
+      ),
+    );
+  }
+
+  Widget searchBarUI() {
+    return Padding(
+      padding:  EdgeInsets.only(left: 16.w, right: 16.w),
+      child: Container(
+        height: searchresult.isNotEmpty? MediaQuery.of(context).size.height*.30 : MediaQuery.of(context).size.height*.15,
+       // decoration: BoxDecoration(),
+        child: FloatingSearchBar(
+          builder: (BuildContext context, Animation<double> transition) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: searchresult.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int i) {
+                      bool istanza = searchresult[i] is Azienda;
+                      print(istanza);
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          searchresult[i] is Azienda
+                              ? Column(
+                                  children: [
+                                    ListTile(
+                                      dense: true,
+                                      title: Text(searchresult[i].nome),
+                                      subtitle: Text(searchresult[i].indirizzo),
+                                      leading: Icon(
+                                        Icons.location_city_outlined,
+                                      ),
+                                    ),
+                                    Divider(),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    ListTile(
+                                      dense: true,
+                                      title: Text(searchresult[i]
+                                              .nome
+                                              .toString() +
+                                          searchresult[i]
+                                              .cognome
+                                              .toString()),
+                                      leading:Icon(
+                                        Icons.people_outlined,
+                                      ),
+                                    ),
+                                    Divider(),
+                                  ],
+                                )
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+          backgroundColor: Colors.white,
+          clearQueryOnClose: true,
+          backdropColor: Colors.white,
+          hint: 'Search...',
+          openAxisAlignment: 0,
+          axisAlignment: 0.0,
+          elevation: 4,
+          automaticallyImplyDrawerHamburger: false,
+          closeOnBackdropTap: true,
+          transitionCurve: Curves.easeInOut,
+
+
+          transitionDuration: Duration(milliseconds: 500),
+          transition: CircularFloatingSearchBarTransition(),
+          debounceDelay: Duration(milliseconds: 500),
+          actions: [
+            FloatingSearchBarAction(
+              showIfOpened: false,
+              child: CircularButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  setState(() {
+                    showSearchBar = false;
+                  });
+                },
+              ),
+            ),
+            FloatingSearchBarAction.searchToClear(
+              showIfClosed: false,
+            ),
+          ],
+          onQueryChanged: (query) {
+            searchresult.clear();
+            print(query);
+            if (listaAziendePerRicerca.isNotEmpty) {
+              for (int i = 0; i < listaAziendePerRicerca.length; i++) {
+                String? data = listaAziendePerRicerca[i].nome;
+                if (data!.toLowerCase().contains(query)) {
+                  setState(() {
+                    searchresult.add(listaAziendePerRicerca[i]);
+                  });
+                } else {
+                  setState(() {});
+                }
+              }
+            }
+
+            if (listaReportPerRicerca.isNotEmpty) {
+              for (int i = 0; i < listaReportPerRicerca.length; i++) {
+                List<Referente> data = listaReportPerRicerca[i].referente;
+                for(int i = 0; i<data.length; i++){
+                  if (data[i].nome!.toLowerCase().contains(query) || data[i].cognome!.toLowerCase().contains(query)) {
+                    setState(() {
+                      searchresult.add(data[i]);
+                    });
+                  } else {
+                    print("Non contiene");
+                  }
+                }
+              }
+            }
+          },
+        ),
+      ),
     );
   }
 }

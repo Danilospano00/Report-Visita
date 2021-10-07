@@ -457,7 +457,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               autofocus: false,
               onChanged: (String value) {
                 formResults[item["title"]] = value;
-                _handleChanged();
+                _handleChanged(); 
               },
               keyboardType:
                   item['type'] == 'integer' ? TextInputType.number : null,
