@@ -200,7 +200,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(5, 3340527064996842485),
       name: 'Report',
-      lastPropertyId: const IdUid(5, 999915125360666004),
+      lastPropertyId: const IdUid(6, 7188359461764084705),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -229,7 +229,12 @@ final _entities = <ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const IdUid(3, 3200128813239925040),
-            relationTarget: 'Azienda')
+            relationTarget: 'Azienda'),
+        ModelProperty(
+            id: const IdUid(6, 7188359461764084705),
+            name: 'byteListFile',
+            type: 23,
+            flags: 0)
       ],
       relations: <ModelRelation>[
         ModelRelation(
@@ -521,12 +526,16 @@ ModelDefinition getObjectBoxModel() {
           final configurationJsonOffset = object.configurationJson == null
               ? null
               : fbb.writeString(object.configurationJson!);
-          fbb.startTable(6);
+          final byteListFileOffset = object.byteListFile == null
+              ? null
+              : fbb.writeListInt8(object.byteListFile!);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, configurationJsonOffset);
           fbb.addInt64(2, object.compilazione?.millisecondsSinceEpoch);
           fbb.addInt64(3, object.prossimaVisita?.millisecondsSinceEpoch);
           fbb.addInt64(4, object.azienda.targetId);
+          fbb.addOffset(5, byteListFileOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -547,7 +556,10 @@ ModelDefinition getObjectBoxModel() {
                 : DateTime.fromMillisecondsSinceEpoch(compilazioneValue)
             ..prossimaVisita = prossimaVisitaValue == null
                 ? null
-                : DateTime.fromMillisecondsSinceEpoch(prossimaVisitaValue);
+                : DateTime.fromMillisecondsSinceEpoch(prossimaVisitaValue)
+            ..byteListFile =
+                const fb.ListReader<int>(fb.Int8Reader(), lazy: false)
+                    .vTableGetNullable(buffer, rootOffset, 14);
           object.azienda.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.azienda.attach(store);
@@ -689,6 +701,10 @@ class Report_ {
   /// see [Report.azienda]
   static final azienda =
       QueryRelationToOne<Report, Azienda>(_entities[4].properties[4]);
+
+  /// see [Report.byteListFile]
+  static final byteListFile =
+      QueryByteVectorProperty<Report>(_entities[4].properties[5]);
 
   /// see [Report.referente]
   static final referente =

@@ -38,6 +38,10 @@ String config=json.encode([
     "type": "contact",
   },
   {
+    "title": "file",
+    "type": "file",
+  },
+  {
     "title": "note",
     "type": "note",
     "label": [

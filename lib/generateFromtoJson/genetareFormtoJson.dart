@@ -1,15 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Nota.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import '../objectbox.g.dart';
+import 'package:path/path.dart' as p;
+
 
 /*
 esempio json
@@ -57,6 +62,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   List<Nota> listaNote = [];
   final noteKey = GlobalKey<FormBuilderState>();
   TextEditingController noteController = TextEditingController();
+  File? fileSelected;
 
   _GeneratorFromToJsonState(this.formItems);
 
@@ -134,7 +140,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               //This can be further expanded to showing contacts detail
                               onTap: () {
                                 contattoSelezionato.add(contact);
-                                formResults[title] = contattoSelezionato;
+                                formResults[title]  = contattoSelezionato;
                                 _handleChanged();
                                 Navigator.pop(context);
                               });
@@ -526,17 +532,16 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             firstDate: DateTime(2020),
             lastDate: DateTime(2050),
             builder: (BuildContext context, Widget? child) {
-
               return Theme(
-                  data: ThemeData.light().copyWith(
-                primaryColor:  Colors.red,
-                accentColor: const Color(0xFF8CE7F1),
-                colorScheme: ColorScheme.light(primary:  Colors.red),
-                buttonTheme: ButtonThemeData(
-                    textTheme: ButtonTextTheme.primary
+                data: ThemeData.light().copyWith(
+                  primaryColor: Colors.red,
+                  accentColor: const Color(0xFF8CE7F1),
+                  colorScheme: ColorScheme.light(primary: Colors.red),
+                  buttonTheme:
+                      ButtonThemeData(textTheme: ButtonTextTheme.primary),
                 ),
-              ),
-              child:child!,);
+                child: child!,
+              );
             },
           );
           if (picked != null) {
@@ -549,17 +554,16 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           final TimeOfDay? picked = await showTimePicker(
             context: context,
             builder: (BuildContext context, Widget? child) {
-
               return Theme(
                 data: ThemeData.light().copyWith(
-                  primaryColor:  Colors.red,
+                  primaryColor: Colors.red,
                   accentColor: const Color(0xFF8CE7F1),
-                  colorScheme: ColorScheme.light(primary:  Colors.red),
-                  buttonTheme: ButtonThemeData(
-                      textTheme: ButtonTextTheme.primary
-                  ),
+                  colorScheme: ColorScheme.light(primary: Colors.red),
+                  buttonTheme:
+                      ButtonThemeData(textTheme: ButtonTextTheme.primary),
                 ),
-                child:child!,);
+                child: child!,
+              );
             },
             initialTime: TimeOfDay.now(),
           );
@@ -571,7 +575,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
               _datevalueMap[item["title"]] = DateTime(date.year, date.month,
                       date.day, selectedTime.hour, selectedTime.minute)
-                  .toString().substring(0, 16);
+                  .toString()
+                  .substring(0, 16);
             });
         }
 
@@ -673,6 +678,68 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         ));
       }
 
+      if (item['type'] == 'file') {
+        listWidget.add(Padding(
+            padding: EdgeInsets.only(top: ScreenUtil().setHeight(8)),
+            child: Column(children: [
+              Row(
+                children: <Widget>[
+                  Text(
+                    "Allegati",
+                    style: homePageMainTextStyle,
+                  ),
+                  Expanded(
+                    child: new Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: Divider(
+                        color: Colors.grey[700],
+                        thickness: 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        splashRadius: 1,
+                        icon: Icon(Icons.add_circle_outlined),
+                        iconSize: 40,
+                        color: Colors.red,
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          showSolutionFile(item["title"]);
+                        },
+                      ),
+                    ),
+                  ),
+                  fileSelected!=null?GestureDetector(
+                    onLongPress: () {
+                      setState(() {
+
+                        fileSelected=null;
+                        formResults[item["title"]]  = fileSelected;
+                        _handleChanged();
+                      });
+                    },
+                    child:Container(
+                      width: MediaQuery.of(context).size.width*.60,
+                      child: AutoSizeText(
+                        p.basename(fileSelected!.path),
+                        style: homePageMainTextStyle,
+                        overflow:TextOverflow.ellipsis ,
+                      ),
+                    ),
+                  ):Container()
+                ],
+              )
+            ])));
+      }
+
       if (item['type'] == 'contact') {
         listWidget.add(Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(8)),
@@ -699,11 +766,12 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment:MainAxisAlignment.start ,
-                  mainAxisSize: MainAxisSize.max ,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w),
+                      padding:
+                          EdgeInsets.only(top: 4.h, bottom: 4.h),
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: IconButton(
@@ -718,58 +786,58 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         ),
                       ),
                     ),
-
                     Container(
                       height: 50,
-                      width: 260.w,
+                      width: 273.w,
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: contattoSelezionato.length,
                           scrollDirection: Axis.horizontal,
-                         // physics: NeverScrollableScrollPhysics(),
+                          // physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, i) {
                             return (contattoSelezionato[i].avatar != null &&
-                                contattoSelezionato[i].avatar!.isNotEmpty)
+                                    contattoSelezionato[i].avatar!.isNotEmpty)
                                 ? Padding(
-                              padding:  EdgeInsets.all(4.0.h),
-                              child: GestureDetector(
-                                onLongPress: () {
-                                  setState(() {
-                                    contattoSelezionato.removeAt(i);
-                                    _handleChanged();
-                                  });
-                                },
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                  MemoryImage(contattoSelezionato[i].avatar!),
-                                ),
-                              ),
-                            )
+                                    padding: EdgeInsets.all(4.0.h),
+                                    child: GestureDetector(
+                                      onLongPress: () {
+                                        setState(() {
+                                          contattoSelezionato.removeAt(i);
+                                          formResults[item["title"]]  = contattoSelezionato;
+                                          _handleChanged();
+                                        });
+                                      },
+                                      child: CircleAvatar(
+                                        backgroundImage: MemoryImage(
+                                            contattoSelezionato[i].avatar!),
+                                      ),
+                                    ),
+                                  )
                                 : Padding(
-                              padding:  EdgeInsets.all(4.0.h),
-                              child: GestureDetector(
-                                onLongPress: () {
-                                  setState(() {
-                                    contattoSelezionato.removeAt(i);
-                                    _handleChanged();
-                                  });
-                                },
-                                child: CircleAvatar(
-                                  child: Text(
-                                    contattoSelezionato[i].initials(),
-                                    style: TextStyle(color: rvTheme.canvasColor),
-                                  ),
-                                  backgroundColor: rvTheme.primaryColor,
-                                ),
-                              ),
-                            );
+                                    padding: EdgeInsets.all(4.0.h),
+                                    child: GestureDetector(
+                                      onLongPress: () {
+                                        setState(() {
+                                          contattoSelezionato.removeAt(i);
+                                          formResults[item["title"]]  = contattoSelezionato;
+                                          _handleChanged();
+                                        });
+                                      },
+                                      child: CircleAvatar(
+                                        child: Text(
+                                          contattoSelezionato[i].initials(),
+                                          style: TextStyle(
+                                              color: rvTheme.canvasColor),
+                                        ),
+                                        backgroundColor: rvTheme.primaryColor,
+                                      ),
+                                    ),
+                                  );
                           }),
                     ),
-
                   ],
                 ),
               ),
-
             ],
           ),
         ));
@@ -1040,7 +1108,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               },
             ),
             Padding(
-              padding: EdgeInsets.only(top: 4.h,bottom: 8.h),
+              padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
               child: GestureDetector(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
@@ -1104,5 +1172,98 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     objectMap[field] = value;
     selectObject = selectObject.fromMap(objectMap);
     formResults[title] = selectObject;
+  }
+
+  void showSolutionFile( String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          title: Text(
+            "Aggiungi File",
+            textAlign: TextAlign.center,
+          ),
+          content: Container(
+              width: MediaQuery.of(context).size.width * .60,
+              height: MediaQuery.of(context).size.height * .20,
+              child: Center(
+                  child: AutoSizeText(
+                      "Puoi selezionare un File presente sull'archivio o scattare una foto."))),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ButtonTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              child: RaisedButton(
+                color: rvTheme.primaryColor,
+                elevation: 2,
+                child: Text(
+                  "Seleziona",
+                  style: TextStyle(color: rvTheme.canvasColor),
+                ),
+                onPressed: () async {
+
+                  FilePickerResult? result = await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['jpg', 'pdf', 'doc','png']
+                  );
+
+                  if (result != null) {
+                    File file = File(result.files.single.path!);
+                    setState(() {
+                      fileSelected=file;
+                    });
+                    formResults[title]  = file;
+                    _handleChanged();
+                    Navigator.pop(context);
+                  } else {
+                    // User canceled the picker
+                  }
+
+
+                 // Navigator.pop(context);
+
+                },
+              ),
+            ),
+            ButtonTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              child: RaisedButton(
+                color: rvTheme.primaryColor,
+                elevation: 2,
+                child: Text(
+                  "Scatta",
+                  style: TextStyle(color: rvTheme.canvasColor),
+                ),
+                onPressed: () async {
+                  final ImagePicker _picker = ImagePicker();
+
+                  final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+
+                  if(photo!=null) {
+                    File file = File(photo.path);
+                    setState(() {
+                      fileSelected=file;
+                    });
+                    formResults[title] = file;
+                    _handleChanged();
+                    Navigator.pop(context);
+                  }else{
+
+                  }
+
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+
+
   }
 }

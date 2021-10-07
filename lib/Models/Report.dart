@@ -11,6 +11,8 @@ class Report{
   String? configurationJson;
   DateTime? compilazione;
   DateTime? prossimaVisita;
+  @Property(type: PropertyType.byteVector)
+  List<int>? byteListFile;
 
 
    final azienda=ToOne<Azienda>();

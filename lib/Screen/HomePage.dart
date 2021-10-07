@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
@@ -183,6 +186,18 @@ class MyHomePageState extends State<MyHomePage> {
     } else {
       _showSnackBar("Campi mancanti");
       return;
+    }
+
+    if(response["file"] != null){
+
+      File file = response["file"];
+
+      //ByteData fileByteData = await rootBundle.load(file.path);
+      Uint8List fileUint8List = await file.readAsBytes();
+      //fileByteData.buffer.asUint8List(fileByteData.offsetInBytes, fileByteData.lengthInBytes);
+      List<int> fileListInt = fileUint8List.cast<int>();
+      _report.byteListFile=fileListInt;
+
     }
 
     if (response["dateCompilazione"] != null)

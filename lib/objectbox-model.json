@@ -184,7 +184,7 @@
     },
     {
       "id": "5:3340527064996842485",
-      "lastPropertyId": "5:999915125360666004",
+      "lastPropertyId": "6:7188359461764084705",
       "name": "Report",
       "properties": [
         {
@@ -215,6 +215,11 @@
           "flags": 520,
           "indexId": "3:3200128813239925040",
           "relationTarget": "Azienda"
+        },
+        {
+          "id": "6:7188359461764084705",
+          "name": "byteListFile",
+          "type": 23
         }
       ],
       "relations": [
