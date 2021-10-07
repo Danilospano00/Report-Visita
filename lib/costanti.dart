@@ -23,12 +23,6 @@ String config=json.encode([
     "validation": true
   },
   {
-    "title": "dateCompilazione",
-    "label": "compilazione",
-    "type": "date",
-    "required": "no"
-  },
-  {
     "title": "prossimaVisita",
     "label": "prossima visita",
     "type": "date",

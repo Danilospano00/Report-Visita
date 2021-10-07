@@ -165,17 +165,21 @@ class MyHomePageState extends State<MyHomePage> {
       return;
     }
     if (response["contatto"] != null) {
-      Contact contact = response["contatto"];
-      _report.referente.target = Referente(
-          nome: contact.givenName ?? " ",
-          cognome: contact.familyName ?? " ",
-          telefono: contact.phones!.isNotEmpty
-              ? contact.phones!.elementAt(0).value
-              : null,
-          // id: contact.identifier!=null?int.parse(contact.identifier!):-1,
-          email: contact.emails!.isNotEmpty
-              ? contact.emails!.elementAt(0).value
-              : null);
+
+      List<Contact> contact = response["contatto"];
+      contact.forEach((contact) {
+        _report.referente.add( Referente(
+            nome: contact.givenName ?? " ",
+            cognome: contact.familyName ?? " ",
+            telefono: contact.phones!.isNotEmpty
+                ? contact.phones!.elementAt(0).value
+                : null,
+            // id: contact.identifier!=null?int.parse(contact.identifier!):-1,
+            email: contact.emails!.isNotEmpty
+                ? contact.emails!.elementAt(0).value
+                : null));
+      });
+
     } else {
       _showSnackBar("Campi mancanti");
       return;
@@ -184,8 +188,7 @@ class MyHomePageState extends State<MyHomePage> {
     if (response["dateCompilazione"] != null)
       _report.compilazione = DateTime.parse(response["dateCompilazione"]);
     else {
-      _showSnackBar("Campi mancanti");
-      return;
+      _report.compilazione = DateTime.now();
     }
 
     if (response["prossimaVisita"] != null)

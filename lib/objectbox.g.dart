@@ -19,133 +19,122 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 8460234860715438408),
+      id: const IdUid(1, 7680391318172929617),
       name: 'Azienda',
-      lastPropertyId: const IdUid(10, 3574540353529118309),
+      lastPropertyId: const IdUid(10, 8916914568439692031),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 7808108765268025182),
+            id: const IdUid(1, 4251973141094445378),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 7974233072808858153),
+            id: const IdUid(2, 9113671131925970057),
             name: 'nome',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 7596696256123044276),
+            id: const IdUid(3, 1605146872390469641),
             name: 'indirizzo',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 5340825892269844003),
+            id: const IdUid(4, 233115652319760780),
             name: 'cap',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 1790211398887102549),
+            id: const IdUid(5, 7019725277862164034),
             name: 'citta',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 3018968991148458212),
+            id: const IdUid(6, 8467371171069459758),
             name: 'partitaIva',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 6597458789409012988),
+            id: const IdUid(7, 6840011190013759796),
             name: 'codiceFiscale',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 6792923101365665855),
+            id: const IdUid(8, 146442061210388558),
             name: 'lat',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(9, 5371245810450206642),
+            id: const IdUid(9, 7059998843745818455),
             name: 'lng',
             type: 8,
             flags: 0),
         ModelProperty(
-            id: const IdUid(10, 3574540353529118309),
+            id: const IdUid(10, 8916914568439692031),
             name: 'renderKey',
             type: 9,
             flags: 0)
       ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(1, 7816065985264809267),
-            name: 'referenti',
-            targetId: const IdUid(4, 8317230939662089217)),
-        ModelRelation(
-            id: const IdUid(2, 2683811393994220662),
-            name: 'reports',
-            targetId: const IdUid(5, 5482550158823569927)),
-        ModelRelation(
-            id: const IdUid(3, 3563601081454117575),
-            name: 'events',
-            targetId: const IdUid(2, 7897695579554558223))
-      ],
-      backlinks: <ModelBacklink>[]),
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[
+        ModelBacklink(name: 'referenti', srcEntity: 'Referente', srcField: ''),
+        ModelBacklink(name: 'reports', srcEntity: 'Report', srcField: ''),
+        ModelBacklink(name: 'events', srcEntity: 'Event', srcField: '')
+      ]),
   ModelEntity(
-      id: const IdUid(2, 7897695579554558223),
+      id: const IdUid(2, 5953336626248704928),
       name: 'Event',
-      lastPropertyId: const IdUid(5, 6629519680951903219),
+      lastPropertyId: const IdUid(4, 6171730511282965482),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 7520895260367860385),
+            id: const IdUid(1, 4007721547883438717),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 924415528375980991),
+            id: const IdUid(2, 4690951266521953618),
             name: 'date',
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3372484252157164723),
+            id: const IdUid(3, 4937564314507903129),
             name: 'descrizione',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 9053317680352321450),
+            id: const IdUid(4, 6171730511282965482),
             name: 'aziendaId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(1, 965388715842789542),
-            relationTarget: 'Azienda'),
-        ModelProperty(
-            id: const IdUid(5, 6629519680951903219),
-            name: 'referenteId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(2, 6497295642343522316),
-            relationTarget: 'Referente')
+            indexId: const IdUid(1, 6239286463158365392),
+            relationTarget: 'Azienda')
       ],
-      relations: <ModelRelation>[],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(1, 7404641149566312458),
+            name: 'referente',
+            targetId: const IdUid(4, 7151926937552982657))
+      ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(3, 164068517067656528),
+      id: const IdUid(3, 4311911329912121033),
       name: 'Nota',
-      lastPropertyId: const IdUid(3, 5032708557379852664),
+      lastPropertyId: const IdUid(3, 7448987757746992852),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1525777481681704206),
+            id: const IdUid(1, 3205647782247511021),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 6414245078746456117),
+            id: const IdUid(2, 4210989929080814206),
             name: 'titolo',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 5032708557379852664),
+            id: const IdUid(3, 7448987757746992852),
             name: 'testo',
             type: 9,
             flags: 0)
@@ -153,100 +142,104 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(4, 8317230939662089217),
+      id: const IdUid(4, 7151926937552982657),
       name: 'Referente',
-      lastPropertyId: const IdUid(7, 4031844865372382246),
+      lastPropertyId: const IdUid(8, 715802498592503400),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 2800621579793915429),
+            id: const IdUid(1, 2956486295006565917),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 1041454870545477114),
+            id: const IdUid(2, 7984525061348748492),
             name: 'nome',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3878008086786633539),
+            id: const IdUid(3, 5063340341344372883),
             name: 'cognome',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 8831013091349465548),
+            id: const IdUid(4, 5248427982577134333),
             name: 'ruolo',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 7858702449189039043),
+            id: const IdUid(5, 2231873890095241133),
             name: 'telefono',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 3207493360725824270),
+            id: const IdUid(6, 6915798299052527530),
             name: 'email',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 4031844865372382246),
+            id: const IdUid(7, 8045678100845258381),
             name: 'lng',
             type: 8,
-            flags: 0)
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 715802498592503400),
+            name: 'aziendaId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(2, 4349831053801725827),
+            relationTarget: 'Azienda')
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(4, 3776478613251764546),
+            id: const IdUid(2, 1127125399291987263),
             name: 'events',
-            targetId: const IdUid(2, 7897695579554558223))
+            targetId: const IdUid(2, 5953336626248704928))
       ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(5, 5482550158823569927),
+      id: const IdUid(5, 3340527064996842485),
       name: 'Report',
-      lastPropertyId: const IdUid(6, 8119780012927646051),
+      lastPropertyId: const IdUid(5, 999915125360666004),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 5345383412897643111),
+            id: const IdUid(1, 3222029855715634254),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 3504715279921915442),
+            id: const IdUid(2, 1085152779943139338),
             name: 'configurationJson',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3718252479862676441),
+            id: const IdUid(3, 5268945991684943812),
             name: 'compilazione',
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 8405597467589901663),
+            id: const IdUid(4, 7491829105962668215),
             name: 'prossimaVisita',
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 3759103972366318202),
+            id: const IdUid(5, 999915125360666004),
             name: 'aziendaId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(3, 1875447252864094183),
-            relationTarget: 'Azienda'),
-        ModelProperty(
-            id: const IdUid(6, 8119780012927646051),
-            name: 'referenteId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(4, 159630822753411865),
-            relationTarget: 'Referente')
+            indexId: const IdUid(3, 3200128813239925040),
+            relationTarget: 'Azienda')
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(5, 1990751358072285223),
+            id: const IdUid(3, 2002548762732762643),
+            name: 'referente',
+            targetId: const IdUid(4, 7151926937552982657)),
+        ModelRelation(
+            id: const IdUid(4, 462586827835209344),
             name: 'note',
-            targetId: const IdUid(3, 164068517067656528))
+            targetId: const IdUid(3, 4311911329912121033))
       ],
       backlinks: <ModelBacklink>[])
 ];
@@ -271,9 +264,9 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(5, 5482550158823569927),
-      lastIndexId: const IdUid(4, 159630822753411865),
-      lastRelationId: const IdUid(5, 1990751358072285223),
+      lastEntityId: const IdUid(5, 3340527064996842485),
+      lastIndexId: const IdUid(3, 3200128813239925040),
+      lastRelationId: const IdUid(4, 462586827835209344),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
@@ -288,9 +281,14 @@ ModelDefinition getObjectBoxModel() {
         model: _entities[0],
         toOneRelations: (Azienda object) => [],
         toManyRelations: (Azienda object) => {
-              RelInfo<Azienda>.toMany(1, object.id!): object.referenti,
-              RelInfo<Azienda>.toMany(2, object.id!): object.reports,
-              RelInfo<Azienda>.toMany(3, object.id!): object.events
+              RelInfo<Referente>.toOneBacklink(8, object.id!,
+                  (Referente srcObject) => srcObject.azienda): object.referenti,
+              RelInfo<Report>.toOneBacklink(
+                      5, object.id!, (Report srcObject) => srcObject.azienda):
+                  object.reports,
+              RelInfo<Event>.toOneBacklink(
+                      4, object.id!, (Event srcObject) => srcObject.azienda):
+                  object.events
             },
         getId: (Azienda object) => object.id,
         setId: (Azienda object, int id) {
@@ -354,18 +352,31 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 20))
             ..renderKey = const fb.StringReader()
                 .vTableGetNullable(buffer, rootOffset, 22);
-          InternalToManyAccess.setRelInfo(object.referenti, store,
-              RelInfo<Azienda>.toMany(1, object.id!), store.box<Azienda>());
-          InternalToManyAccess.setRelInfo(object.reports, store,
-              RelInfo<Azienda>.toMany(2, object.id!), store.box<Azienda>());
-          InternalToManyAccess.setRelInfo(object.events, store,
-              RelInfo<Azienda>.toMany(3, object.id!), store.box<Azienda>());
+          InternalToManyAccess.setRelInfo(
+              object.referenti,
+              store,
+              RelInfo<Referente>.toOneBacklink(
+                  8, object.id!, (Referente srcObject) => srcObject.azienda),
+              store.box<Azienda>());
+          InternalToManyAccess.setRelInfo(
+              object.reports,
+              store,
+              RelInfo<Report>.toOneBacklink(
+                  5, object.id!, (Report srcObject) => srcObject.azienda),
+              store.box<Azienda>());
+          InternalToManyAccess.setRelInfo(
+              object.events,
+              store,
+              RelInfo<Event>.toOneBacklink(
+                  4, object.id!, (Event srcObject) => srcObject.azienda),
+              store.box<Azienda>());
           return object;
         }),
     Event: EntityDefinition<Event>(
         model: _entities[1],
-        toOneRelations: (Event object) => [object.azienda, object.referente],
-        toManyRelations: (Event object) => {},
+        toOneRelations: (Event object) => [object.azienda],
+        toManyRelations: (Event object) =>
+            {RelInfo<Event>.toMany(1, object.id!): object.referente},
         getId: (Event object) => object.id,
         setId: (Event object, int id) {
           object.id = id;
@@ -374,12 +385,11 @@ ModelDefinition getObjectBoxModel() {
           final descrizioneOffset = object.descrizione == null
               ? null
               : fbb.writeString(object.descrizione!);
-          fbb.startTable(6);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.date?.millisecondsSinceEpoch);
           fbb.addOffset(2, descrizioneOffset);
           fbb.addInt64(3, object.azienda.targetId);
-          fbb.addInt64(4, object.referente.targetId);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -399,9 +409,8 @@ ModelDefinition getObjectBoxModel() {
           object.azienda.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
           object.azienda.attach(store);
-          object.referente.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
-          object.referente.attach(store);
+          InternalToManyAccess.setRelInfo(object.referente, store,
+              RelInfo<Event>.toMany(1, object.id!), store.box<Event>());
           return object;
         }),
     Nota: EntityDefinition<Nota>(
@@ -440,9 +449,9 @@ ModelDefinition getObjectBoxModel() {
         }),
     Referente: EntityDefinition<Referente>(
         model: _entities[3],
-        toOneRelations: (Referente object) => [],
+        toOneRelations: (Referente object) => [object.azienda],
         toManyRelations: (Referente object) =>
-            {RelInfo<Referente>.toMany(4, object.id!): object.events},
+            {RelInfo<Referente>.toMany(2, object.id!): object.events},
         getId: (Referente object) => object.id,
         setId: (Referente object, int id) {
           object.id = id;
@@ -459,7 +468,7 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.telefono!);
           final emailOffset =
               object.email == null ? null : fbb.writeString(object.email!);
-          fbb.startTable(8);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, nomeOffset);
           fbb.addOffset(2, cognomeOffset);
@@ -467,6 +476,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, telefonoOffset);
           fbb.addOffset(5, emailOffset);
           fbb.addFloat64(6, object.lng);
+          fbb.addInt64(7, object.azienda.targetId);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -489,15 +499,20 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 14))
             ..lng = const fb.Float64Reader()
                 .vTableGetNullable(buffer, rootOffset, 16);
+          object.azienda.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          object.azienda.attach(store);
           InternalToManyAccess.setRelInfo(object.events, store,
-              RelInfo<Referente>.toMany(4, object.id!), store.box<Referente>());
+              RelInfo<Referente>.toMany(2, object.id!), store.box<Referente>());
           return object;
         }),
     Report: EntityDefinition<Report>(
         model: _entities[4],
-        toOneRelations: (Report object) => [object.azienda, object.referente],
-        toManyRelations: (Report object) =>
-            {RelInfo<Report>.toMany(5, object.id!): object.note},
+        toOneRelations: (Report object) => [object.azienda],
+        toManyRelations: (Report object) => {
+              RelInfo<Report>.toMany(3, object.id!): object.referente,
+              RelInfo<Report>.toMany(4, object.id!): object.note
+            },
         getId: (Report object) => object.id,
         setId: (Report object, int id) {
           object.id = id;
@@ -506,13 +521,12 @@ ModelDefinition getObjectBoxModel() {
           final configurationJsonOffset = object.configurationJson == null
               ? null
               : fbb.writeString(object.configurationJson!);
-          fbb.startTable(7);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, configurationJsonOffset);
           fbb.addInt64(2, object.compilazione?.millisecondsSinceEpoch);
           fbb.addInt64(3, object.prossimaVisita?.millisecondsSinceEpoch);
           fbb.addInt64(4, object.azienda.targetId);
-          fbb.addInt64(5, object.referente.targetId);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -537,11 +551,10 @@ ModelDefinition getObjectBoxModel() {
           object.azienda.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.azienda.attach(store);
-          object.referente.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
-          object.referente.attach(store);
+          InternalToManyAccess.setRelInfo(object.referente, store,
+              RelInfo<Report>.toMany(3, object.id!), store.box<Report>());
           InternalToManyAccess.setRelInfo(object.note, store,
-              RelInfo<Report>.toMany(5, object.id!), store.box<Report>());
+              RelInfo<Report>.toMany(4, object.id!), store.box<Report>());
           return object;
         })
   };
@@ -584,18 +597,6 @@ class Azienda_ {
   /// see [Azienda.renderKey]
   static final renderKey =
       QueryStringProperty<Azienda>(_entities[0].properties[9]);
-
-  /// see [Azienda.referenti]
-  static final referenti =
-      QueryRelationToMany<Azienda, Referente>(_entities[0].relations[0]);
-
-  /// see [Azienda.reports]
-  static final reports =
-      QueryRelationToMany<Azienda, Report>(_entities[0].relations[1]);
-
-  /// see [Azienda.events]
-  static final events =
-      QueryRelationToMany<Azienda, Event>(_entities[0].relations[2]);
 }
 
 /// [Event] entity fields to define ObjectBox queries.
@@ -616,7 +617,7 @@ class Event_ {
 
   /// see [Event.referente]
   static final referente =
-      QueryRelationToOne<Event, Referente>(_entities[1].properties[4]);
+      QueryRelationToMany<Event, Referente>(_entities[1].relations[0]);
 }
 
 /// [Nota] entity fields to define ObjectBox queries.
@@ -659,6 +660,10 @@ class Referente_ {
   /// see [Referente.lng]
   static final lng = QueryDoubleProperty<Referente>(_entities[3].properties[6]);
 
+  /// see [Referente.azienda]
+  static final azienda =
+      QueryRelationToOne<Referente, Azienda>(_entities[3].properties[7]);
+
   /// see [Referente.events]
   static final events =
       QueryRelationToMany<Referente, Event>(_entities[3].relations[0]);
@@ -687,9 +692,9 @@ class Report_ {
 
   /// see [Report.referente]
   static final referente =
-      QueryRelationToOne<Report, Referente>(_entities[4].properties[5]);
+      QueryRelationToMany<Report, Referente>(_entities[4].relations[0]);
 
   /// see [Report.note]
   static final note =
-      QueryRelationToMany<Report, Nota>(_entities[4].relations[0]);
+      QueryRelationToMany<Report, Nota>(_entities[4].relations[1]);
 }

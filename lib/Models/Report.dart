@@ -14,6 +14,6 @@ class Report{
 
 
    final azienda=ToOne<Azienda>();
-   final referente=ToOne<Referente>();
+   final referente=ToMany<Referente>();
    final note=ToMany<Nota>();
 }

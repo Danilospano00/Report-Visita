@@ -201,11 +201,11 @@ class AggiungiEventoState extends State<AggiungiEvento> {
 
       Event event = new Event();
       event.azienda.target = azienda;
-      event.referente.target = referente;
+      event.referente.add(referente);
       event.date = data;
 
       print(event.azienda.target.toString()+"\n");
-      print(event.referente.target.toString()+"\n");
+      print(event.referente.toString()+"\n");
       print(event.date.toString()+"\n");
 
       _store.box<Event>().put(event);

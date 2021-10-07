@@ -25,8 +25,11 @@ class Azienda{
 
 
 
+  @Backlink()
   final referenti=ToMany<Referente>();
+  @Backlink()
   final reports=ToMany<Report>();
+  @Backlink()
   final events=ToMany<Event>();
 
   Azienda({this.id, this.nome,this.indirizzo,this.cap,this.citta,this.partitaIva,this.codiceFiscale,this.lat,this.lng});

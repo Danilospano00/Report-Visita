@@ -23,9 +23,10 @@ esempio json
 class GeneratorFormToJson extends StatefulWidget {
   final String form;
   final ValueChanged<Map> onChanged;
-  final  Store store;
+  final Store store;
 
-  GeneratorFormToJson({required this.form, required this.onChanged, required this.store});
+  GeneratorFormToJson(
+      {required this.form, required this.onChanged, required this.store});
 
   @override
   _GeneratorFromToJsonState createState() =>
@@ -48,11 +49,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   List<TextEditingController> controller = [];
   List<TextEditingController> controllerNote = [];
   List<TextEditingController> controllerNoteDesc = [];
-  List<FocusNode> focusList=[];
+  List<FocusNode> focusList = [];
 
-
-
-  Contact? contattoSelezionato;
+  List<Contact> contattoSelezionato = [];
 
   bool loadContact = false;
   List<Nota> listaNote = [];
@@ -134,8 +133,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               title: Text(contact.displayName ?? ''),
                               //This can be further expanded to showing contacts detail
                               onTap: () {
-                                contattoSelezionato = contact;
-                                formResults[title] = contact;
+                                contattoSelezionato.add(contact);
+                                formResults[title] = contattoSelezionato;
                                 _handleChanged();
                                 Navigator.pop(context);
                               });
@@ -408,9 +407,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           phones: [Item(label: "telefono", value: telefono)]);
                       if (saveContact)
                         await ContactsService.addContact(contact);
-                      contattoSelezionato = contact;
+                      contattoSelezionato.add(contact);
 
-                      formResults[title] = contact;
+                      formResults[title] = contattoSelezionato;
                       _handleChanged();
                       Navigator.pop(context);
                     }
@@ -429,7 +428,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: jsonToForm(),
@@ -527,7 +525,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             initialDate: DateTime.now(),
             firstDate: DateTime(2020),
             lastDate: DateTime(2050),
-
             builder: (BuildContext context, Widget? child) {
               return child!;
             },
@@ -536,6 +533,23 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             setState(() => _datevalueMap[item["title"]] =
                 picked.toString().substring(0, 10));
           }
+        }
+
+        Future selectTime() async {
+          final TimeOfDay? picked = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+          );
+          if (picked != null)
+            setState(() {
+              TimeOfDay selectedTime = picked;
+              String dateS = _datevalueMap[item["title"]]!;
+              DateTime date = DateTime.parse(dateS);
+
+              _datevalueMap[item["title"]] = DateTime(date.year, date.month,
+                      date.day, selectedTime.hour, selectedTime.minute)
+                  .toString().substring(0, 16);
+            });
         }
 
         listWidget.add(
@@ -558,17 +572,18 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 },
                 onTap: () async {
                   await _selectDate();
+                  await selectTime();
                   formResults[item["title"]] = _datevalueMap[item["title"]];
                   _handleChanged();
                 },
                 decoration: InputDecoration(
                   //label: Text(item["label"]),
 
-
                   contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   labelText: item["label"],
                   focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.red, width: 2.0),
+                      borderSide:
+                          const BorderSide(color: Colors.red, width: 2.0),
                       borderRadius: BorderRadius.circular(5)),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0)),
@@ -657,45 +672,81 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top:4.h,bottom: 4.h,left: 4.w),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    splashRadius: 1,
-                    icon: Icon(Icons.add_circle_outlined),iconSize: 40,
-                    color: Colors.red,
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      showSolutionReferente(item["title"]);
-                    },
-                  ),
-                ),
-              ),
-              contattoSelezionato != null
-                  ? ListTile(
-                          leading: (contattoSelezionato!.avatar != null &&
-                                  contattoSelezionato!.avatar!.isNotEmpty)
-                              ? CircleAvatar(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment:MainAxisAlignment.start ,
+                  mainAxisSize: MainAxisSize.max ,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          splashRadius: 1,
+                          icon: Icon(Icons.add_circle_outlined),
+                          iconSize: 40,
+                          color: Colors.red,
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            showSolutionReferente(item["title"]);
+                          },
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      height: 50,
+                      width: 260.w,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: contattoSelezionato.length,
+                          scrollDirection: Axis.horizontal,
+                         // physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            return (contattoSelezionato[i].avatar != null &&
+                                contattoSelezionato[i].avatar!.isNotEmpty)
+                                ? Padding(
+                              padding:  EdgeInsets.all(4.0.h),
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  setState(() {
+                                    contattoSelezionato.removeAt(i);
+                                    _handleChanged();
+                                  });
+                                },
+                                child: CircleAvatar(
                                   backgroundImage:
-                                      MemoryImage(contattoSelezionato!.avatar!),
-                                )
-                              : CircleAvatar(
+                                  MemoryImage(contattoSelezionato[i].avatar!),
+                                ),
+                              ),
+                            )
+                                : Padding(
+                              padding:  EdgeInsets.all(4.0.h),
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  setState(() {
+                                    contattoSelezionato.removeAt(i);
+                                    _handleChanged();
+                                  });
+                                },
+                                child: CircleAvatar(
                                   child: Text(
-                                    contattoSelezionato!.initials(),
-                                    style:
-                                        TextStyle(color: rvTheme.canvasColor),
+                                    contattoSelezionato[i].initials(),
+                                    style: TextStyle(color: rvTheme.canvasColor),
                                   ),
                                   backgroundColor: rvTheme.primaryColor,
                                 ),
-                         // title: Text(contattoSelezionato!.displayName ?? ''),
-                          //This can be further expanded to showing contacts detail
-                          onTap: () {
-                            setState(() {
-                              contattoSelezionato = null;
-                            });
-                          })
-                  : Container(),
+                              ),
+                            );
+                          }),
+                    ),
+
+                  ],
+                ),
+              ),
+
             ],
           ),
         ));
@@ -726,8 +777,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 },
                 hideSuggestionsOnKeyboardHide: false,
                 suggestionsCallback: (String query) {
-
-                  dynamic lista=widget.store.box<Azienda>().getAll();
+                  dynamic lista = widget.store.box<Azienda>().getAll();
                   // da impostare la chiamata al db in base all entity
 
                   return List.of(lista).where((aziende) {
@@ -749,10 +799,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         ? getValueField("nome")
                         : formFieldController.value.text,
                   onChanged: (value) {
-                    if(selectObject==null){
-                    formResults[item['title'] + "Name"] =
-                        formFieldController.value.text;
-                    }else if(formResults.containsKey(item['title'] + "Name") ){
+                    if (selectObject == null) {
+                      formResults[item['title'] + "Name"] =
+                          formFieldController.value.text;
+                    } else if (formResults
+                        .containsKey(item['title'] + "Name")) {
                       formResults.remove(item['title'] + "Name");
                     }
                   },
@@ -777,7 +828,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         controller.forEach((element) {
                           element.clear();
                         });
-                        if(formResults.containsKey(item['title']) ){
+                        if (formResults.containsKey(item['title'])) {
                           formResults.remove(item['title']);
                         }
                         selectObject = null;
@@ -805,18 +856,15 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             ? getValueField(item['field'][i]['label'])
                             : controller[i].value.text,
                       textInputAction: TextInputAction.next,
-
                       onChanged: (value) {
-
-                        if(selectObject==null){
-                        formResults[item['field'][i]['label']] =
-                            controller[i].value.text;
-                        }else{
-                          setNewValueObject(item['field'][i]['label'],controller[i].value.text,item['title']);
-
+                        if (selectObject == null) {
+                          formResults[item['field'][i]['label']] =
+                              controller[i].value.text;
+                        } else {
+                          setNewValueObject(item['field'][i]['label'],
+                              controller[i].value.text, item['title']);
                         }
                       },
-
                       onSubmitted: (value) {
                         _handleChanged();
                       },
@@ -846,20 +894,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
 
       if (item['type'] == "note") {
-        if(listaNote.isEmpty || listaNote==null){
+        if (listaNote.isEmpty || listaNote == null) {
           for (var i = 0; i < item['label'].length; i++) {
-      listaNote.add(Nota(titolo: item['label'][i],testo: ""));
-      controllerNote.add(TextEditingController());
-      controllerNoteDesc.add(TextEditingController());
+            listaNote.add(Nota(titolo: item['label'][i], testo: ""));
+            controllerNote.add(TextEditingController());
+            controllerNoteDesc.add(TextEditingController());
           }
-
-
-
         }
         listWidget.add(Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 8.h,bottom: 12.h),
+              padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
               child: Row(
                 children: <Widget>[
                   Text(
@@ -889,26 +934,23 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(4)),
+                        padding:
+                            EdgeInsets.only(bottom: ScreenUtil().setHeight(4)),
                         child: FormBuilderTextField(
-                          name:listaNote[i].titolo!,
+                          name: listaNote[i].titolo!,
                           controller: controllerNote[i]
                             ..text = listaNote[i].titolo!,
                           minLines: 2,
                           maxLines: 6,
                           textInputAction: TextInputAction.done,
                           onChanged: (value) {
-
-                            listaNote[i].titolo=controllerNote[i].value.text;
-
+                            listaNote[i].titolo = controllerNote[i].value.text;
                           },
-
                           onSubmitted: (value) {
                             formResults[item['title']] = listaNote;
                             _handleChanged();
                           },
                           validator: (String? value) {
-
                             if (value!.isEmpty) {
                               return 'Please ${item['title']} cannot be empty';
                             }
@@ -932,40 +974,40 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             //labelText: listaNote[i].titolo==""?"Titolo":listaNote[i].titolo,
                             focusedBorder: formUnderlineInputBorder,
                             labelStyle: homePageMainTextStyle,
-
                           ),
                         ),
                       ),
-
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 8),
                         child: FormBuilderTextField(
-                          name: listaNote[i].titolo!+"desc",
+                          name: listaNote[i].titolo! + "desc",
                           //keyboardType: TextInputType.multiline,
                           minLines: 2,
                           maxLines: 5,
                           maxLength: 1000,
                           textInputAction: TextInputAction.done,
 
-                          controller: controllerNoteDesc[i]..text=  listaNote[i].testo!,
+                          controller: controllerNoteDesc[i]
+                            ..text = listaNote[i].testo!,
                           validator: FormBuilderValidators.required(context),
                           decoration: InputDecoration(
                             alignLabelWithHint: true,
-                            labelStyle: TextStyle(decorationColor: Colors.grey[800]),
+                            labelStyle:
+                                TextStyle(decorationColor: Colors.grey[800]),
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             filled: true,
                             fillColor: Colors.grey.shade300,
                             labelText: "Inserisci testo...",
                             border: InputBorder.none,
                             disabledBorder: InputBorder.none,
-
                           ),
-                          onSubmitted: (value){
+                          onSubmitted: (value) {
                             formResults[item['title']] = listaNote;
                             _handleChanged();
                           },
-                          onChanged: (value){
-                            listaNote[i].testo=controllerNoteDesc[i].value.text;
+                          onChanged: (value) {
+                            listaNote[i].testo =
+                                controllerNoteDesc[i].value.text;
                           },
                         ),
                       ),
@@ -975,7 +1017,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               },
             ),
             Padding(
-              padding: EdgeInsets.only(top:4.h),
+              padding: EdgeInsets.only(top: 4.h),
               child: GestureDetector(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
@@ -984,7 +1026,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
                   await addNote("Titolo");
                   //noteController.clear();
-
                 },
                 child: Container(
                   height: 56.w,
@@ -999,12 +1040,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Aggiungi Campo", style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.15,
-                        )),
+                        Text("Aggiungi Campo",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.15,
+                            )),
                         Spacer(),
                         Icon(
                           Icons.unfold_more_outlined,
@@ -1026,28 +1068,18 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   Future<void> addNote(String titolo) async {
     listaNote.add(Nota(titolo: titolo, testo: ""));
     setState(() {});
-
   }
-
-
-
-
-
 
   dynamic getValueField(String field) {
     Map<String, dynamic> objectMap = selectObject.toMap();
 
-    return objectMap[field]??"";
+    return objectMap[field] ?? "";
   }
 
-  void setNewValueObject(String field,String value,String title) {
-
+  void setNewValueObject(String field, String value, String title) {
     Map<String, dynamic> objectMap = selectObject.toMap();
-    objectMap[field]=value;
-    selectObject= selectObject.fromMap(objectMap);
+    objectMap[field] = value;
+    selectObject = selectObject.fromMap(objectMap);
     formResults[title] = selectObject;
-
-
-
   }
 }
