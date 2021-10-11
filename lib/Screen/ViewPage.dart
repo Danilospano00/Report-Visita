@@ -8,6 +8,7 @@ import 'package:report_visita_danilo/Screen/ScegliAllerta.dart';
 import '../costanti.dart';
 import 'AccountEmpty.dart';
 import 'ListaAziende.dart';
+import 'Preferences.dart';
 
 class ViewPage extends StatefulWidget {
   @override

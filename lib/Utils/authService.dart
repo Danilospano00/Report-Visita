@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/Preferences.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
@@ -22,6 +23,9 @@ import '../costanti.dart';
 import 'horizontaldivider.dart';
 
 class AuthService {
+  Random rnd = new Random();
+  List<Azienda> listaAziende = mainStore!.box<Azienda>().getAll();
+
   handleAuth() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -150,7 +154,7 @@ class AuthService {
                         flex: 3,
                         child: Container(
                           child: AutoSizeText(
-                            "12",
+                            listaAziende.length.toString(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.red,
@@ -199,7 +203,11 @@ class AuthService {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Nome azienda o contatto",
+                                listaAziende.isNotEmpty
+                                    ? listaAziende[
+                                            rnd.nextInt(listaAziende.length)]
+                                        .toString()
+                                    : "Nome azienda o contatto",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   color: Colors.black,
@@ -316,7 +324,8 @@ class AuthService {
                                     padding: const EdgeInsets.only(
                                         left: 20.0, bottom: 20),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -343,8 +352,8 @@ class AuthService {
                                             );
                                           },
                                           child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 20.0),
                                             child: Text(
                                               "Ciao\nAccedi al tuo account",
                                               style: TextStyle(
@@ -425,24 +434,18 @@ class AuthService {
                             ),
                             recognizer: new TapGestureRecognizer()
                               ..onTap = () {
-
                                 final Uri _emailLaunchUri = Uri(
                                     scheme: 'mailto',
                                     path: emailAdress,
                                     queryParameters: {
-                                      'subject': subjectEmail ,
+                                      'subject': subjectEmail,
                                       'body': bodyEmail,
-                                    }
-                                );
+                                    });
 
-                                String url=_emailLaunchUri.toString();
-                                 url=url.replaceAll("+"," ");
-
+                                String url = _emailLaunchUri.toString();
+                                url = url.replaceAll("+", " ");
 
                                 launch(url);
-
-
-
                               },
                           ))
                         ],
@@ -499,7 +502,7 @@ class AuthService {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
-   /* try {
+    /* try {
       // Request credential for the currently signed in Apple account.
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [

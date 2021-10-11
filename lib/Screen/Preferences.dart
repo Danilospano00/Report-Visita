@@ -24,85 +24,95 @@ class PreferencesState extends State<Preferences> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding:  EdgeInsets.all(ScreenUtil().setHeight(16)),
-              child: AutoSizeText("Seleziona la tipologia di configurazione che vuoi usare",
+              padding: EdgeInsets.all(ScreenUtil().setHeight(16)),
+              child: AutoSizeText(
+                "Seleziona la tipologia di configurazione che vuoi usare",
                 maxLines: 2,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(20),
                   fontWeight: FontWeight.w400,
-
                 ),
               ),
             ),
             ListView.builder(
               shrinkWrap: true,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.w),
-                    child: Card(
-                      child: Padding(
-                        padding: EdgeInsets.all( 8.0.w),
-                        child: SizedBox(
-                          height: 100.w,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Nome Configurazione "+ (++index).toString(),
-                                style: TextStyle(
-                                  fontSize: 15.712129,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,),
-                                textAlign: TextAlign.left,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.w),
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0.w),
+                      child: SizedBox(
+                        height: 100.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Nome Configurazione " + (++index).toString(),
+                              style: TextStyle(
+                                fontSize: 15.712129,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
                               ),
-                              Spacer(),
-                              Text(
-                                "Descrizione configurazione "+ (index++).toString(),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 15.712129,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,),
+                              textAlign: TextAlign.left,
+                            ),
+                            Spacer(),
+                            Text(
+                              "Descrizione configurazione " +
+                                  (index++).toString(),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 15.712129,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
                               ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    _datiConfigurazione = "Stringa configurazione";
-                                    _saveConfiguration(_datiConfigurazione);
-                                    Navigator.pushReplacement(context,
-                                      MaterialPageRoute<void>(
-                                          builder: (context) => ScegliAllerta()),);
-                                  },
-                                  child: Text(
-                                    "Seleziona",
-                                      style: TextStyle(color: Colors.white,
-                                        fontSize: 15.712129,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,)
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.red, padding: EdgeInsets.all(4.w)),
-                                ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  _datiConfigurazione =
+                                      "Stringa configurazione";
+                                  _saveConfiguration(_datiConfigurazione);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (context) => ScegliAllerta(),
+                                    ),
+                                  );
+                                },
+                                child: Text("Seleziona",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15.712129,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                    padding: EdgeInsets.all(4.w)),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  );
-                },
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
     );
   }
-  Future<void> _saveConfiguration(String datiConfigurazione)async{
+
+  Future<void> _saveConfiguration(String datiConfigurazione) async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString("datiConfigurazione", datiConfigurazione.toString());
     print(prefs.getString("datiConfigurazione"));
-    }
+  }
 }
