@@ -1411,7 +1411,5 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       return  Image.asset("assets/png.png");
     if(extension==".jpg")
       return  Image.asset("assets/jpg.png");
-
-
   }
 }
