@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "447008297834-r8h3124cdk06grvqd2dcm5atfki7hcau.apps.googleusercontent.com",
+              "client_id": "447008297834-1qbtkihgh1k23e1ri8lu6qlnhfngr0jo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "it.reportvisita"
+                "bundle_id": "com.reportvisita.rv"
               }
             }
           ]

@@ -8,12 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:places_service/places_service.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Nota.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import '../objectbox.g.dart';
 import 'package:path/path.dart' as p;
+
 
 
 /*
@@ -63,13 +67,18 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   final noteKey = GlobalKey<FormBuilderState>();
   TextEditingController noteController = TextEditingController();
   File? fileSelected;
+  final  _placesService=PlacesService();
+  bool loadGeo=false;
 
   _GeneratorFromToJsonState(this.formItems);
 
   @override
   void initState() {
     super.initState();
+    _placesService.initialize(
+      apiKey: 'AIzaSyBPq6owQEXFDFuQXSq1wONp14g6fYL6Zwo',
 
+    );
     getContacts();
   }
 
@@ -435,7 +444,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   Widget build(BuildContext context) {
     return Container(
       child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: jsonToForm(),
       ),
     );
@@ -727,12 +736,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       });
                     },
                     child:Container(
-                      width: MediaQuery.of(context).size.width*.60,
-                      child: AutoSizeText(
-                        p.basename(fileSelected!.path),
-                        style: homePageMainTextStyle,
-                        overflow:TextOverflow.ellipsis ,
-                      ),
+                      //width: MediaQuery.of(context).size.width*.60,
+                      child: getFileIcon()
                     ),
                   ):Container()
                 ],
@@ -930,6 +935,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               ),
             ),
 
+
+
             //list builder
             ListView.builder(
                 addAutomaticKeepAlives: true,
@@ -938,6 +945,130 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, i) {
                   controller.add(TextEditingController());
+                  if(item['field'][i]['label']=="indirizzo")
+                    {
+                      return
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 4.h),
+                        child: TypeAheadField<dynamic>(
+                          onSuggestionSelected: (select) {
+
+                            // impostare indirizzo selezionato
+                            formResults[item['title']] = select;
+                            _handleChanged();
+                            setState(() {
+                              selectObject = select;
+                            });
+                          },
+                          hideSuggestionsOnKeyboardHide: false,
+                          suggestionsCallback: (String query) async {
+                            if(query!=""){
+                            List<PlacesAutoCompleteResult> autoCompleteSuggestions = await _placesService.getAutoComplete(query);
+                            return autoCompleteSuggestions;}
+                            else{
+                              return [];
+                            }
+                          },
+                          itemBuilder: (context, dynamic suggestions) {
+                            final suggestion = suggestions!;
+                            return ListTile(
+                              title: Text(suggestion.toString()),
+                            );
+                          },
+                          textFieldConfiguration: TextFieldConfiguration(
+                            controller: controller[i]
+                              ..text = selectObject != null
+                                  ? getValueField(item['field'][i]['label'])
+                                  : controller[i].value.text,
+                            onChanged: (value) {
+                              if (selectObject == null) {
+                                formResults[item['field'][i]['label']] =
+                                    controller[i].value.text;
+                              } else {
+                                setNewValueObject(item['field'][i]['label'],
+                                    controller[i].value.text, item['title']);
+                              }
+                            },
+                            onSubmitted: (value) {
+                              _handleChanged();
+                            },
+                            decoration: InputDecoration(
+                              labelText: item['field'][i]['label'],
+                              fillColor: Colors.grey.shade300,
+                              filled: true,
+                              labelStyle: homePageMainTextStyle,
+                              focusedBorder: formUnderlineInputBorder,
+                              prefixIcon: !loadGeo?Icon(
+                                Icons.map_sharp,
+                                color: Colors.black,
+                              ):SizedBox(
+                                  width: 30, height: 30,
+                                  child: CircularProgressIndicator(color:Colors.red,)),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.location_on),
+                                color: Colors.black,
+                                onPressed: () async {
+
+                                  setState(() {
+                                    loadGeo=true;
+                                  });
+
+                                    Position? _currentLocation;
+
+                                  LocationPermission permission = await Geolocator.checkPermission();
+                                  if (permission == LocationPermission.denied) {
+                                    permission = await Geolocator.requestPermission();
+                                    if (permission == LocationPermission.denied) {
+
+                                      return Future.error('Location permissions are denied');
+                                    }
+                                  }
+                                  if (permission == LocationPermission.deniedForever) {
+                                    // Permissions are denied forever, handle appropriately.
+                                    return Future.error(
+                                        'Location permissions are permanently denied, we cannot request permissions.');
+                                  }
+                                  // When we reach here, permissions are granted and we can
+                                  // continue accessing the position of the device.
+                                  _currentLocation=  await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+
+                                       if(_currentLocation!=null) {
+                                         List<
+                                             Placemark> placemarks = await placemarkFromCoordinates(
+                                             _currentLocation.latitude,
+                                             _currentLocation.longitude);
+                                         Placemark place = placemarks[0];
+                                         String address = '${place
+                                             .street}, ${place
+                                             .subLocality}, ${place
+                                             .locality}, ${place
+                                             .postalCode}, ${place.country}';
+                                         if (selectObject == null) {
+                                           formResults[item['field'][i]['label']] = address;
+                                               controller[i]..text=address;
+                                         } else {
+                                           controller[i]..text=address;
+                                           setNewValueObject(item['field'][i]['label'],
+                                               controller[i].value.text, item['title']);
+                                         }
+
+                                       }
+                                  setState(() {
+                                    loadGeo=false;
+                                  });
+
+
+
+                                 // recuperare adress dalla posizione attuale
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+
+                    }else{
                   return Padding(
                     padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(4)),
                     child: FormBuilderTextField(
@@ -979,10 +1110,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       ),
                     ),
                   );
+                }
                 })
           ],
         ));
       }
+
+
 
       if (item['type'] == "note") {
         if (listaNote.isEmpty || listaNote == null) {
@@ -1263,6 +1397,20 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       },
     );
 
+
+
+  }
+
+  getFileIcon() {
+    final extension = p.extension(fileSelected!.path);
+    if(extension==".pdf")
+      return  Image.asset("assets/pdf.png");
+    if(extension==".doc")
+      return  Image.asset("assets/doc.png");
+    if(extension==".png")
+      return  Image.asset("assets/png.png");
+    if(extension==".jpg")
+      return  Image.asset("assets/jpg.png");
 
 
   }

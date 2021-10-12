@@ -504,6 +504,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.1.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.14.2"
   frontend_server_client:
     dependency: transitive
     description:
@@ -567,6 +574,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  google_maps_webservice:
+    dependency: transitive
+    description:
+      name: google_maps_webservice
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.20-nullsafety.5"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -868,6 +882,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.0"
+  places_service:
+    dependency: "direct main"
+    description:
+      name: places_service
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+2"
   platform:
     dependency: transitive
     description:
@@ -1160,6 +1181,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.5"
   vector_math:
     dependency: transitive
     description:
