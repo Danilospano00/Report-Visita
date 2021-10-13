@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
-import 'package:report_visita_danilo/Screen/AggiungiEvento.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/HomePage.dart';
-import 'package:report_visita_danilo/Screen/ScegliAllerta.dart';
 
 import '../costanti.dart';
 import 'AccountEmpty.dart';
 import 'ListaAziende.dart';
-import 'Preferences.dart';
 
 class ViewPage extends StatefulWidget {
   @override

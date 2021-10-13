@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'HomePage.dart';
 import 'ViewPage.dart';
 
 class ScegliAllerta extends StatefulWidget {
@@ -300,6 +301,11 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                           recognizer: new TapGestureRecognizer()
                             ..onTap = () {
                               _aggiungiSoglieAllerta();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyHomePage()),
+                              );
                               Navigator.pop(context);
                               Navigator.pop(context);
                             },
