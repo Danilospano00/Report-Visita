@@ -948,6 +948,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   if(item['field'][i]['label']=="indirizzo")
                     {
                       return
+
+
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.h),
                         child: TypeAheadField<dynamic>(
@@ -1289,6 +1291,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     }
     return listWidget;
   }
+
+
+
 
   Future<void> addNote(String titolo) async {
     listaNote.add(Nota(titolo: titolo, testo: ""));
