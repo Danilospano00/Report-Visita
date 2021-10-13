@@ -11,6 +11,7 @@ import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/MyDrawer.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 import '../costanti.dart';
 import '../objectbox.g.dart';
@@ -65,9 +66,7 @@ class CalendarPageState extends State<CalendarPage> {
 
     listaEventi = mainStore!.box<Event>().getAll();
 
-    listaEventi.sort((a, b) {
-      return a.date!.compareTo(b.date!);
-    });
+
   }
 
   @override
@@ -90,163 +89,163 @@ class CalendarPageState extends State<CalendarPage> {
       body: loading
           ? CircularProgressIndicator()
           : StreamBuilder<List<Event>>(
-          stream: stream,
-          builder:
-              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if(snapshot.hasData){
-                listaEventi = snapshot.data;
-                }
-                else{
+              stream: stream,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  listaEventi = snapshot.data;
+                  listaEventi.sort((a, b) {
+                    return a.date!.compareTo(b.date!);
+                  });
+                } else {
                   listaEventi = [];
                 }
-            return Stack(
-              children: [
-                SafeArea(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: listaEventi.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ritornaDataEvento(index),
-                                  Column(
+                return Stack(
+                  children: [
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: listaEventi.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Row(
+                                      ritornaDataEvento(index),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            FormatDate.fromDateTimeToString(
-                                                listaEventi[index].date!,
-                                                "orario"),
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                fontSize: 12.075892.sp,
-                                                fontWeight: FontWeight.w400,
-                                                letterSpacing: 2.w),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                FormatDate.fromDateTimeToString(
+                                                    listaEventi[index].date!,
+                                                    "orario"),
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    fontSize: 12.075892.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    letterSpacing: 2.w),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 8.0),
+                                                child: calcolaLivelloAllerta(
+                                                    index),
+                                              ),
+                                            ],
                                           ),
                                           Padding(
-                                            padding:
-                                            EdgeInsets.only(left: 8.0),
-                                            child:
-                                            calcolaLivelloAllerta(index),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 8.h),
-                                        child: Text(
-                                          listaEventi[index]
-                                              .azienda
-                                              .target!
-                                              .nome
-                                              .toString(),
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: 20.126488.sp,
-                                            fontWeight: FontWeight.w400,
-                                            letterSpacing: 0.25,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${listaEventi[index].azienda
-                                                .target!.indirizzo.toString()}",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 12.075892.sp,
-                                              fontWeight: FontWeight.w400,
-                                              letterSpacing: 0.4,
-                                              color: Colors.grey[700],
-                                            ),
-                                          ),
-                                          ElevatedButton(
+                                            padding: EdgeInsets.only(top: 8.h),
                                             child: Text(
-                                              "map",
+                                              listaEventi[index]
+                                                  .azienda
+                                                  .target!
+                                                  .nome
+                                                  .toString(),
+                                              textAlign: TextAlign.left,
                                               style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  fontWeight:
-                                                  FontWeight.bold),
-                                            ),
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                              minimumSize: Size(18.w, 25.h),
-                                              primary: Colors.red,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                    32.0),
+                                                fontSize: 20.126488.sp,
+                                                fontWeight: FontWeight.w400,
+                                                letterSpacing: 0.25,
+                                                color: Colors.grey[700],
                                               ),
                                             ),
                                           ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "${listaEventi[index].azienda.target!.indirizzo.toString()}",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize: 12.075892.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  letterSpacing: 0.4,
+                                                  color: Colors.grey[700],
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                child: Text(
+                                                  "map",
+                                                  style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                onPressed: () {},
+                                                style: ElevatedButton.styleFrom(
+                                                  minimumSize: Size(18.w, 25.h),
+                                                  primary: Colors.red,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32.0),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
+                                      Divider(
+                                        height: 1,
+                                        thickness: 2,
+                                      ),
                                     ],
-                                  ),
-                                  Divider(
-                                    height: 1,
-                                    thickness: 2,
-                                  ),
-                                ],
-                              );
-                            },
+                                  );
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: ElevatedButton.icon(
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AggiungiEvento()));
-                      },
-                      label: Text(
-                        "EVENT",
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.25,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(125.w, 56.h),
-                        primary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            );
-          }
-      ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: ElevatedButton.icon(
+                          icon: Icon(
+                            Icons.add,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AggiungiEvento()));
+                          },
+                          label: Text(
+                            "EVENT",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.25,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(125.w, 56.h),
+                            primary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
     );
   }
 
@@ -255,7 +254,7 @@ class CalendarPageState extends State<CalendarPage> {
       if (listaEventi[i]
           .date!
           .add(Duration(
-          days: int.parse(prefs.getString("prioritaAlta") ?? "21")))
+              days: int.parse(prefs.getString("prioritaAlta") ?? "21")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -264,7 +263,7 @@ class CalendarPageState extends State<CalendarPage> {
       } else if (listaEventi[i]
           .date!
           .add(Duration(
-          days: int.parse(prefs.getString("prioritaMedia") ?? "14")))
+              days: int.parse(prefs.getString("prioritaMedia") ?? "14")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -436,7 +435,23 @@ class CalendarPageState extends State<CalendarPage> {
   }
 
   Widget ritornaDataEvento(int i) {
-    DateTime date = listaEventi[i].date!;
+    //DateTime date = DateFormat.yMd('en_US').parse(listaEventi[i].date!.day.toString() + listaEventi[i].date!.month.toString()+listaEventi[i].date!.year.toString());
+
+    String dateTime = "${listaEventi[i].date!.day.toString()}" +
+        "-" +
+        listaEventi[i].date!.month.toString() +
+        "-" +
+        "${listaEventi[i].date!.year.toString()}";
+
+    DateTime date = DateFormat('yyyy-MM-dd').parse(dateTime);
+   /* String datee = listaEventi.length - 1 > 0
+        ? DateFormat('dd-MM-y').parse(listaEventi[i - 1].date!.toString())
+            as String
+        : "1";*/
+
+    print(date);
+    /*DateTime dateTime = DateTime.parse(listaEventi[i].date!.toString());
+    DateTime date = */
     if (i == 0) {
       dataGiaStampata = true;
       return Padding(
@@ -451,7 +466,13 @@ class CalendarPageState extends State<CalendarPage> {
           ),
         ),
       );
-    } else if (!dataGiaStampata || date != listaEventi[i - 1].date!) {
+    } else if (!dataGiaStampata ||
+        date !=
+            DateFormat('dd-MM-yyyy').parse(listaEventi[i - 1].date!.toString())) {
+      String datee = listaEventi.length - 1 > 0
+          ? DateFormat('dd-MM-yyyy').parse(listaEventi[i - 1].date!.toString()).toString()
+          : "1";
+      print(datee);
       return Padding(
         padding: EdgeInsets.only(top: 73.h, bottom: 7.h),
         child: AutoSizeText(
