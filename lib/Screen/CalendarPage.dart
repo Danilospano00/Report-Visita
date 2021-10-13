@@ -12,6 +12,7 @@ import 'package:report_visita_danilo/Utils/MyDrawer.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../costanti.dart';
 import '../objectbox.g.dart';
 import 'AggiungiEvento.dart';
 
@@ -22,6 +23,8 @@ class CalendarPage extends StatefulWidget {
 
 class CalendarPageState extends State<CalendarPage> {
   DateTime currentDate = DateTime.now();
+
+  late Stream<List<Event>> stream;
 
   List<Event> listaEventi = [];
   int contagiorni = 0;
@@ -44,67 +47,23 @@ class CalendarPageState extends State<CalendarPage> {
       prefs = value;
       setState(() {
         loading = false;
+
+        stream = mainStore!
+            .box<Event>()
+            .query()
+            .watch(triggerImmediately: true)
+            .map((query) => query.find());
       });
     });
 
-    Event event = new Event();
-    event.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    var azienda1 = new Azienda(
-        nome: "Azienda test 1", indirizzo: "via dell azienda", citta: "Roma");
-    event.azienda.target = azienda1;
-    listaEventi.add(event);
+    /*  Query<Event> query = mainStore!
+        .box<Event>()
+        .query(Event_.date.between(DateTime.now().millisecond,
+            DateTime.now().add(Duration(days: 365)).millisecond))
+        .build();
+    listaEventi = query.find();*/
 
-    Event event8 = new Event();
-    event8.date = new DateTime.utc(2021, 9, 30, 10, 30);
-    var azienda8 = new Azienda(
-        nome: "Azienda test 2", indirizzo: "via dell azienda", citta: "Roma");
-    event8.azienda.target = azienda8;
-    listaEventi.add(event8);
-
-    Event event2 = new Event();
-    event2.date = new DateTime.utc(2022, 12, 17, 10, 30);
-    var azienda2 = new Azienda(
-        nome: "Azienda test 3",
-        indirizzo: "Via Nome Lungo o Corto, 123 ",
-        citta: "Roma");
-    event2.azienda.target = azienda2;
-    listaEventi.add(event2);
-
-    Event event3 = new Event();
-    event3.date = new DateTime.utc(2021, 9, 24, 10, 30);
-    var azienda3 = new Azienda(
-        nome: "Azienda test 4",
-        indirizzo: "Via Nome Lungo o Corto, 123 ",
-        citta: "Roma");
-    event3.azienda.target = azienda3;
-    listaEventi.add(event3);
-
-    Event event9 = new Event();
-    event9.date = new DateTime.utc(2021, 9, 24, 10, 30);
-    var azienda9 = new Azienda(
-        nome: "Azienda test 5",
-        indirizzo: "Via Nome Lungo o Corto, 123 ",
-        citta: "Roma");
-    event9.azienda.target = azienda9;
-    listaEventi.add(event9);
-
-    Event event4 = new Event();
-    event4.date = new DateTime.utc(2021, 10, 5, 10, 30);
-    var azienda4 = new Azienda(
-        nome: "Azienda test 6",
-        indirizzo: "Via Nome Lungo o Corto, 123 ",
-        citta: "Roma");
-    event4.azienda.target = azienda4;
-    listaEventi.add(event4);
-
-    Event event5 = new Event();
-    event5.date = new DateTime.utc(2021, 10, 23, 10, 30);
-    var azienda5 = new Azienda(
-        nome: "Azienda test 6",
-        indirizzo: "Via Nome Lungo o Corto, 123 ",
-        citta: "Roma");
-    event5.azienda.target = azienda5;
-    listaEventi.add(event5);
+    listaEventi = mainStore!.box<Event>().getAll();
 
     listaEventi.sort((a, b) {
       return a.date!.compareTo(b.date!);
@@ -130,7 +89,17 @@ class CalendarPageState extends State<CalendarPage> {
       endDrawer: MyDrawer(),
       body: loading
           ? CircularProgressIndicator()
-          : Stack(
+          : StreamBuilder<List<Event>>(
+          stream: stream,
+          builder:
+              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if(snapshot.hasData){
+                listaEventi = snapshot.data;
+                }
+                else{
+                  listaEventi = [];
+                }
+            return Stack(
               children: [
                 SafeArea(
                   child: SingleChildScrollView(
@@ -150,7 +119,7 @@ class CalendarPageState extends State<CalendarPage> {
                                   ritornaDataEvento(index),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -165,8 +134,10 @@ class CalendarPageState extends State<CalendarPage> {
                                                 letterSpacing: 2.w),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 8.0),
-                                            child: calcolaLivelloAllerta(index),
+                                            padding:
+                                            EdgeInsets.only(left: 8.0),
+                                            child:
+                                            calcolaLivelloAllerta(index),
                                           ),
                                         ],
                                       ),
@@ -189,10 +160,11 @@ class CalendarPageState extends State<CalendarPage> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${listaEventi[index].azienda.target!.indirizzo.toString()} - ${listaEventi[index].azienda.target!.citta.toString()}",
+                                            "${listaEventi[index].azienda
+                                                .target!.indirizzo.toString()}",
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
                                               fontSize: 12.075892.sp,
@@ -206,7 +178,8 @@ class CalendarPageState extends State<CalendarPage> {
                                               "map",
                                               style: TextStyle(
                                                   fontSize: 10.sp,
-                                                  fontWeight: FontWeight.bold),
+                                                  fontWeight:
+                                                  FontWeight.bold),
                                             ),
                                             onPressed: () {},
                                             style: ElevatedButton.styleFrom(
@@ -214,7 +187,8 @@ class CalendarPageState extends State<CalendarPage> {
                                               primary: Colors.red,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(32.0),
+                                                BorderRadius.circular(
+                                                    32.0),
                                               ),
                                             ),
                                           ),
@@ -245,7 +219,10 @@ class CalendarPageState extends State<CalendarPage> {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AggiungiEvento()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AggiungiEvento()));
                       },
                       label: Text(
                         "EVENT",
@@ -267,7 +244,9 @@ class CalendarPageState extends State<CalendarPage> {
                   ),
                 ),
               ],
-            ),
+            );
+          }
+      ),
     );
   }
 
@@ -276,7 +255,7 @@ class CalendarPageState extends State<CalendarPage> {
       if (listaEventi[i]
           .date!
           .add(Duration(
-              days: int.parse(prefs.getString("prioritaAlta") ?? "21")))
+          days: int.parse(prefs.getString("prioritaAlta") ?? "21")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,
@@ -285,7 +264,7 @@ class CalendarPageState extends State<CalendarPage> {
       } else if (listaEventi[i]
           .date!
           .add(Duration(
-              days: int.parse(prefs.getString("prioritaMedia") ?? "14")))
+          days: int.parse(prefs.getString("prioritaMedia") ?? "14")))
           .isAfter(DateTime.now())) {
         return Icon(
           Icons.circle,

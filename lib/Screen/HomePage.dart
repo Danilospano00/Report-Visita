@@ -101,36 +101,38 @@ class MyHomePageState extends State<MyHomePage> {
             ))
           : Padding(
               padding: EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w),
-              child: SingleChildScrollView(
-                child: FormBuilder(
-                  key: formKeyBody,
-                  child: Stack(
-                    children: [
-                      /*Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                        child: Row(
-                          children: [
-                            ,
-                          ],
-                        ),
-                      ),*/
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: FormBuilder(
+                    key: formKeyBody,
+                    child: Stack(
+                      children: [
+                        /*Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12.h),
+                          child: Row(
+                            children: [
+                              ,
+                            ],
+                          ),
+                        ),*/
 
-                      Padding(
-                        padding: EdgeInsets.only(top:100),
-                        child: GeneratorFormToJson(
-                          store: _store,
-                          form: configurazione,
-                          onChanged: (dynamic value) {
-                            print(value);
-                            setState(() {
-                              response = value;
-                            });
-                            print(response.toString());
-                          },
+                        Padding(
+                          padding: EdgeInsets.only(top:50),
+                          child: GeneratorFormToJson(
+                            store: _store,
+                            form: configurazione,
+                            onChanged: (dynamic value) {
+                              print(value);
+                              setState(() {
+                                response = value;
+                              });
+                              print(response.toString());
+                            },
+                          ),
                         ),
-                      ),
-                      cambiaAppBar(),
-                    ],
+                        cambiaAppBar(),
+                      ],
+                    ),
                   ),
                 ),
               ),

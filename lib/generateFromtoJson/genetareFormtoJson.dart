@@ -479,10 +479,18 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 }
                 return null;
               },
+
+              minLines: item['type'] == "multiline" ? 5 : 1,
               maxLines: item['type'] == "multiline" ? 10 : 1,
               obscureText: item['type'] == "password" ? true : false,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                labelStyle: TextStyle(
+                  fontSize: 15.712129.sp,
+                  color: Colors.red,
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red)),
+               // contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 labelText: item['label'],
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0)),

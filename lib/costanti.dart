@@ -107,7 +107,6 @@ String configurazioneAggiuntaEvento=json.encode([
     "hint": "Nome Cliente",
     "entity": "Azienda",
     "field": [
-      {"label": "indirizzo", "required": true},
     ],
     "empty": false,
     "validation": true
@@ -119,7 +118,9 @@ String configurazioneAggiuntaEvento=json.encode([
     "required": "yes"
   },
   {
-    "title": "multiline",
+    "title": "descrizione",
     "type": "multiline",
+    "label": "Descrizione",
+    "required": "yes",
   },
 ]);

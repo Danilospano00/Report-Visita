@@ -37,11 +37,10 @@ class AuthService {
             List<Azienda> listaAziende = mainStore!.box<Azienda>().getAll();
 
 
-            Query<Event> query = mainStore!.box<Event>().query(Event_.date.equals(DateTime.now().millisecond)).build();
+           Query<Event> query = mainStore!.box<Event>().query(Event_.date.equals(DateTime.now().millisecond)).build();
             List<Event>  meeting=query.find();
             query.close();
             int meet=meeting.length;
-
 
 
 
@@ -82,13 +81,16 @@ class AuthService {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
-                                  child: Text(
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.5,
+                                  padding: EdgeInsets.only(left: 20.0),
+                                  child: AutoSizeText(
                                     user.email.toString(),
+                                    maxLines: 2,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
+                                        //overflow: TextOverflow.ellipsis,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -208,8 +210,7 @@ class AuthService {
                               Text(
                                 listaAziende.isNotEmpty
                                     ? listaAziende[
-                                            rnd.nextInt(listaAziende.length)]
-                                        .toString()
+                                            rnd.nextInt(listaAziende.length)].nome!
                                     : "Nome azienda o contatto",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
