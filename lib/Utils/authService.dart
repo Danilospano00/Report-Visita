@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/Preferences.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
@@ -20,17 +21,30 @@ import 'package:url_launcher/url_launcher.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../costanti.dart';
+import '../objectbox.g.dart';
 import 'horizontaldivider.dart';
 
 class AuthService {
-  Random rnd = new Random();
-  List<Azienda> listaAziende = mainStore!.box<Azienda>().getAll();
+
 
   handleAuth() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
+            Random rnd = new Random();
+
+            List<Azienda> listaAziende = mainStore!.box<Azienda>().getAll();
+
+
+            Query<Event> query = mainStore!.box<Event>().query(Event_.date.equals(DateTime.now().millisecond)).build();
+            List<Event>  meeting=query.find();
+            query.close();
+            int meet=meeting.length;
+
+
+
+
             dynamic user = snapshot.data;
             return Card(
               margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -83,7 +97,7 @@ class AuthService {
                           ),
                         ),
                       ),
-                      Container(
+                     /* Container(
                         height: 140.h,
                         decoration: BoxDecoration(color: Colors.transparent),
                         child: Align(
@@ -99,7 +113,7 @@ class AuthService {
                             child: Icon(Icons.add),
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                   Padding(
@@ -115,7 +129,7 @@ class AuthService {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  "Hai 3 meeting oggi",
+                                  "Hai ${meet} meeting oggi",
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.bold,
@@ -169,23 +183,12 @@ class AuthService {
                         flex: 3,
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Allerte attive",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text("Dall'ultimo sync\ndel 03/09 alle 15:30",
-                                    overflow: TextOverflow.visible,
-                                    style: TextStyle(fontSize: 18)),
-                              ],
-                            ),
+                            Text(
+                              "Aziende",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            )
                           ],
                         ),
                       ),
