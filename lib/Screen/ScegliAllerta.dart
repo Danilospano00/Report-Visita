@@ -39,281 +39,292 @@ class ScegliAllertaState extends State<ScegliAllerta> {
             padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: FormBuilder(
               key: formKeyScegliAllerta,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil().setHeight(40),
-                        left: ScreenUtil().setWidth(16),
-                        right: ScreenUtil().setWidth(16)),
-                    child: AutoSizeText(
-                      "Definisci le soglie di allerta",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.9092158,
-                          color: Colors.grey[700]),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(onPressed: (){
+                        Navigator.pop(context);
+                      },
+
+                          icon:Icon(Icons.arrow_back,size: 36,),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16.h),
-                    child: AutoSizeText(
-                      "Seleziona l'intervallo di tempo che fà passare il report alla fascia di allerta successiva. Se non definiti saranno usati i valori preimpostati dal sistema.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 0.9092158,
-                          color: Colors.grey[700]),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: ScreenUtil().setHeight(20),
+                          left: ScreenUtil().setWidth(16),
+                          right: ScreenUtil().setWidth(16)),
+                      child: AutoSizeText(
+                        "Definisci le soglie di allerta",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.9092158,
+                            color: Colors.grey[700]),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 40.h),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0.w),
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.green,
+                    Padding(
+                      padding: EdgeInsets.only(top: 16.h),
+                      child: AutoSizeText(
+                        "Seleziona l'intervallo di tempo che fà passare il report alla fascia di allerta successiva. Se non definiti saranno usati i valori preimpostati dal sistema.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0.9092158,
+                            color: Colors.grey[700]),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 40.h),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: Icon(
+                              Icons.circle,
+                              color: Colors.green,
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: 50.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(color: Colors.grey[300]),
-                          child: Center(
-                            child: Text(
-                              _valoreSoglia1.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 20.sp,
+                          Container(
+                            width: 50.w,
+                            height: 30.h,
+                            decoration: BoxDecoration(color: Colors.grey[300]),
+                            child: Center(
+                              child: Text(
+                                _valoreSoglia1.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20.sp,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.north_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              ++_valoreSoglia1;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.south_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              if (_valoreSoglia1 > 0) --_valoreSoglia1;
-                            });
-                          },
-                        ),
-                        Container(
-                          width: 120.w,
-                          child: FormBuilderDropdown(
-                            decoration: InputDecoration(
-                              labelText: 'Giorni',
-                              labelStyle: TextStyle(color: Colors.black),
-                              alignLabelWithHint: true,
-                              floatingLabelStyle:
-                                  TextStyle(color: Colors.transparent),
+                          IconButton(
+                            icon: Icon(
+                              Icons.north_outlined,
                             ),
-                            items: scegliPeriodoSoglia
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            name: 'scegliAllerta1',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    endIndent: 16.w,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.h),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0.w),
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.yellow,
-                          ),
-                        ),
-                        Container(
-                          width: 50.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(color: Colors.grey[300]),
-                          child: Center(
-                            child: Text(
-                              _valoreSoglia2.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 20.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.north_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              ++_valoreSoglia2;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.south_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              if (_valoreSoglia2 > 0) --_valoreSoglia2;
-                            });
-                          },
-                        ),
-                        Container(
-                          width: 120.w,
-                          child: FormBuilderDropdown(
-                            decoration: InputDecoration(
-                              labelText: 'Giorni',
-                              labelStyle: TextStyle(color: Colors.black),
-                              alignLabelWithHint: true,
-                              floatingLabelStyle:
-                                  TextStyle(color: Colors.transparent),
-                            ),
-                            items: scegliPeriodoSoglia
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            name: 'scegliAllerta2',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    endIndent: 16.w,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.h),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.red,
-                          ),
-                        ),
-                        Container(
-                          width: 50.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(color: Colors.grey[300]),
-                          child: Center(
-                            child: Text(
-                              _valoreSoglia3.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 20.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.north_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              ++_valoreSoglia3;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.south_outlined,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              if (_valoreSoglia3 > 0) --_valoreSoglia3;
-                            });
-                          },
-                        ),
-                        Container(
-                          width: 120.w,
-                          child: FormBuilderDropdown(
-                            decoration: InputDecoration(
-                              labelText: 'Giorni',
-                              labelStyle: TextStyle(color: Colors.black),
-                              alignLabelWithHint: true,
-                              floatingLabelStyle:
-                                  TextStyle(color: Colors.transparent),
-                            ),
-                            items: scegliPeriodoSoglia
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            name: 'scegliAllerta3',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    endIndent: 16.w,
-                    indent: 16.w,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 85.h),
-                    child: Container(
-                      padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
-                      alignment: Alignment.bottomRight,
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'Conferma',
-                          style: new TextStyle(
-                              fontSize: ScreenUtil().setSp(18),
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey[700]),
-                          recognizer: new TapGestureRecognizer()
-                            ..onTap = () {
-                              _aggiungiSoglieAllerta();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyHomePage()),
-                              );
-                              Navigator.pop(context);
-                              Navigator.pop(context);
+                            onPressed: () {
+                              setState(() {
+                                ++_valoreSoglia1;
+                              });
                             },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.south_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (_valoreSoglia1 > 0) --_valoreSoglia1;
+                              });
+                            },
+                          ),
+                          Container(
+                            width: 120.w,
+                            child: FormBuilderDropdown(
+                              decoration: InputDecoration(
+                                labelText: 'Giorni',
+                                labelStyle: TextStyle(color: Colors.black),
+                                alignLabelWithHint: true,
+                                floatingLabelStyle:
+                                    TextStyle(color: Colors.transparent),
+                              ),
+                              items: scegliPeriodoSoglia
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              name: 'scegliAllerta1',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      endIndent: 16.w,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.h),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: Icon(
+                              Icons.circle,
+                              color: Colors.yellow,
+                            ),
+                          ),
+                          Container(
+                            width: 50.w,
+                            height: 30.h,
+                            decoration: BoxDecoration(color: Colors.grey[300]),
+                            child: Center(
+                              child: Text(
+                                _valoreSoglia2.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.north_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                ++_valoreSoglia2;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.south_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (_valoreSoglia2 > 0) --_valoreSoglia2;
+                              });
+                            },
+                          ),
+                          Container(
+                            width: 120.w,
+                            child: FormBuilderDropdown(
+                              decoration: InputDecoration(
+                                labelText: 'Giorni',
+                                labelStyle: TextStyle(color: Colors.black),
+                                alignLabelWithHint: true,
+                                floatingLabelStyle:
+                                    TextStyle(color: Colors.transparent),
+                              ),
+                              items: scegliPeriodoSoglia
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              name: 'scegliAllerta2',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      endIndent: 16.w,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.h),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              Icons.circle,
+                              color: Colors.red,
+                            ),
+                          ),
+                          Container(
+                            width: 50.w,
+                            height: 30.h,
+                            decoration: BoxDecoration(color: Colors.grey[300]),
+                            child: Center(
+                              child: Text(
+                                _valoreSoglia3.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.north_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                ++_valoreSoglia3;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.south_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (_valoreSoglia3 > 0) --_valoreSoglia3;
+                              });
+                            },
+                          ),
+                          Container(
+                            width: 120.w,
+                            child: FormBuilderDropdown(
+                              decoration: InputDecoration(
+                                labelText: 'Giorni',
+                                labelStyle: TextStyle(color: Colors.black),
+                                alignLabelWithHint: true,
+                                floatingLabelStyle:
+                                    TextStyle(color: Colors.transparent),
+                              ),
+                              items: scegliPeriodoSoglia
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              name: 'scegliAllerta3',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      endIndent: 16.w,
+                      indent: 16.w,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 85.h),
+                      child: Container(
+                        padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
+                        alignment: Alignment.bottomRight,
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'Conferma',
+                            style: new TextStyle(
+                                fontSize: ScreenUtil().setSp(18),
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey[700]),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () {
+                                _aggiungiSoglieAllerta();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyHomePage()),
+                                );
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

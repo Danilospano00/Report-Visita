@@ -245,7 +245,7 @@ class CalendarPageState extends State<CalendarPage> {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context) => AggiungiEvento()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AggiungiEvento()));
                       },
                       label: Text(
                         "EVENT",
