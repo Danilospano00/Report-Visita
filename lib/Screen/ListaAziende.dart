@@ -139,7 +139,12 @@ class ListaAziendeState extends State<ListaAziende> {
       resizeToAvoidBottomInset: false,
       key: key,
       body: listaAziende2.length == 0
-          ? Center(child: Text("Non ci sono aziende", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),))
+          ? Center(
+              child: Text(
+              "Non ci sono aziende",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ))
           : !hasBeenInitialized && !locationInitialized
               ? Center(child: CircularProgressIndicator(color: Colors.red))
               : Stack(
@@ -273,9 +278,15 @@ class ListaAziendeState extends State<ListaAziende> {
               indexBarWidth: 12.h,
               indexBarAlignment: Alignment.topRight,
               indexBarOptions: IndexBarOptions(
+                downDecoration: BoxDecoration(
+                  color: Colors.red,
+                  border: Border.all(color: Colors.red, width: 0.0),
+                  borderRadius: new BorderRadius.all(
+                    Radius.elliptical(100, 100),
+                  ),
+                ),
                 needRebuild: true,
                 ignoreDragCancel: false,
-                downColor: Colors.red,
                 selectTextStyle: TextStyle(color: Colors.white),
                 indexHintDecoration: BoxDecoration(
                   color: Colors.red,
@@ -414,7 +425,9 @@ class ListaAziendeState extends State<ListaAziende> {
                         alignment: Alignment.bottomRight,
                         child: Icon(
                           Icons.circle,
-                          color: item.azienda.events.isNotEmpty? Colors.lightGreenAccent:Colors.blue,
+                          color: item.azienda.events.isNotEmpty
+                              ? Colors.lightGreenAccent
+                              : Colors.blue,
                           size: 16,
                         ),
                       ),

@@ -13,6 +13,7 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../objectbox.g.dart';
+import 'AggiungiEvento.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -244,7 +245,7 @@ class CalendarPageState extends State<CalendarPage> {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        //showAddEvento();
+                        //  Navigator.push(context, MaterialPageRoute(builder: (context) => AggiungiEvento()));
                       },
                       label: Text(
                         "EVENT",
