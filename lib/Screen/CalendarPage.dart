@@ -64,7 +64,7 @@ class CalendarPageState extends State<CalendarPage> {
         .build();
     listaEventi = query.find();*/
 
-    listaEventi = mainStore!.box<Event>().getAll();
+   // listaEventi = mainStore!.box<Event>().getAll();
 
 
   }
