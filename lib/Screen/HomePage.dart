@@ -11,6 +11,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
@@ -216,6 +217,16 @@ class MyHomePageState extends State<MyHomePage> {
       _showSnackBar("Campi mancanti");
       return;
     }
+
+    Event evento = Event();
+    evento.date = DateTime.parse(response["prossimaVisita"]);
+    evento.azienda.target =  _report.azienda.target;
+    evento.referente.addAll(_report.referente);
+    int idEvento = mainStore!.box<Event>().put(evento);
+
+    evento = mainStore!.box<Event>().get(idEvento)!;
+    _report.azienda.target!.events.add(evento);
+
 
     int count = await mainStore!.box<Report>().put(_report);
     print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');

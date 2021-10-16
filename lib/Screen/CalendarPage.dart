@@ -68,6 +68,10 @@ class CalendarPageState extends State<CalendarPage> {
             DateTime.now().add(Duration(days: 365)).millisecond))
         .build();
     listaEventi = query.find();*/
+
+   // listaEventi = mainStore!.box<Event>().getAll();
+
+
   }
 
   @override

@@ -47,6 +47,8 @@ class SplashPage extends StatelessWidget {
               (route) => false,
         );
 
+      }else{
+        print("ERROR permission");
       }
 
     } catch (e) {
