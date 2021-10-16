@@ -29,8 +29,6 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-
-
         children: [
           ListTile(
             title:  AutoSizeText('Filtra per urgenza',

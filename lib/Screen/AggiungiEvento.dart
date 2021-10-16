@@ -129,6 +129,11 @@ class AggiungiEventoState extends State<AggiungiEvento> {
       _showSnackBar("Campi mancanti");
       return;
     }
+    if (response["dateCompilazione"] != null)
+      _report.compilazione = DateTime.parse(response["dateCompilazione"]);
+    else {
+      _report.compilazione = DateTime.now();
+    }
     if (response["prossimaVisita"] != null)
       _report.prossimaVisita = DateTime.parse(response["prossimaVisita"]);
     else {

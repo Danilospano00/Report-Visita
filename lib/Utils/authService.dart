@@ -25,8 +25,6 @@ import '../objectbox.g.dart';
 import 'horizontaldivider.dart';
 
 class AuthService {
-
-
   handleAuth() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -36,17 +34,17 @@ class AuthService {
 
             List<Azienda> listaAziende = mainStore!.box<Azienda>().getAll();
 
-
-           Query<Event> query = mainStore!.box<Event>().query(Event_.date.equals(DateTime.now().millisecond)).build();
-            List<Event>  meeting=query.find();
+            Query<Event> query = mainStore!
+                .box<Event>()
+                .query(Event_.date.equals(DateTime.now().millisecond))
+                .build();
+            List<Event> meeting = query.find();
             query.close();
-            int meet=meeting.length;
-
-
+            int meet = meeting.length;
 
             dynamic user = snapshot.data;
             return Card(
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
+              margin: EdgeInsets.only(left: 16.w, right: 16.w),
               child: Column(
                 children: [
                   Stack(
@@ -82,7 +80,8 @@ class AuthService {
                                   ),
                                 ),
                                 Container(
-                                  width: MediaQuery.of(context).size.width*0.5,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
                                   padding: EdgeInsets.only(left: 20.0),
                                   child: AutoSizeText(
                                     user.email.toString(),
@@ -99,7 +98,7 @@ class AuthService {
                           ),
                         ),
                       ),
-                     /* Container(
+                      /* Container(
                         height: 140.h,
                         decoration: BoxDecoration(color: Colors.transparent),
                         child: Align(
@@ -138,7 +137,7 @@ class AuthService {
                                       fontSize: 18),
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 2)),
+                                    padding: EdgeInsets.only(top: 2, bottom:2)),
                                 Text(
                                   "Controlla il planner",
                                   style: TextStyle(
@@ -188,8 +187,7 @@ class AuthService {
                             Text(
                               "Aziende",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           ],
                         ),
@@ -210,7 +208,8 @@ class AuthService {
                               Text(
                                 listaAziende.isNotEmpty
                                     ? listaAziende[
-                                            rnd.nextInt(listaAziende.length)].nome!
+                                            rnd.nextInt(listaAziende.length)]
+                                        .nome!
                                     : "Nome azienda o contatto",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
@@ -220,7 +219,7 @@ class AuthService {
                                 ),
                               ),
                               Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2.h)),
+                                  padding: EdgeInsets.only(top: 2.h, bottom: 2.h)),
                               Text(
                                 "è passato olte un mese dall'ultimo incontro...",
                                 textAlign: TextAlign.start,
@@ -263,7 +262,7 @@ class AuthService {
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           primary: Colors.red,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.only(right: 20,left:20),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
                           ),
@@ -309,7 +308,7 @@ class AuthService {
                 Expanded(
                   child: SingleChildScrollView(
                     child: Card(
-                      margin: EdgeInsets.symmetric(horizontal: 16.w),
+                      margin: EdgeInsets.only(right: 16.w, left: 16.w),
                       child: Column(
                         children: [
                           Stack(

@@ -33,7 +33,7 @@ class ScegliAllertaState extends State<ScegliAllerta> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 52.w),
+        padding: EdgeInsets.only(left: 16.w,right: 16.w, top: 52.h,bottom: 52.h),
         child: Card(
           child: Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -317,7 +317,7 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                                       builder: (context) => MyHomePage()),
                                 );
                                 Navigator.pop(context);
-                                Navigator.pop(context);
+
                               },
                           ),
                         ),

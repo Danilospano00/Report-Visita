@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -19,15 +22,19 @@ class Preferences extends StatefulWidget {
 class PreferencesState extends State<Preferences> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late String _datiConfigurazione;
+  late String configurazioneFormDiEsempio;
 
 
-  late String configurazione;
+
+  dynamic configurazioniPreferences;
+
 
   @override
   initState() {
     super.initState();
     setState(() {
-      configurazione = configPerConfigurazioniUtente;
+      configurazioneFormDiEsempio = configPerConfigurazioniUtente;
+      configurazioniPreferences = configPreferences;
     });
   }
 
@@ -51,11 +58,11 @@ class PreferencesState extends State<Preferences> {
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: configPreferences.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.w),
+                      EdgeInsets.only(left: 16.0.w, top: 8.h,bottom: 16.h, right: 16.w ),
                   child: Card(
                     child: Padding(
                       padding: EdgeInsets.all(8.0.w),
@@ -65,8 +72,14 @@ class PreferencesState extends State<Preferences> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            configPreferences[index].containKey("icon")?
+                            CircleAvatar(
+                              child: Image.asset("assets/${configPreferences[index]['icon']}.png"),
+                            ):
+                                Container(),
                             Text(
-                              "Nome Configurazione " + (++index).toString(),
+                              configPreferences[index]['name'],
+                              //"Nome Configurazione " + (++index).toString(),
                               style: TextStyle(
                                 fontSize: 15.712129,
                                 fontWeight: FontWeight.w700,
@@ -76,8 +89,7 @@ class PreferencesState extends State<Preferences> {
                             ),
                             Spacer(),
                             Text(
-                              "Descrizione configurazione " +
-                                  (index++).toString(),
+                              configPreferences[index]['description'],
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 15.712129,
@@ -89,13 +101,11 @@ class PreferencesState extends State<Preferences> {
                               alignment: Alignment.bottomRight,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  _datiConfigurazione =
-                                      "Stringa configurazione";
-                                  _saveConfiguration(_datiConfigurazione);
+                                  _saveConfiguration("Stringa configurazione");
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute<void>(
-                                      builder: (context) => _mostraConfigurazione("Esempio ruolo del Venditore"),
+                                      builder: (context) => _mostraConfigurazione(configPreferences[index]['name'], json.encode(configPreferences[index]['jsonConfig'])),
                                     ),
                                   );
                                 },
@@ -131,7 +141,7 @@ class PreferencesState extends State<Preferences> {
     print(prefs.getString("datiConfigurazione"));
   }
 
-  Widget _mostraConfigurazione(String titolo){
+  Widget _mostraConfigurazione(String titolo, String configurazione){
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -197,4 +207,7 @@ class PreferencesState extends State<Preferences> {
       ),
     );
   }
+
+
+
 }

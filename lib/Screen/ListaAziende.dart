@@ -369,7 +369,7 @@ class ListaAziendeState extends State<ListaAziende> {
               shadowColor: Colors.grey,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
-              margin: EdgeInsets.symmetric(vertical: 8.h),
+              margin: EdgeInsets.only(top: 8.h, bottom: 8.h),
               child: Container(
                 height: 60.h,
                 child: Column(

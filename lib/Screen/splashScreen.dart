@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:report_visita_danilo/Screen/ViewPage.dart';
+
+import '../costanti.dart';
 
 class SplashPage extends StatelessWidget {
 
@@ -29,6 +33,10 @@ class SplashPage extends StatelessWidget {
       await remoteConfig.fetchAndActivate();
       String urlremote = remoteConfig.getString("url");
       print(urlremote);
+      dynamic configurazioniPreferences = remoteConfig.getString("configurazioni");
+
+      configPreferences = await json.decode(configurazioniPreferences);
+      print("JSON CONFIGURAZIONI PREFERENCES : " + configPreferences.toString());
 
       final PermissionStatus permissionStatus = await _getPermission();
       if (permissionStatus == PermissionStatus.granted) {
@@ -43,7 +51,10 @@ class SplashPage extends StatelessWidget {
 
     } catch (e) {
       print("ERROR");
-    }
+      print(e.toString());
+    print("Configurazioni non prese");
+
+  }
   }
 
   Future<PermissionStatus> _getPermission() async {
@@ -57,6 +68,7 @@ class SplashPage extends StatelessWidget {
       return permission;
     }
   }
+
 
 
 }

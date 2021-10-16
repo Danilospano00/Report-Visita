@@ -129,8 +129,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         itemBuilder: (BuildContext context, int index) {
                           late Contact contact = _contacts.elementAt(index);
                           return ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 18),
+                              contentPadding: const EdgeInsets.only(
+                                  top: 2, bottom:2, left: 18, right: 18),
                               leading: (contact.avatar != null &&
                                       contact.avatar!.isNotEmpty)
                                   ? CircleAvatar(
@@ -460,7 +460,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           item['type'] == "multiline") {
         listWidget.add(
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0),
+            margin: const EdgeInsets.only(top: 10.0, bottom:10),
             child: TextFormField(
               //initialValue: _initValue != null ? _initValue[item["title"]] : null,
               autofocus: false,
@@ -504,7 +504,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         var newlist = List<String>.from(item['items']);
 
         listWidget.add(Container(
-          margin: EdgeInsets.symmetric(vertical: 10.0),
+          margin: EdgeInsets.only(top: 10.0, bottom: 10),
           child: DropdownButtonFormField<String>(
             decoration: InputDecoration(
               contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -599,7 +599,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
         listWidget.add(
           Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
+              margin: EdgeInsets.only(top: 10.0, bottom: 10),
               child: TextFormField(
                 //initialValue: _initValue != null ? _initValue[item["title"]] : null,
                 autofocus: false,
@@ -1213,7 +1213,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.only(top: 8, bottom: 8),
                         child: FormBuilderTextField(
                           name: listaNote[i].titolo! + "desc",
                           //keyboardType: TextInputType.multiline,

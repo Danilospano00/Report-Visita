@@ -108,7 +108,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.only(right: 16.w, left:16.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
