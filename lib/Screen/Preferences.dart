@@ -63,39 +63,53 @@ class PreferencesState extends State<Preferences> {
                 return Padding(
                   padding:
                       EdgeInsets.only(left: 16.0.w, top: 8.h,bottom: 16.h, right: 16.w ),
-                  child: Card(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0.w),
-                      child: SizedBox(
-                        height: 100.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                  child: Container(
+                    height: 120.h,
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 8.0.h, bottom: 8.h, left: 8.w, right: 8.w),
+                        child: Stack(
                           children: [
-                            configPreferences[index].containKey("icon")?
-                            CircleAvatar(
-                              child: Image.asset("assets/${configPreferences[index]['icon']}.png"),
-                            ):
-                                Container(),
-                            Text(
-                              configPreferences[index]['name'],
-                              //"Nome Configurazione " + (++index).toString(),
-                              style: TextStyle(
-                                fontSize: 15.712129,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            Spacer(),
-                            Text(
-                              configPreferences[index]['description'],
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 15.712129,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                configPreferences[index].containsKey("icon")?
+                                CircleAvatar(
+                                  backgroundColor: Colors.red,
+                                  minRadius: 30,
+                                  maxRadius: 50,
+                                  child: Image.asset("assets/${configPreferences[index]['icon']}.png", color: Colors.white,),
+                                ):
+                                    Container(),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.w, top: 20.h),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      AutoSizeText(
+                                        configPreferences[index]['name'],
+                                        //"Nome Configurazione " + (++index).toString(),
+                                        style: TextStyle(
+                                          fontSize: 15.712129.sp,
+                                          fontWeight: FontWeight.w300,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      AutoSizeText(
+                                        configPreferences[index]['description'],
+                                        maxLines: 3,
+                                        overflow: TextOverflow.fade,
+                                        style: TextStyle(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w300,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                             Align(
                               alignment: Alignment.bottomRight,

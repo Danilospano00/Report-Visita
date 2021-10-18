@@ -61,7 +61,6 @@ class CalendarPageState extends State<CalendarPage> {
       print("Bassa " + prefs.getString("prioritaBassa").toString());
     });
 
-
     /*  Query<Event> query = mainStore!
         .box<Event>()
         .query(Event_.date.between(DateTime.now().millisecond,
@@ -69,9 +68,7 @@ class CalendarPageState extends State<CalendarPage> {
         .build();
     listaEventi = query.find();*/
 
-   // listaEventi = mainStore!.box<Event>().getAll();
-
-
+    // listaEventi = mainStore!.box<Event>().getAll();
   }
 
   @override
@@ -83,215 +80,226 @@ class CalendarPageState extends State<CalendarPage> {
       body: loading
           ? CircularProgressIndicator()
           : StreamBuilder<List<Event>>(
-          stream: stream,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              listaEventi = snapshot.data;
-              listaEventi.sort((a, b) {
-                return a.date!.compareTo(b.date!);
-              });
-            } else {
-              listaEventi = [];
-            }
-            return Stack(
-              children: [
-                SafeArea(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 16.w, left: 16.w),
-                      child: listaEventi.isEmpty
-                          ? Center(child: Text("Non ci sono eventi"))
-                          : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics:
-                            const NeverScrollableScrollPhysics(),
-                            itemCount: listaEventi.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  ritornaDataEvento(index),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            FormatDate
-                                                .fromDateTimeToString(
-                                                listaEventi[index]
-                                                    .date!,
-                                                "orario"),
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                fontSize:
-                                                12.075892.sp,
-                                                fontWeight:
-                                                FontWeight.w400,
-                                                letterSpacing: 2.w),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 8.0),
-                                            child:
-                                            calcolaLivelloAllerta(
-                                                index),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding:
-                                        EdgeInsets.only(top: 8.h),
-                                        child: Text(
-                                          listaEventi[index]
-                                              .azienda
-                                              .target!
-                                              .nome
-                                              .toString(),
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: 20.126488.sp,
-                                            fontWeight:
-                                            FontWeight.w400,
-                                            letterSpacing: 0.25,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${listaEventi[index].azienda
-                                                .target!.indirizzo.toString()}",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 12.075892.sp,
-                                              fontWeight:
-                                              FontWeight.w400,
-                                              letterSpacing: 0.4,
-                                              color: Colors.grey[700],
+              stream: stream,
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  List<Event> listaEvent = snapshot.data;
+                  listaEvent.sort((a, b) {
+                    return a.date!.compareTo(b.date!);
+                  });
+                  for (int x = 0; x < listaEvent.length; x++) {
+                    if (listaEvent[x].date!.isAfter(DateTime.now())) {
+                      listaEventi.add(listaEvent[x]);
+                    }
+                     else if (listaEvent[x].date!.day == (DateTime.now().day) &&
+                          listaEvent[x].date!.month == (DateTime.now().month) &&
+                          listaEvent[x].date!.year == (DateTime.now().year)) {
+                        listaEventi.add(listaEvent[x]);
+                      }
+                  }
+                } else {
+                  listaEventi = [];
+                }
+                return Stack(
+                  children: [
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 16.w, left: 16.w),
+                          child: listaEventi.isEmpty
+                              ? Center(child: Text("Non ci sono eventi"))
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: listaEventi.length,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ritornaDataEvento(index),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      FormatDate
+                                                          .fromDateTimeToString(
+                                                              listaEventi[index]
+                                                                  .date!,
+                                                              "orario"),
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              12.075892.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          letterSpacing: 2.w),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 8.0),
+                                                      child:
+                                                          calcolaLivelloAllerta(
+                                                              index),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 8.h),
+                                                  child: Text(
+                                                    listaEventi[index]
+                                                        .azienda
+                                                        .target!
+                                                        .nome
+                                                        .toString(),
+                                                    textAlign: TextAlign.left,
+                                                    style: TextStyle(
+                                                      fontSize: 20.126488.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      letterSpacing: 0.25,
+                                                      color: Colors.grey[700],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "${listaEventi[index].azienda.target!.indirizzo.toString()}",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontSize: 12.075892.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        letterSpacing: 0.4,
+                                                        color: Colors.grey[700],
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      child: Text(
+                                                        "map",
+                                                        style: TextStyle(
+                                                            fontSize: 10.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      onPressed: () {
+                                                        openMap(
+                                                            listaEventi[index]
+                                                                .azienda
+                                                                .target!
+                                                                .lat!,
+                                                            listaEventi[index]
+                                                                .azienda
+                                                                .target!
+                                                                .lng!);
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        minimumSize:
+                                                            Size(18.w, 25.h),
+                                                        primary: Colors.red,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      32.0),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          ElevatedButton(
-                                            child: Text(
-                                              "map",
-                                              style: TextStyle(
-                                                  fontSize: 10.sp,
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .bold),
+                                            Divider(
+                                              height: 1,
+                                              thickness: 2,
                                             ),
-                                            onPressed: () {
-                                              openMap(listaEventi[index].azienda
-                                                  .target!.lat!,
-                                                  listaEventi[index].azienda
-                                                      .target!.lng!);
-                                            },
-                                            style: ElevatedButton
-                                                .styleFrom(
-                                              minimumSize:
-                                              Size(18.w, 25.h),
-                                              primary: Colors.red,
-                                              shape:
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius
-                                                    .circular(
-                                                    32.0),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Divider(
-                                    height: 1,
-                                    thickness: 2,
-                                  ),
-                                ],
-                              );
-                            },
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: ElevatedButton.icon(
+                          icon: Icon(
+                            Icons.add,
+                            color: Colors.red,
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: ElevatedButton.icon(
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AggiungiEvento()));
-                      },
-                      label: Text(
-                        "EVENT",
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.25,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(125.w, 56.h),
-                        primary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AggiungiEvento()));
+                          },
+                          label: Text(
+                            "EVENT",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.25,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(125.w, 56.h),
+                            primary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            );
-          }),
+                  ],
+                );
+              }),
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          actions: [
-      Padding(
-      //ho dovuto cambiare il padding a 12 perchè sennò diventava troppo piccolo il fab
-      padding: EdgeInsets.only(right: 16.w, top: 2.h),
-      child: ElevatedButton(
-        onPressed: () {
-          print("aperto");
-          _keyDrawer.currentState!.openEndDrawer();
-        },
-        style: ElevatedButton.styleFrom(
-          shape: CircleBorder(),
-          primary: Colors.red,
-          minimumSize: Size(20, 10),
-          shadowColor: Colors.transparent,
-        ),
-        child: Icon(
-        Icons.filter_list_outlined,
-        size: 36,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        actions: [
+          Padding(
+            //ho dovuto cambiare il padding a 12 perchè sennò diventava troppo piccolo il fab
+            padding: EdgeInsets.only(right: 16.w, top: 2.h),
+            child: ElevatedButton(
+              onPressed: () {
+                print("aperto");
+                _keyDrawer.currentState!.openEndDrawer();
+              },
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+                primary: Colors.red,
+                minimumSize: Size(20, 10),
+                shadowColor: Colors.transparent,
+              ),
+              child: Icon(
+                Icons.filter_list_outlined,
+                size: 36,
+              ),
+            ),
+          ),
+        ],
       ),
-    ),)
-    ,
-    ]
-    ,
-    )
-    ,
     );
   }
 
@@ -309,8 +317,7 @@ class CalendarPageState extends State<CalendarPage> {
           if (x != 0) {
             Event event = list[x - 1];
             differenzaGiorni = e.date!.difference(event.date!).inDays;
-          }
-          else
+          } else
             differenzaGiorni = 0;
         }
       }
@@ -340,7 +347,8 @@ class CalendarPageState extends State<CalendarPage> {
   }
 
   static Future<void> openMap(double latitude, double longitude) async {
-    String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
     if (await canLaunch(googleUrl)) {
       await launch(googleUrl);
     } else {
@@ -376,8 +384,8 @@ class CalendarPageState extends State<CalendarPage> {
                 .parse(listaEventi[i - 1].date!.toString())) {
       String datee = listaEventi.length - 1 > 0
           ? DateFormat('dd-MM-yyyy')
-          .parse(listaEventi[i - 1].date!.toString())
-          .toString()
+              .parse(listaEventi[i - 1].date!.toString())
+              .toString()
           : "1";
       return Padding(
         padding: EdgeInsets.only(top: 73.h, bottom: 7.h),

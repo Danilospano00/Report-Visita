@@ -81,7 +81,10 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                 padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
                 child: GestureDetector(
                   onTap: () async {
-                    _addEvent();
+                    if(_keyFormAggiungiEvento.currentState!.saveAndValidate()) {
+                      _addEvent();
+                      Navigator.pop(context);
+                    }
                   },
                   child: Container(
                     height: 56.w,

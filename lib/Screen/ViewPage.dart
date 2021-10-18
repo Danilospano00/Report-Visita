@@ -50,7 +50,7 @@ class ViewPageState extends State<ViewPage> {
                 color: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AccountEmpty()));
+                      MaterialPageRoute(builder: (context) => Preferences()));
                 },
               ),
               Spacer(),
