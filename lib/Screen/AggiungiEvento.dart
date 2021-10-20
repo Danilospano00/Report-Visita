@@ -172,7 +172,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
 
   void _showSnackBar(String text) {
     final snackBar = SnackBar(
-      duration: Duration(seconds: 8),
+      duration: Duration(seconds: 3),
       content: Text(text),
       backgroundColor: Colors.black,
       padding: EdgeInsets.all(15.0),
