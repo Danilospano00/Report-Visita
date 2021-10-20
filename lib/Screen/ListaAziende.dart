@@ -383,7 +383,7 @@ class ListaAziendeState extends State<ListaAziende> {
                           child: Text(
                             item.nomeAzienda,
                             style: TextStyle(
-                                fontSize: 15.712129,
+                                fontSize: 15.712129.sp,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.grey[700]),
                           ),

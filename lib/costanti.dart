@@ -13,6 +13,8 @@ String subjectEmail="Feedback, suggerimenti, nuove funzioni";
 String bodyEmail="Vuoi altre funzionalita'?\n Contattami ORA!\nL' applicazione e' attualmente in continua fase di Evoluzione e questo avverra' grazie alle tue segnalazioni.\n Non esitare a contattarmi per suggerimenti/modifiche.\n Ho a cuore il tuo business e il tuo feedback e' importantissimo.\n Ti ringrazio per la collaborazione.";
 var configPreferences;
 
+bool accessoEffettuato = false;
+
 
 String config=json.encode([
   {

@@ -70,7 +70,7 @@ class MyHomePageState extends State<MyHomePage> {
       openStore().then((Store store) {
         _store = store;
         mainStore = _store;
-        setState(() {
+        setState((){
           hasBeenInitialized = true;
           listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
           listaReportPerRicerca = mainStore!.box<Report>().getAll();

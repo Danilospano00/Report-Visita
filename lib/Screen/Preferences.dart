@@ -5,6 +5,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Screen/whitePage.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
@@ -24,10 +25,7 @@ class PreferencesState extends State<Preferences> {
   late String _datiConfigurazione;
   late String configurazioneFormDiEsempio;
 
-
-
   dynamic configurazioniPreferences;
-
 
   @override
   initState() {
@@ -61,52 +59,64 @@ class PreferencesState extends State<Preferences> {
               itemCount: configPreferences.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding:
-                      EdgeInsets.only(left: 16.0.w, top: 8.h,bottom: 16.h, right: 16.w ),
+                  padding: EdgeInsets.only(
+                      left: 16.0.w, top: 8.h, bottom: 16.h, right: 16.w),
                   child: Container(
                     height: 120.h,
                     child: Card(
                       child: Padding(
-                        padding: EdgeInsets.only(top: 8.0.h, bottom: 8.h, left: 8.w, right: 8.w),
+                        padding: EdgeInsets.only(
+                            top: 8.0.h, bottom: 8.h, left: 8.w, right: 8.w),
                         child: Stack(
                           children: [
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                configPreferences[index].containsKey("icon")?
-                                CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  minRadius: 30,
-                                  maxRadius: 50,
-                                  child: Image.asset("assets/${configPreferences[index]['icon']}.png", color: Colors.white,),
-                                ):
-                                    Container(),
+                                configPreferences[index].containsKey("icon")
+                                    ? CircleAvatar(
+                                        backgroundColor: Colors.red,
+                                        minRadius: 20,
+                                        maxRadius: 40,
+                                        child: Image.asset(
+                                          "assets/${configPreferences[index]['icon']}.png",
+                                          color: Colors.white,
+                                          width: 40.w,
+                                        ),
+                                      )
+                                    : Container(),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8.w, top: 20.h),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      AutoSizeText(
-                                        configPreferences[index]['name'],
-                                        //"Nome Configurazione " + (++index).toString(),
-                                        style: TextStyle(
-                                          fontSize: 15.712129.sp,
-                                          fontWeight: FontWeight.w300,
-                                          fontStyle: FontStyle.normal,
+                                  padding:
+                                      EdgeInsets.only(left: 16.w, top: 20.h),
+                                  child: Container(
+                                    width: 200.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AutoSizeText(
+                                          configPreferences[index]['name'],
+                                          style: TextStyle(
+                                            fontSize: 15.712129.sp,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                          ),
+                                          textAlign: TextAlign.left,
                                         ),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      AutoSizeText(
-                                        configPreferences[index]['description'],
-                                        maxLines: 3,
-                                        overflow: TextOverflow.fade,
-                                        style: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w300,
-                                          fontStyle: FontStyle.normal,
+                                        Flexible(
+                                          child: AutoSizeText(
+                                            configPreferences[index]
+                                                ['description'],
+                                            maxLines: 3,
+                                            overflow: TextOverflow.fade,
+                                            style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.w300,
+                                              fontStyle: FontStyle.normal,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -119,14 +129,19 @@ class PreferencesState extends State<Preferences> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute<void>(
-                                      builder: (context) => _mostraConfigurazione(configPreferences[index]['name'], json.encode(configPreferences[index]['jsonConfig'])),
+                                      builder: (context) =>
+                                          _mostraConfigurazione(
+                                              configPreferences[index]['name'],
+                                              json.encode(
+                                                  configPreferences[index]
+                                                      ['jsonConfig'])),
                                     ),
                                   );
                                 },
                                 child: Text("Seleziona",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 15.712129,
+                                      fontSize: 15.712129.sp,
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
                                     )),
@@ -155,14 +170,15 @@ class PreferencesState extends State<Preferences> {
     print(prefs.getString("datiConfigurazione"));
   }
 
-  Widget _mostraConfigurazione(String titolo, String configurazione){
+  Widget _mostraConfigurazione(String titolo, String configurazione) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.grey[700]),
-        title: AutoSizeText(titolo,
+        title: AutoSizeText(
+          titolo,
           textAlign: TextAlign.left,
           style: TextStyle(
               fontSize: 21.sp,
@@ -189,13 +205,16 @@ class PreferencesState extends State<Preferences> {
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 16.h, right: 8.w),
-              child: Align(alignment: Alignment.bottomRight,
+              child: Align(
+                alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   onPressed: () {
                     _saveConfiguration("datiConfigurazione");
-                    Navigator.pushReplacement(context, MaterialPageRoute<void>(builder: (context) => ScegliAllerta()),
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (context) => ScegliAllerta()),
                     );
-
                   },
                   child: Text(
                     "ACCETTA",
@@ -221,7 +240,4 @@ class PreferencesState extends State<Preferences> {
       ),
     );
   }
-
-
-
 }

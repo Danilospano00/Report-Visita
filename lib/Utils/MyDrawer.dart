@@ -5,13 +5,14 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
-  _MyDrawerState createState() => _MyDrawerState();
+  State<StatefulWidget> createState() =>_MyDrawerState();
+
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  bool bassa=true;
-  bool media=true;
-  bool alta=true;
+  static bool bassa=true;
+  static bool media=true;
+  static bool alta=true;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   activeColor: Colors.grey,
                   onChanged: (value) {
                     setState(() {
-                      bassa = value as bool;
+                      bassa = value!;
                     });
                   },
                 ),
@@ -84,7 +85,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   activeColor: Colors.grey,
                   onChanged: (value) {
                     setState(() {
-                      media = value as bool;
+                      media = value!;
                     });
                   },
                 ),
@@ -115,7 +116,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   activeColor: Colors.grey,
                   onChanged: (value) {
                     setState(() {
-                      alta = value as bool;
+                      alta = value!;
                     });
                   },
                 ),

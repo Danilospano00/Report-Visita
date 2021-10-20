@@ -317,7 +317,7 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                                       builder: (context) => MyHomePage()),
                                 );
                                 Navigator.pop(context);
-
+                                Navigator.pop(context);
                               },
                           ),
                         ),

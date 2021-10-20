@@ -8,7 +8,6 @@ import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
-import 'package:report_visita_danilo/Utils/MyDrawer.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -74,28 +73,31 @@ class CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       key: _keyDrawer,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      endDrawer: MyDrawer(),
+      endDrawer: myDrawer(),
       body: loading
           ? CircularProgressIndicator()
           : StreamBuilder<List<Event>>(
               stream: stream,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
-                  List<Event> listaEvent = snapshot.data;
+                  List<Event> listaEvent = [];
+                  listaEventi = [];
+                  listaEvent = snapshot.data;
                   listaEvent.sort((a, b) {
                     return a.date!.compareTo(b.date!);
                   });
                   for (int x = 0; x < listaEvent.length; x++) {
                     if (listaEvent[x].date!.isAfter(DateTime.now())) {
                       listaEventi.add(listaEvent[x]);
+                    } else if (listaEvent[x].date!.day ==
+                            (DateTime.now().day) &&
+                        listaEvent[x].date!.month == (DateTime.now().month) &&
+                        listaEvent[x].date!.year == (DateTime.now().year)) {
+                      listaEventi.add(listaEvent[x]);
                     }
-                     else if (listaEvent[x].date!.day == (DateTime.now().day) &&
-                          listaEvent[x].date!.month == (DateTime.now().month) &&
-                          listaEvent[x].date!.year == (DateTime.now().year)) {
-                        listaEventi.add(listaEvent[x]);
-                      }
                   }
                 } else {
                   listaEventi = [];
@@ -403,5 +405,126 @@ class CalendarPageState extends State<CalendarPage> {
       dataGiaStampata = true;
       return SizedBox.shrink();
     }
+  }
+
+  Widget myDrawer() {
+    bool bassa = true;
+    bool media = true;
+    bool alta = true;
+
+    return Drawer(
+      child: ListView(
+        children: [
+          ListTile(
+            title: AutoSizeText(
+              'Filtra per urgenza',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.sp),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.close, size: 30),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * .20,
+                left: 16.w,
+                right: 16.w),
+            child: Form(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Checkbox(
+                    value: bassa,
+                    activeColor: Colors.grey,
+                    onChanged: (value) {
+                      setState(() {
+                        bassa = value!;
+                      });
+                    },
+                  ),
+                  Expanded(
+                    child: AutoSizeText(
+                      'Priorità Bassa',
+                      style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: Icon(
+                      Icons.circle,
+                      color: Colors.greenAccent,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
+            child: Row(
+              children: [
+                Checkbox(
+                  value: media,
+                  activeColor: Colors.grey,
+                  onChanged: (value) {
+                    setState(() {
+                      media = value!;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: AutoSizeText(
+                    'Priorità Media',
+                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: Icon(
+                    Icons.circle,
+                    color: Colors.yellowAccent,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
+            child: Row(
+              children: [
+                Checkbox(
+                  value: alta,
+                  activeColor: Colors.grey,
+                  onChanged: (value) {
+                    setState(() {
+                      alta = value!;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: AutoSizeText(
+                    'Priorità Alta',
+                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: Icon(
+                    Icons.circle,
+                    color: Colors.redAccent,
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

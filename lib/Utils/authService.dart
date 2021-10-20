@@ -17,6 +17,7 @@ import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/Preferences.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -25,283 +26,273 @@ import '../objectbox.g.dart';
 import 'horizontaldivider.dart';
 
 class AuthService {
-  handleAuth() {
+  handleAuth(List<Azienda> listaAziende, List<Azienda> listaEventDaCiclare, Azienda aziendaRandom) {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            Random rnd = new Random();
+            int meet = 0;
+            List<Event> listaEventi = mainStore!.box<Event>().getAll();
+            for (int x = 0; x < listaEventi.length; x++) {
+              if (listaEventi[x].date!.day == (DateTime.now().day) &&
+                  listaEventi[x].date!.month == (DateTime.now().month) &&
+                  listaEventi[x].date!.year == (DateTime.now().year)) {
+                meet++;
+              }
+            }
 
-            List<Azienda> listaAziende = mainStore!.box<Azienda>().getAll();
-
-            Query<Event> query = mainStore!
-                .box<Event>()
-                .query(Event_.date.equals(DateTime.now().millisecond))
-                .build();
-            List<Event> meeting = query.find();
-            query.close();
-            int meet = meeting.length;
 
             dynamic user = snapshot.data;
             return Card(
-              margin: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      ShapeOfView(
-                        elevation: 4,
-                        height: 140.h,
-                        shape: DiagonalShape(
-                          position: DiagonalPosition.Bottom,
-                          direction: DiagonalDirection.Left,
-                          angle: DiagonalAngle.deg(angle: 5),
-                        ),
-                        child: ColoredBox(
-                          color: Colors.red,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, bottom: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.red[900],
-                                  radius: 50,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 45,
-                                    child: Icon(
-                                      Icons.perm_identity_outlined,
-                                      size: 48,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  padding: EdgeInsets.only(left: 20.0),
-                                  child: AutoSizeText(
-                                    user.email.toString(),
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.sp,
-                                        //overflow: TextOverflow.ellipsis,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      /* Container(
-                        height: 140.h,
-                        decoration: BoxDecoration(color: Colors.transparent),
-                        child: Align(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          child: FloatingActionButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Preferences()));
-                            },
-                            backgroundColor: Colors.grey[700],
-                            child: Icon(Icons.add),
-                          ),
-                        ),
-                      ),*/
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 20.0.h, left: 16.w, right: 16.w),
+                    margin: EdgeInsets.only(left: 16.w, right: 16.w),
                     child: Column(
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        Stack(
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Hai ${meet} meeting oggi",
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 2, bottom:2)),
-                                Text(
-                                  "Controlla il planner",
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.grey[700]),
-                                ),
-                              ],
-                            ),
-                            Spacer(),
-                            Icon(
-                              Icons.navigate_next_rounded,
-                              size: 30.sp,
-                              color: Colors.grey[700],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 10.h,
-                    ),
-                    child: Divider(indent: 16.w),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          child: AutoSizeText(
-                            listaAziende.length.toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 94.272766.sp,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -1.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            Text(
-                              "Aziende",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 14.h, right: 16.w, left: 16.w),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                listaAziende.isNotEmpty
-                                    ? listaAziende[
-                                            rnd.nextInt(listaAziende.length)]
-                                        .nome!
-                                    : "Nome azienda o contatto",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                            ShapeOfView(
+                              elevation: 4,
+                              height: 140.h,
+                              shape: DiagonalShape(
+                                position: DiagonalPosition.Bottom,
+                                direction: DiagonalDirection.Left,
+                                angle: DiagonalAngle.deg(angle: 5),
+                              ),
+                              child: ColoredBox(
+                                color: Colors.red,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, bottom: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Colors.red[900],
+                                        radius: 50,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 45,
+                                          child: Icon(
+                                            Icons.perm_identity_outlined,
+                                            size: 48,
+                                            color: Colors.grey[700],
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        padding: EdgeInsets.only(left: 20.0),
+                                        child: AutoSizeText(
+                                          user.email.toString(),
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18.sp,
+                                              //overflow: TextOverflow.ellipsis,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Padding(
-                                  padding: EdgeInsets.only(top: 2.h, bottom: 2.h)),
-                              Text(
-                                "è passato olte un mese dall'ultimo incontro...",
-                                textAlign: TextAlign.start,
-                                maxLines: 2,
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.grey[700]),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 20.0.h, left: 16.w, right: 16.w),
+                          child: Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Hai $meet meeting oggi",
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.sp),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 2, bottom: 2)),
+                                      Text(
+                                        "Controlla il planner",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.grey[700]),
+                                      ),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.navigate_next_rounded,
+                                    size: 30.sp,
+                                    color: Colors.grey[700],
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 20.h),
-                          child: Icon(
-                            Icons.navigate_next_rounded,
-                            size: 30.sp,
-                            color: Colors.grey[700],
+                          padding: EdgeInsets.only(
+                            top: 10.h,
+                          ),
+                          child: Divider(indent: 16.w),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                child: AutoSizeText(
+                                  listaEventDaCiclare.length.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 94.272766.sp,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: -1.5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Aziende",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        listaAziende.isNotEmpty
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    top: 14.h, right: 16.w, left: 16.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            aziendaRandom.nome!,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 2.h, bottom: 2.h)),
+                                          Text(
+                                            "Sono passati ${aziendaRandom.events[aziendaRandom.events.length - 2].date!.difference(DateTime.now()).inDays.toString()} giorni dall'ultima visita",
+                                            textAlign: TextAlign.start,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontSize: 18.sp,
+                                                color: Colors.grey[700]),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 20.h),
+                                      child: Icon(
+                                        Icons.navigate_next_rounded,
+                                        size: 30.sp,
+                                        color: Colors.grey[700],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                              width: 200.w,
+                              margin: EdgeInsets.only(
+                                left: 16.w,
+                              ),
+                              child: Divider(),
+                            ),
+                            ElevatedButton(
+                              child: Text(
+                                "vedi tutti",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.5),
+                              ),
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                padding:
+                                    const EdgeInsets.only(right: 20, left: 20),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32.0),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 48.h),
+                          child: ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.tune_outlined,
+                            ),
+                            label: Text(
+                              "Settings",
+                              style: TextStyle(
+                                fontSize: 18.748113.sp,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.25,
+                              ),
+                            ),
+                            onPressed: () {
+                              singOut();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              fixedSize: Size(163.w, 36.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(
-                          left: 16.w,
-                        ),
-                        child: Divider(),
-                      ),
-                      ElevatedButton(
-                        child: Text(
-                          "vedi tutti",
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5),
-                        ),
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          padding: const EdgeInsets.only(right: 20,left:20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 48.h),
-                    child: ElevatedButton.icon(
-                      icon: Icon(
-                        Icons.tune_outlined,
-                      ),
-                      label: Text(
-                        "Settings",
-                        style: TextStyle(
-                          fontSize: 18.748113.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.25,
-                        ),
-                      ),
-                      onPressed: () {
-                        singOut();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        fixedSize: Size(163.w, 36.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+                  );
           } else {
             return Column(
               children: [

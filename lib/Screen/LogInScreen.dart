@@ -8,6 +8,7 @@ import 'package:report_visita_danilo/Utils/horizontaldivider.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../costanti.dart';
 import 'Preferences.dart';
 import 'Registration.dart';
 
@@ -130,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // _setFirstAccess();
                                   setState(() {
                                     _isLoading = true;
+
                                     animateButton();
                                   });
                                   print('Valid');
@@ -212,7 +214,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: AutoSizeText(
                           "non hai un account?",
                           maxLines: 1,
-                          style: TextStyle(fontSize: ScreenUtil().setSp(24), letterSpacing: 0.9, fontWeight: FontWeight.w400),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(24),
+                              letterSpacing: 0.9,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       SizedBox(
@@ -243,9 +248,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!_isLoading) {
       return new Text(
         _text,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 16.0,
+          fontSize: 16.sp,
         ),
       );
     } else {
@@ -283,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
- /* Future<void> _setFirstAccess() async {
+/* Future<void> _setFirstAccess() async {
     final SharedPreferences prefs = await _prefs;
     if (!(prefs.containsKey("isFirstAccess") ||
         prefs.getBool("isFirstAccess") == false)) {
