@@ -122,6 +122,9 @@ class MyHomePageState extends State<MyHomePage> {
                           child: GeneratorFormToJson(
                             store: _store,
                             form: configurazione,
+                              active: true,
+                            initialReport: null,
+
                             onChanged: (dynamic value) {
                               print(value);
                               setState(() {

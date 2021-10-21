@@ -73,6 +73,8 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                         print(response.toString());
                       },
                       store: _store,
+                      active: true,
+                      initialReport: null,
                     ),
                   ),
                 ),

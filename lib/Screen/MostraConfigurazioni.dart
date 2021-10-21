@@ -55,6 +55,8 @@ class MostraConfigurazioniState extends State<MostraConfigurazioni> {
               GeneratorFormToJson(
                 form: configurazione,
                 store: mainStore!,
+                initialReport: null,
+              active: false,
                 onChanged: (dynamic value) {
                   print(value);
                   setState(() {

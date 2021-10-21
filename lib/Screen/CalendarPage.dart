@@ -408,11 +408,13 @@ class CalendarPageState extends State<CalendarPage> {
     }
   }
 
-  Widget myDrawer() {
+  Widget? myDrawer() {
     bool bassa = true;
     bool media = true;
     bool alta = true;
 
+    /* StatefulBuilder(
+        builder: (context, setState) {*/
     return Drawer(
       child: ListView(
         children: [
@@ -527,5 +529,6 @@ class CalendarPageState extends State<CalendarPage> {
         ],
       ),
     );
+  //});
   }
 }

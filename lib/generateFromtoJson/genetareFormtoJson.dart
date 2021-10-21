@@ -14,9 +14,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:places_service/places_service.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Nota.dart';
+import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import '../objectbox.g.dart';
 import 'package:path/path.dart' as p;
+
 
 
 
@@ -33,9 +35,11 @@ class GeneratorFormToJson extends StatefulWidget {
   final String form;
   final ValueChanged<Map> onChanged;
   final Store store;
+  final bool active; // attivare o disattivare la possibilta di modifica
+  Report? initialReport;
 
   GeneratorFormToJson(
-      {required this.form, required this.onChanged, required this.store});
+      {required this.form, required this.onChanged, required this.store,required this.active,required this.initialReport});
 
   @override
   _GeneratorFromToJsonState createState() =>
@@ -462,7 +466,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           Container(
             margin: const EdgeInsets.only(top: 10.0, bottom:10),
             child: TextFormField(
-              //initialValue: _initValue != null ? _initValue[item["title"]] : null,
+            //  initialValue: widget.initialReport != null ? widget.initialReport.azienda.target. : null,
+              enabled:widget.active,
               autofocus: false,
               onChanged: (String value) {
                 formResults[item["title"]] = value;
@@ -506,6 +511,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         listWidget.add(Container(
           margin: EdgeInsets.only(top: 10.0, bottom: 10),
           child: DropdownButtonFormField<String>(
+
             decoration: InputDecoration(
               contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               border:
@@ -524,19 +530,20 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             value: dropDownMap[item["title"]],
             isExpanded: true,
             // style: Theme.of(context).textTheme.subhead,
-            onChanged: (String? newValue) {
+            onChanged: widget.active?
+                (String? newValue) {
               setState(() {
                 dropDownMap[item["title"]] = newValue!;
                 formResults[item["title"]] = newValue.trim();
               });
               _handleChanged();
-            },
-            items: newlist.map<DropdownMenuItem<String>>((String value) {
+            }:null,
+            items: widget.active?newlist.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
               );
-            }).toList(),
+            }).toList():[],
           ),
         ));
       }
@@ -601,11 +608,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           Container(
               margin: EdgeInsets.only(top: 10.0, bottom: 10),
               child: TextFormField(
-                //initialValue: _initValue != null ? _initValue[item["title"]] : null,
+                enabled:widget.active,
                 autofocus: false,
                 readOnly: true,
                 controller:
-                    TextEditingController(text: _datevalueMap[item["title"]]),
+                    TextEditingController()..text=(widget.initialReport != null ? widget.initialReport!.prossimaVisita.toString() :_datevalueMap[item["title"]])!,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return 'Please  cannot be empty';
@@ -659,16 +666,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               children: <Widget>[
                 new Expanded(child: new Text(item['items'][i])),
                 new Radio<dynamic>(
+
                     hoverColor: Colors.red,
                     value: item['items'][i],
                     groupValue: radioValueMap["${item["title"]}"],
-                    onChanged: (dynamic value) {
+                    onChanged: widget.active?(dynamic value) {
                       setState(() {
                         radioValueMap["${item["title"]}"] = value;
                       });
                       formResults[item["title"]] = value;
                       _handleChanged();
-                    })
+                    }:null)
               ],
             ),
           );
@@ -686,16 +694,18 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             new Expanded(child: new Text(item["label"])),
             Switch(
                 value: switchValueMap["${item["title"]}"]!,
-                onChanged: (bool value) {
+                onChanged:widget.active? (bool value) {
                   updateSwitchValue(item["title"], value);
                   formResults[item["title"]] = value;
                   _handleChanged();
-                }),
+                }:null),
           ],
         ));
       }
 
       if (item['type'] == 'file') {
+        /*if(widget.initialReport != null)
+           fileSelected= await writeToFile(widget.initialReport!.byteListFile);*/
         listWidget.add(Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(8)),
             child: Column(children: [
@@ -727,22 +737,22 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         icon: Icon(Icons.add_circle_outlined),
                         iconSize: 40,
                         color: Colors.red,
-                        onPressed: () {
+                        onPressed:widget.active? () {
                           FocusScope.of(context).unfocus();
                           showSolutionFile(item["title"]);
-                        },
+                        }:null,
                       ),
                     ),
                   ),
                   fileSelected!=null?GestureDetector(
-                    onLongPress: () {
+                    onLongPress:widget.active? () {
                       setState(() {
 
                         fileSelected=null;
                         formResults[item["title"]]  = fileSelected;
                         _handleChanged();
                       });
-                    },
+                    }:null,
                     child:Container(
                       //width: MediaQuery.of(context).size.width*.60,
                       child: getFileIcon()
@@ -792,10 +802,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           icon: Icon(Icons.add_circle_outlined),
                           iconSize: 40,
                           color: Colors.red,
-                          onPressed: () {
+                          onPressed:widget.active? () {
                             FocusScope.of(context).unfocus();
                             showSolutionReferente(item["title"]);
-                          },
+                          }:null,
                         ),
                       ),
                     ),
@@ -813,13 +823,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 ? Padding(
                                     padding: EdgeInsets.all(4.0.h),
                                     child: GestureDetector(
-                                      onLongPress: () {
+                                      onLongPress:widget.active? () {
                                         setState(() {
                                           contattoSelezionato.removeAt(i);
                                           formResults[item["title"]]  = contattoSelezionato;
                                           _handleChanged();
                                         });
-                                      },
+                                      }:null,
                                       child: CircleAvatar(
                                         backgroundImage: MemoryImage(
                                             contattoSelezionato[i].avatar!),
@@ -829,13 +839,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 : Padding(
                                     padding: EdgeInsets.all(4.0.h),
                                     child: GestureDetector(
-                                      onLongPress: () {
+                                      onLongPress:widget.active? () {
                                         setState(() {
                                           contattoSelezionato.removeAt(i);
                                           formResults[item["title"]]  = contattoSelezionato;
                                           _handleChanged();
                                         });
-                                      },
+                                      }:null,
                                       child: CircleAvatar(
                                         child: Text(
                                           contattoSelezionato[i].initials(),
@@ -872,13 +882,15 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             Padding(
               padding: EdgeInsets.only(bottom: 8.h),
               child: TypeAheadField<dynamic>(
-                onSuggestionSelected: (select) {
+
+
+                onSuggestionSelected: widget.active?(select) {
                   formResults[item['title']] = select;
                   _handleChanged();
                   setState(() {
                     selectObject = select;
                   });
-                },
+                }:(select){},
                 hideSuggestionsOnKeyboardHide: false,
                 suggestionsCallback: (String query) {
                   dynamic lista = widget.store.box<Azienda>().getAll();
@@ -898,11 +910,14 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   );
                 },
                 textFieldConfiguration: TextFieldConfiguration(
+
+                  enabled: widget.active,
                   controller: formFieldController
-                    ..text = selectObject != null
+                    ..text = widget.initialReport != null ? widget.initialReport!.azienda.target!.nome :
+                selectObject != null
                         ? getValueField("nome")
                         : formFieldController.value.text,
-                  onChanged: (value) {
+                  onChanged:widget.active? (value) {
                     if (selectObject == null) {
                       formResults[item['title'] + "Name"] =
                           formFieldController.value.text;
@@ -910,10 +925,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         .containsKey(item['title'] + "Name")) {
                       formResults.remove(item['title'] + "Name");
                     }
-                  },
-                  onSubmitted: (value) {
+                  }:null,
+                  onSubmitted: widget.active?(value) {
                     _handleChanged();
-                  },
+                  }:null,
                   decoration: InputDecoration(
                     labelText: item['hint'],
                     fillColor: Colors.grey.shade300,
@@ -927,7 +942,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.cancel_outlined),
                       color: Colors.black,
-                      onPressed: () {
+                      onPressed:widget.active? () {
                         formFieldController.clear();
                         controller.forEach((element) {
                           element.clear();
@@ -936,7 +951,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           formResults.remove(item['title']);
                         }
                         selectObject = null;
-                      },
+                      }:null,
                     ),
                   ),
                 ),
@@ -961,7 +976,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.h),
                         child: TypeAheadField<dynamic>(
-                          onSuggestionSelected: (select) {
+                          onSuggestionSelected: widget.active?(select) {
 
                             // impostare indirizzo selezionato
                             formResults[item['title']] = select;
@@ -969,7 +984,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             setState(() {
                               selectObject = select;
                             });
-                          },
+                          }:(select){},
                           hideSuggestionsOnKeyboardHide: false,
                           suggestionsCallback: (String query) async {
                             if(query!=""){
@@ -986,11 +1001,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             );
                           },
                           textFieldConfiguration: TextFieldConfiguration(
+                            enabled: widget.active,
                             controller: controller[i]
-                              ..text = selectObject != null
+                              ..text =  widget.initialReport != null ? widget.initialReport!.azienda.target!.indirizzo :
+                          selectObject != null
                                   ? getValueField(item['field'][i]['label'])
                                   : controller[i].value.text,
-                            onChanged: (value) {
+                            onChanged: widget.active?(value) {
                               if (selectObject == null) {
                                 formResults[item['field'][i]['label']] =
                                     controller[i].value.text;
@@ -998,10 +1015,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 setNewValueObject(item['field'][i]['label'],
                                     controller[i].value.text, item['title']);
                               }
-                            },
-                            onSubmitted: (value) {
+                            }:null,
+                            onSubmitted: widget.active?(value) {
                               _handleChanged();
-                            },
+                            }:null,
                             decoration: InputDecoration(
                               labelText: item['field'][i]['label'],
                               fillColor: Colors.grey.shade300,
@@ -1017,7 +1034,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.location_on),
                                 color: Colors.black,
-                                onPressed: () async {
+                                onPressed:widget.active? () async {
 
                                   setState(() {
                                     loadGeo=true;
@@ -1071,7 +1088,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
 
                                  // recuperare adress dalla posizione attuale
-                                },
+                                }:null,
                               ),
                             ),
                           ),
@@ -1083,6 +1100,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(4)),
                     child: FormBuilderTextField(
                       name: item['field'][i]['label'],
+                      enabled: widget.active,
                       controller: controller[i]
                         ..text = selectObject != null
                             ? getValueField(item['field'][i]['label'])
@@ -1173,6 +1191,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             EdgeInsets.only(bottom: ScreenUtil().setHeight(4)),
                         child: FormBuilderTextField(
                           name: listaNote[i].titolo!,
+                          enabled: widget.active,
                           controller: controllerNote[i]
                             ..text = listaNote[i].titolo!,
                           minLines: 2,
@@ -1216,6 +1235,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         padding: EdgeInsets.only(top: 8, bottom: 8),
                         child: FormBuilderTextField(
                           name: listaNote[i].titolo! + "desc",
+                          enabled: widget.active,
+
                           //keyboardType: TextInputType.multiline,
                           minLines: 2,
                           maxLines: 5,
@@ -1251,10 +1272,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 );
               },
             ),
-            Padding(
+            widget.active?   Padding(
               padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
               child: GestureDetector(
-                onTap: () async {
+                onTap:
+                () async {
                   FocusScope.of(context).unfocus();
                   controllerNote.add(TextEditingController());
                   controllerNoteDesc.add(TextEditingController());
@@ -1292,7 +1314,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   ),
                 ),
               ),
-            )
+            ):Container()
           ],
         ));
       }
@@ -1310,7 +1332,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
   dynamic getValueField(String field) {
     Map<String, dynamic> objectMap = selectObject.toMap();
-
     return objectMap[field] ?? "";
   }
 
@@ -1413,6 +1434,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
 
   }
+
+
+
+ /* Future<File> writeToFile(ByteData data) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = tempPath + '/file_01.tmp'; // file_01.tmp is dump file, can be anything
+    return new File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+  }*/
 
   getFileIcon() {
     final extension = p.extension(fileSelected!.path);

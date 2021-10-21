@@ -194,6 +194,8 @@ class PreferencesState extends State<Preferences> {
               child: GeneratorFormToJson(
                 form: configurazione,
                 store: mainStore!,
+                active: false,
+                initialReport: null,
                 onChanged: (dynamic value) {
                   print(value);
                   setState(() {
