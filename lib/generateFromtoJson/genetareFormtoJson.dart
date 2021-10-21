@@ -612,7 +612,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 autofocus: false,
                 readOnly: true,
                 controller:
-                    TextEditingController()..text=(widget.initialReport != null ? widget.initialReport!.prossimaVisita.toString() :_datevalueMap[item["title"]])!,
+                    TextEditingController()..text=(widget.initialReport != null ? widget.initialReport!.prossimaVisita!.toString() :_datevalueMap[item["title"]]).toString(),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return 'Please  cannot be empty';

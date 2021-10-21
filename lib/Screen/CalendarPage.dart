@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
-import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
-import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -178,15 +175,19 @@ class CalendarPageState extends State<CalendarPage> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Text(
-                                                      "${listaEventi[index].azienda.target!.indirizzo.toString()}",
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                        fontSize: 12.075892.sp,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        letterSpacing: 0.4,
-                                                        color: Colors.grey[700],
+                                                    Container(
+                                                      width: 250.w,
+                                                      child: AutoSizeText(
+                                                        "${listaEventi[index].azienda.target!.indirizzo.toString()}",
+                                                        textAlign: TextAlign.left,
+                                                        maxLines: 2,
+                                                        style: TextStyle(
+                                                          fontSize: 12.075892.sp,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          letterSpacing: 0.4,
+                                                          color: Colors.grey[700],
+                                                        ),
                                                       ),
                                                     ),
                                                     ElevatedButton(

@@ -70,7 +70,7 @@ class MyHomePageState extends State<MyHomePage> {
       openStore().then((Store store) {
         _store = store;
         mainStore = _store;
-        setState((){
+        setState(() {
           hasBeenInitialized = true;
           listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
           listaReportPerRicerca = mainStore!.box<Report>().getAll();
@@ -118,13 +118,12 @@ class MyHomePageState extends State<MyHomePage> {
                         ),*/
 
                         Padding(
-                          padding: EdgeInsets.only(top:50),
+                          padding: EdgeInsets.only(top: 50),
                           child: GeneratorFormToJson(
                             store: _store,
                             form: configurazione,
-                              active: true,
+                            active: true,
                             initialReport: null,
-
                             onChanged: (dynamic value) {
                               print(value);
                               setState(() {
@@ -150,22 +149,25 @@ class MyHomePageState extends State<MyHomePage> {
 
     if (response["azienda"] != null) {
       _report.azienda.target = response["azienda"];
-    } else if (response["indirizzo"] != null &&
-        response["aziendaName"] != null &&
-        response["partitaIva"] != null) {
-      List<Location> locations;
-      try {
-        locations = await locationFromAddress(response["indirizzo"]);
-      } on Exception catch (e) {
-        _showSnackBar("Indirizzo non valido");
-        return;
+    } else if (response["aziendaName"] != null) {
+      _report.azienda.target = Azienda()..nome = response["aziendaName"];
+
+      if (response["indirizzo"] != null) {
+        List<Location> locations;
+        try {
+          locations = await locationFromAddress(response["indirizzo"]);
+        } on Exception catch (e) {
+          _showSnackBar("Indirizzo non valido");
+          return;
+        }
+
+        _report.azienda.target!.indirizzo = response["indirizzo"];
+        _report.azienda.target!.lat = locations[0].latitude;
+        _report.azienda.target!.lng = locations[0].longitude;
       }
-      _report.azienda.target = Azienda()
-        ..nome = response["aziendaName"]
-        ..indirizzo = response["indirizzo"]
-        ..partitaIva = response["partitaIva"]
-        ..lng = locations[0].longitude
-        ..lat = locations[0].latitude;
+      if (response["partitaIva"] != null) {
+        _report.azienda.target!.partitaIva = response["partitaIva"];
+      }
     } else {
       _showSnackBar("Campi mancanti");
       return;
@@ -184,21 +186,16 @@ class MyHomePageState extends State<MyHomePage> {
                 ? contact.emails!.elementAt(0).value
                 : null));
       });
-    } else {
-      _showSnackBar("Campi mancanti");
-      return;
     }
 
-    if(response["file"] != null){
-
+    if (response["file"] != null) {
       File file = response["file"];
 
       //ByteData fileByteData = await rootBundle.load(file.path);
       Uint8List fileUint8List = await file.readAsBytes();
       //fileByteData.buffer.asUint8List(fileByteData.offsetInBytes, fileByteData.lengthInBytes);
       List<int> fileListInt = fileUint8List.cast<int>();
-      _report.byteListFile=fileListInt;
-
+      _report.byteListFile = fileListInt;
     }
 
     if (response["dateCompilazione"] != null)
@@ -207,32 +204,23 @@ class MyHomePageState extends State<MyHomePage> {
       _report.compilazione = DateTime.now();
     }
 
-    if (response["prossimaVisita"] != null)
+    if (response["prossimaVisita"] != null) {
       _report.prossimaVisita = DateTime.parse(response["prossimaVisita"]);
-    else {
-      _showSnackBar("Campi mancanti");
-      return;
+
+      Event evento = Event();
+      evento.date = DateTime.parse(response["prossimaVisita"]);
+      evento.azienda.target = _report.azienda.target;
+      evento.referente.addAll(_report.referente);
+      int idEvento = mainStore!.box<Event>().put(evento);
+
+      evento = mainStore!.box<Event>().get(idEvento)!;
+      _report.azienda.target!.events.add(evento);
     }
 
-    if (response["note"] != null)
-      _report.note.addAll(response["note"]);
-    else {
-      _showSnackBar("Campi mancanti");
-      return;
-    }
-
-    Event evento = Event();
-    evento.date = DateTime.parse(response["prossimaVisita"]);
-    evento.azienda.target =  _report.azienda.target;
-    evento.referente.addAll(_report.referente);
-    int idEvento = mainStore!.box<Event>().put(evento);
-
-    evento = mainStore!.box<Event>().get(idEvento)!;
-    _report.azienda.target!.events.add(evento);
-
+    if (response["note"] != null) _report.note.addAll(response["note"]);
 
     int count = await mainStore!.box<Report>().put(_report);
-    print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
+    print('\n\n\n\nre-read rPORT: ${mainStore!.box<Report>().get(count)}');
 
     if (count > 0) {
       List<dynamic> mappaJsonConfigurazione = json.decode(config);
@@ -247,6 +235,7 @@ class MyHomePageState extends State<MyHomePage> {
       if (change)
         showSConafigChange(mappaJsonConfigurazione);
       else {
+
         response = [];
         _showSnackBar("report salvato");
       }
@@ -372,10 +361,12 @@ class MyHomePageState extends State<MyHomePage> {
 
   Widget searchBarUI() {
     return Padding(
-      padding:  EdgeInsets.only(left: 16.w, right: 16.w),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w),
       child: Container(
-        height: searchresult.isNotEmpty? MediaQuery.of(context).size.height*.30 : MediaQuery.of(context).size.height*.15,
-       // decoration: BoxDecoration(),
+        height: searchresult.isNotEmpty
+            ? MediaQuery.of(context).size.height * .30
+            : MediaQuery.of(context).size.height * .15,
+        // decoration: BoxDecoration(),
         child: FloatingSearchBar(
           builder: (BuildContext context, Animation<double> transition) {
             return SingleChildScrollView(
@@ -412,10 +403,8 @@ class MyHomePageState extends State<MyHomePage> {
                                       title: Text(searchresult[i]
                                               .nome
                                               .toString() +
-                                          searchresult[i]
-                                              .cognome
-                                              .toString()),
-                                      leading:Icon(
+                                          searchresult[i].cognome.toString()),
+                                      leading: Icon(
                                         Icons.people_outlined,
                                       ),
                                     ),
@@ -440,8 +429,6 @@ class MyHomePageState extends State<MyHomePage> {
           automaticallyImplyDrawerHamburger: false,
           closeOnBackdropTap: true,
           transitionCurve: Curves.easeInOut,
-
-
           transitionDuration: Duration(milliseconds: 500),
           transition: CircularFloatingSearchBarTransition(),
           debounceDelay: Duration(milliseconds: 500),
@@ -480,8 +467,9 @@ class MyHomePageState extends State<MyHomePage> {
             if (listaReportPerRicerca.isNotEmpty) {
               for (int i = 0; i < listaReportPerRicerca.length; i++) {
                 List<Referente> data = listaReportPerRicerca[i].referente;
-                for(int i = 0; i<data.length; i++){
-                  if (data[i].nome!.toLowerCase().contains(query) || data[i].cognome!.toLowerCase().contains(query)) {
+                for (int i = 0; i < data.length; i++) {
+                  if (data[i].nome!.toLowerCase().contains(query) ||
+                      data[i].cognome!.toLowerCase().contains(query)) {
                     setState(() {
                       searchresult.add(data[i]);
                     });

@@ -19,9 +19,10 @@ class AccountEmptyState extends State<AccountEmpty> {
   Azienda aziendaRandom = Azienda();
   int differenzaGiorni = 0;
   List<Azienda> listaAziende = [];
+  List<Azienda> listaAziendaConEventiOggi = [];
 
-  List<Azienda> listaEventDaCiclare = [];
-
+  List<Azienda> listaAziendeDaCiclare = [];
+  List<Event> list = [];
 
   SharedPreferences? prefs;
 
@@ -29,26 +30,32 @@ class AccountEmptyState extends State<AccountEmpty> {
   initState() {
     super.initState();
 
-    listaEventDaCiclare  = mainStore!.box<Azienda>().getAll();
+    listaAziendeDaCiclare = mainStore!.box<Azienda>().getAll();
     SharedPreferences.getInstance().then((value) {
       prefs = value;
-      for (int x = 0; x < listaEventDaCiclare.length; x++) {
-        Azienda a = listaEventDaCiclare[x];
-        List<Event> list = a.events;
-        list.sort((a, b) {
-          return a.date!.compareTo(b.date!);
-        });
-        print(prefs!.getString("prioritaAlta").toString());
+      for (int x = 0; x < listaAziendeDaCiclare.length; x++) {
+        Azienda a = listaAziendeDaCiclare[x];
+        print(a);
+          list = a.events;
+          list.sort((a, b) {
+            return a.date!.compareTo(b.date!);
+          });
+        for (int i = 0; i < list.length; i++) {
+          if (list[i].date!.day == (DateTime.now().day) &&
+              list[i].date!.month == (DateTime.now().month) &&
+              list[i].date!.year == (DateTime.now().year)) {
+            listaAziendaConEventiOggi.add(list[i].azienda.target!);
+          }
+        }
 
-        if (list.length >= 2) {
+        if (list.length >= 2 && list.elementAt(list.length-1).date!.isAfter(DateTime.now())) {
           differenzaGiorni =
               list[list.length - 1].date!.difference(DateTime.now()).inDays;
-          print(list[list.length - 1].date!);
-          print(differenzaGiorni);
         }
         if (differenzaGiorni >=
             int.parse(prefs!.getString("prioritaAlta").toString())) {
           listaAziende.add(a);
+          differenzaGiorni = 0;
           print("evento aggiunto");
         }
         print(listaAziende.length.toString());
@@ -78,7 +85,7 @@ class AccountEmptyState extends State<AccountEmpty> {
                 color: Colors.grey[700]),
           ),
         ),
-        body: AuthService()
-                .handleAuth(listaAziende, listaEventDaCiclare, aziendaRandom));
+        body: AuthService().handleAuth(listaAziende, listaAziendeDaCiclare,
+            aziendaRandom, listaAziendaConEventiOggi));
   }
 }

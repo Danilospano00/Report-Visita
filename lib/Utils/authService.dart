@@ -14,22 +14,19 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Screen/AziendaDettaglio.dart';
+import 'package:report_visita_danilo/Screen/CalendarPage.dart';
+import 'package:report_visita_danilo/Screen/ListaAziendeConEventiOggi.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/PaginaListaAziendeConSogliaRossa.dart';
-import 'package:report_visita_danilo/Screen/Preferences.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../costanti.dart';
-import '../objectbox.g.dart';
-import 'horizontaldivider.dart';
 
 class AuthService {
   handleAuth(List<Azienda> listaAziende, List<Azienda> listaEventDaCiclare,
-      Azienda aziendaRandom) {
+      Azienda aziendaRandom, List<Azienda> listaAziendaConEventiOggi) {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
@@ -102,25 +99,22 @@ class AuthService {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 20.0.h, left: 16.w, right: 16.w),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AziendaDettaglio(
-                                          azienda: aziendaRandom,
-                                        )));
-                          },
-                          child: Row(
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ListaAziendeConEventiOggi(
+                                      listaAziendaConEventiOggi:
+                                      listaAziendaConEventiOggi)));
+                    },
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(top: 20.0.h, left: 16.w, right: 16.w),
+                      child: Row(
                             children: [
                               Column(
-                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     "Hai $meet meeting oggi",
@@ -147,8 +141,7 @@ class AuthService {
                               ),
                             ],
                           ),
-                        ),
-                      ],
+
                     ),
                   ),
                   Padding(
@@ -190,19 +183,28 @@ class AuthService {
                     ],
                   ),
                   listaAziende.isNotEmpty
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                              top: 14.h, right: 16.w, left: 16.w),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      child: Text(
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AziendaDettaglio(
+                                          azienda: aziendaRandom,
+                                        )));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 14.h, right: 16.w, left: 16.w),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
                                         aziendaRandom.nome!,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
@@ -211,50 +213,30 @@ class AuthService {
                                           fontSize: 18,
                                         ),
                                       ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AziendaDettaglio(
-                                                      azienda: aziendaRandom,
-                                                    )));
-                                      },
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 2.h, bottom: 2.h)),
-                                    Text(
-                                      "Sono passati ${aziendaRandom.events[aziendaRandom.events.length - 2].date!.difference(DateTime.now()).inDays.toString()} giorni dall'ultima visita",
-                                      textAlign: TextAlign.start,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          color: Colors.grey[700]),
-                                    ),
-                                  ],
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 2.h, bottom: 2.h)),
+                                      Text(
+                                        "Sono passati ${aziendaRandom.events[aziendaRandom.events.length - 2].date!.difference(DateTime.now()).inDays.abs().toString()} giorni dall'ultima visita",
+                                        textAlign: TextAlign.start,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            fontSize: 18.sp,
+                                            color: Colors.grey[700]),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 20.h),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PaginaListaAziendeConSogliaRossa(
-                                                  listaAziendaConSogliaRossa: listaAziende,
-                                                )));
-                                  },
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 20.h),
                                   child: Icon(
                                     Icons.navigate_next_rounded,
                                     size: 30.sp,
                                     color: Colors.grey[700],
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       : Container(),
@@ -276,7 +258,16 @@ class AuthService {
                               fontWeight: FontWeight.w700,
                               letterSpacing: 0.5),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaginaListaAziendeConSogliaRossa(
+                                        listaAziendaConSogliaRossa:
+                                            listaAziende,
+                                      )));
+                        },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.red,
                           padding: const EdgeInsets.only(right: 20, left: 20),

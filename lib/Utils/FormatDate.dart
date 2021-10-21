@@ -7,10 +7,7 @@ class FormatDate {
   static const String ORARIO = "orario";
 
   static String fromDateTimeToString(DateTime data, String stringa) {
-    /*String convertedDateTime = "${data.year.toString()}-${data.month.toString()
-        .padLeft(2, '0')}-${data.day.toString().padLeft(2, '0')} ${data.hour
-        .toString().padLeft(2, '0')}-${data.minute.toString().padLeft(2, '0')}";
-*/
+
     if (stringa == DATA) {
       String convertedDateTime = "${data.day.toString()}"+" "+_monthFromNumberToString(data)+" "+"${data.year.toString()}";
       return convertedDateTime;

@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
-import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
-import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 
 import '../costanti.dart';
