@@ -2,14 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 
 import 'AziendaDettaglio.dart';
 
 class ListaAziendeConEventiOggi extends StatefulWidget {
-  List<Azienda> listaAziendaConEventiOggi;
+  List<Event> listaEventiDiOggi;
 
-  ListaAziendeConEventiOggi({required this.listaAziendaConEventiOggi});
+  ListaAziendeConEventiOggi({required this.listaEventiDiOggi});
 
   @override
   State<StatefulWidget> createState() => ListaAziendeConEventiOggiState();
@@ -23,7 +24,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
         shadowColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.grey[700]),
       ),
-      body: Column(
+      body: widget.listaEventiDiOggi.isEmpty?Center(child: Text("Oggi non ci sono eventi")): Column(
         children: [
           Padding(
             padding: EdgeInsets.only(
@@ -42,7 +43,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: widget.listaAziendaConEventiOggi.length,
+            itemCount: widget.listaEventiDiOggi.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () {
@@ -51,7 +52,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                       MaterialPageRoute(
                           builder: (context) => AziendaDettaglio(
                               azienda:
-                                  widget.listaAziendaConEventiOggi[index])));
+                                  widget.listaEventiDiOggi[index].azienda.target!)));
                 },
                 child: Column(
                   children: [
@@ -75,7 +76,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                                   Padding(
                                     padding: EdgeInsets.only(left: 12.w),
                                     child: Text(
-                                      widget.listaAziendaConEventiOggi[index]
+                                      widget.listaEventiDiOggi[index].azienda.target!
                                           .nome!,
                                       style: TextStyle(
                                           fontSize: 15.712129.sp,
@@ -84,35 +85,9 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                                     ),
                                   ),
                                   Text(
-                                    widget.listaAziendaConEventiOggi[index]
-                                            .events.isNotEmpty
-                                        ? widget
-                                                .listaAziendaConEventiOggi[
-                                                    index]
-                                                .events
-                                                .elementAt(0)
-                                                .date!
-                                                .day
-                                                .toString() +
-                                            "/" +
-                                            widget
-                                                .listaAziendaConEventiOggi[
-                                                    index]
-                                                .events
-                                                .elementAt(0)
-                                                .date!
-                                                .month
-                                                .toString() +
-                                            "/" +
-                                            widget
-                                                .listaAziendaConEventiOggi[
-                                                    index]
-                                                .events
-                                                .elementAt(0)
-                                                .date!
-                                                .year
-                                                .toString()
-                                        : "",
+                                    FormatDate.fromDateTimeToString(
+                                      widget.listaEventiDiOggi[index].date!,
+                                    "data"),
                                     style: TextStyle(
                                         color: Colors.red,
                                         fontSize: 13.748113.sp,
@@ -122,10 +97,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                                     padding: EdgeInsets.only(right:12.w),
                                     child: Text(
                                       FormatDate.fromDateTimeToString(
-                                          widget.listaAziendaConEventiOggi[index]
-                                              .events
-                                              .elementAt(0)
-                                              .date!,
+                                          widget.listaEventiDiOggi[index].date!,
                                           "orario"),
                                       style: TextStyle(
                                           color: Colors.red,
@@ -135,11 +107,11 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                                   ),
                                 ],
                               ),
-                              widget.listaAziendaConEventiOggi[index].indirizzo != null?
+                              widget.listaEventiDiOggi[index].azienda.target!.indirizzo != null?
                               Padding(
                                 padding: EdgeInsets.only(top:4.h),
                                 child: AutoSizeText(
-                                  widget.listaAziendaConEventiOggi[index].indirizzo!,
+                                  widget.listaEventiDiOggi[index].azienda.target!.indirizzo!,
                                   style: TextStyle(
                                     color: Colors.grey[700],
                                     fontWeight: FontWeight.w700,
@@ -154,12 +126,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                                   alignment: Alignment.bottomRight,
                                   child: Icon(
                                     Icons.circle,
-                                    color: widget
-                                        .listaAziendaConEventiOggi[index]
-                                        .events
-                                        .isNotEmpty
-                                        ? Colors.lightGreenAccent
-                                        : Colors.blue,
+                                    color:  Colors.lightGreenAccent,
                                     size: 16,
                                   ),
                                 ),

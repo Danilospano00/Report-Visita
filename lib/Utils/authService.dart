@@ -18,6 +18,7 @@ import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/ListaAziendeConEventiOggi.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/PaginaListaAziendeConSogliaRossa.dart';
+import 'package:report_visita_danilo/Utils/TakeEventWithDate.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,20 +27,15 @@ import '../costanti.dart';
 
 class AuthService {
   handleAuth(List<Azienda> listaAziende, List<Azienda> listaEventDaCiclare,
-      Azienda aziendaRandom, List<Azienda> listaAziendaConEventiOggi) {
+      Azienda aziendaRandom, List<Event> listaEventiDiOggi) {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
             int meet = 0;
             List<Event> listaEventi = mainStore!.box<Event>().getAll();
-            for (int x = 0; x < listaEventi.length; x++) {
-              if (listaEventi[x].date!.day == (DateTime.now().day) &&
-                  listaEventi[x].date!.month == (DateTime.now().month) &&
-                  listaEventi[x].date!.year == (DateTime.now().year)) {
-                meet++;
-              }
-            }
+            List<Event> lista = TakeEventWithDate.takeEventFromList(listaEventi, DateTime.now());
+            meet=lista.length;
 
             dynamic user = snapshot.data;
             return Card(
@@ -106,8 +102,8 @@ class AuthService {
                           MaterialPageRoute(
                               builder: (context) =>
                                   ListaAziendeConEventiOggi(
-                                      listaAziendaConEventiOggi:
-                                      listaAziendaConEventiOggi)));
+                                      listaEventiDiOggi:
+                                      lista)));
                     },
                     child: Padding(
                       padding:

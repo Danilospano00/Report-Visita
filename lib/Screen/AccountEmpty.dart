@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:report_visita_danilo/Utils/TakeEventWithDate.dart';
 import 'package:report_visita_danilo/Utils/authService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +20,7 @@ class AccountEmptyState extends State<AccountEmpty> {
   Azienda aziendaRandom = Azienda();
   int differenzaGiorni = 0;
   List<Azienda> listaAziende = [];
-  List<Azienda> listaAziendaConEventiOggi = [];
+  List<Event> listaEventiDiOggi = [];
 
   List<Azienda> listaAziendeDaCiclare = [];
   List<Event> list = [];
@@ -40,13 +41,7 @@ class AccountEmptyState extends State<AccountEmpty> {
           list.sort((a, b) {
             return a.date!.compareTo(b.date!);
           });
-        for (int i = 0; i < list.length; i++) {
-          if (list[i].date!.day == (DateTime.now().day) &&
-              list[i].date!.month == (DateTime.now().month) &&
-              list[i].date!.year == (DateTime.now().year)) {
-            listaAziendaConEventiOggi.add(list[i].azienda.target!);
-          }
-        }
+        listaEventiDiOggi = TakeEventWithDate.takeEventFromList(list, DateTime.now());
 
         if (list.length >= 2 && list.elementAt(list.length-1).date!.isAfter(DateTime.now())) {
           differenzaGiorni =
@@ -86,6 +81,6 @@ class AccountEmptyState extends State<AccountEmpty> {
           ),
         ),
         body: AuthService().handleAuth(listaAziende, listaAziendeDaCiclare,
-            aziendaRandom, listaAziendaConEventiOggi));
+            aziendaRandom, listaEventiDiOggi));
   }
 }
