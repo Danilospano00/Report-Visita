@@ -78,6 +78,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
   _GeneratorFromToJsonState(this.formItems);
 
+
   @override
   void initState() {
     super.initState();
