@@ -18,6 +18,7 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../objectbox.g.dart';
 
@@ -31,28 +32,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  final formGlobalKey = GlobalKey<FormState>();
   final formKeyBody = GlobalKey<FormBuilderState>();
-  final formKeyAddReferente = GlobalKey<FormBuilderState>();
-  final noteKey = GlobalKey<FormBuilderState>();
-
-  TextEditingController noteController = TextEditingController();
-  TextEditingController formFieldController = TextEditingController();
-  TextEditingController formFieldControllerIndirizzo = TextEditingController();
-  TextEditingController formFieldControllerCap = TextEditingController();
-  TextEditingController formFieldControllerCitta = TextEditingController();
-  TextEditingController formFieldControllerIva = TextEditingController();
-  TextEditingController formFieldControllerCodicefiscale =
-      TextEditingController();
 
   static final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late Store _store;
   bool hasBeenInitialized = false;
   late Report _report;
-  late Iterable<Contact> _contacts;
-  Azienda? aziendaSelezionata;
-  Contact? contattoSelezionato;
   late String configurazione;
 
   bool showSearchBar = false;
@@ -108,15 +94,6 @@ class MyHomePageState extends State<MyHomePage> {
                     key: formKeyBody,
                     child: Stack(
                       children: [
-                        /*Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.h),
-                          child: Row(
-                            children: [
-                              ,
-                            ],
-                          ),
-                        ),*/
-
                         Padding(
                           padding: EdgeInsets.only(top: 50),
                           child: GeneratorFormToJson(
@@ -219,29 +196,63 @@ class MyHomePageState extends State<MyHomePage> {
 
     if (response["note"] != null) _report.note.addAll(response["note"]);
 
-    int count = await mainStore!.box<Report>().put(_report);
-    print('\n\n\n\nre-read rPORT: ${mainStore!.box<Report>().get(count)}');
+    //int count = await mainStore!.box<Report>().put(_report);
+    //print('\n\n\n\nre-read rPORT: ${mainStore!.box<Report>().get(count)}');
 
-    if (count > 0) {
-      List<dynamic> mappaJsonConfigurazione = json.decode(config);
-      bool change = false;
-      mappaJsonConfigurazione.forEach((element) {
-        if (element['type'] == "note") if (element['label'].length <
-            response["note"].length) {
-          change = true;
-          return;
-        }
-      });
-      if (change)
-        showSConafigChange(mappaJsonConfigurazione);
-      else {
+    //controllo se la config è cambiata solo sulle note
+    if (checkChange()) {
+      List<dynamic> mappaJsonConfigurazione = json.decode(configurazione);
+      showSConafigChange(mappaJsonConfigurazione);
+    } else {
+      //se non è cambiata setto la config nel report
+      addToDBReport(configurazione,"report salvato");
+    }
+  }
 
+
+ void addToDBReport(String configDaSalvare,String msg)async{
+    _report.configurationJson = configDaSalvare;
+    int id = await mainStore!.box<Report>().put(_report);
+    if (id > 0) {
+      setState(() {
         response = [];
-        _showSnackBar("report salvato");
-      }
+      });
+      _showSnackBar(msg);
     } else {
       _showSnackBar("Errore aggiunta Report");
     }
+  }
+
+  bool checkChange() {
+    bool change = false;
+
+    List<dynamic> mappaJsonConfigurazione = json.decode(configurazione);
+
+    //ciclo la configurazione trasformandola in una mappa
+    mappaJsonConfigurazione.forEach((element) {
+      if (element['type'] == "note") {
+        //controllo se le leunghezze delle liste sono cambiate, se si aggiorno la config
+        if (element['label'].length != response["note"].length) {
+          change = true;
+          return;
+        }
+
+        element['label'].forEach((notaConfig) {
+          bool trovata = false;
+          response["note"].forEach((notaResponse) {
+            if (notaConfig == notaResponse) {
+              trovata = true;
+            }
+          });
+          if (!trovata) {
+            change = true;
+            return;
+          }
+        });
+      }
+    });
+
+    return change;
   }
 
   void _showSnackBar(String text) {
@@ -273,7 +284,7 @@ class MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
                   child: AutoSizeText(
-                      "Report aggiunto con successo,è stato rilevato un cambiamento della configuraziona,"
+                      "è stato rilevato un cambiamento della configuraziona,"
                       "vuoi sostituirla ?"))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
@@ -288,7 +299,7 @@ class MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
-                  response = [];
+                  addToDBReport(configurazione,"report salvato");
                   Navigator.pop(context);
                 },
               ),
@@ -303,20 +314,20 @@ class MyHomePageState extends State<MyHomePage> {
                   "Sostituisci",
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   List<String> label = [];
                   response["note"].forEach((element) {
                     label.add(element.titolo);
                   });
 
                   for (var i = 0; i < mappa.length; i++) {
-                    if (mappa[i]['type'] == "note") mappa[i]['label'] = label;
+                    if (mappa[i]['type'] == "note")
+                      mappa[i]['label'] = label;
                   }
-
-                  config = json.encode(mappa);
-                  response = [];
-                  _showSnackBar("configurazione sostituita");
-
+                  String newConfig=json.encode(mappa);
+                  SharedPreferences pref= await SharedPreferences.getInstance();
+                  pref.setString(keyConfigurazione,newConfig);
+                  addToDBReport(newConfig,"Report salvato e configurazione sostituita");
                   Navigator.pop(context);
                 },
               ),

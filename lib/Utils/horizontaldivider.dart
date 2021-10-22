@@ -24,6 +24,7 @@ class HorizontalOrLine extends StatelessWidget {
             child: Divider(
               color: color,
               height: height,
+
             )),
       ),
 

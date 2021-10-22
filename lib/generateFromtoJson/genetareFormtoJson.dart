@@ -38,6 +38,7 @@ class GeneratorFormToJson extends StatefulWidget {
   final bool active; // attivare o disattivare la possibilta di modifica
   Report? initialReport;
 
+
   GeneratorFormToJson(
       {required this.form, required this.onChanged, required this.store,required this.active,required this.initialReport});
 
@@ -73,6 +74,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   File? fileSelected;
   final  _placesService=PlacesService();
   bool loadGeo=false;
+  bool noteInizialized=false;
 
   _GeneratorFromToJsonState(this.formItems);
 
@@ -612,7 +614,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 autofocus: false,
                 readOnly: true,
                 controller:
-                    TextEditingController()..text=(widget.initialReport != null ? widget.initialReport!.prossimaVisita!.toString() :_datevalueMap[item["title"]]).toString(),
+                    TextEditingController()..text=widget.initialReport != null ? widget.initialReport!.prossimaVisita!.toString()
+                        :_datevalueMap[item["title"]]!=null?_datevalueMap[item["title"]]!:"",
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return 'Please  cannot be empty';
@@ -1036,55 +1039,71 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 color: Colors.black,
                                 onPressed:widget.active? () async {
 
-                                  setState(() {
-                                    loadGeo=true;
-                                  });
+                                  try {
+                                    setState(() {
+                                      loadGeo = true;
+                                    });
 
                                     Position? _currentLocation;
 
-                                  LocationPermission permission = await Geolocator.checkPermission();
-                                  if (permission == LocationPermission.denied) {
-                                    permission = await Geolocator.requestPermission();
-                                    if (permission == LocationPermission.denied) {
-
-                                      return Future.error('Location permissions are denied');
+                                    LocationPermission permission = await Geolocator
+                                        .checkPermission();
+                                    if (permission ==
+                                        LocationPermission.denied) {
+                                      permission =
+                                      await Geolocator.requestPermission();
+                                      if (permission ==
+                                          LocationPermission.denied) {
+                                        return Future.error(
+                                            'Location permissions are denied');
+                                      }
                                     }
+                                    if (permission ==
+                                        LocationPermission.deniedForever) {
+                                      // Permissions are denied forever, handle appropriately.
+                                      return Future.error(
+                                          'Location permissions are permanently denied, we cannot request permissions.');
+                                    }
+                                    // When we reach here, permissions are granted and we can
+                                    // continue accessing the position of the device.
+                                    _currentLocation =
+                                    await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.high);
+
+
+                                    if (_currentLocation != null) {
+                                      List<
+                                          Placemark> placemarks = await placemarkFromCoordinates(
+                                          _currentLocation.latitude,
+                                          _currentLocation.longitude);
+                                      Placemark place = placemarks[0];
+                                      String address = '${place
+                                          .street}, ${place
+                                          .subLocality}, ${place
+                                          .locality}, ${place
+                                          .postalCode}, ${place.country}';
+                                      if (selectObject == null) {
+                                        formResults[item['field'][i]['label']] =
+                                            address;
+                                        controller[i]
+                                          ..text = address;
+                                      } else {
+                                        controller[i]
+                                          ..text = address;
+                                        setNewValueObject(
+                                            item['field'][i]['label'],
+                                            controller[i].value.text,
+                                            item['title']);
+                                      }
+                                    }
+                                    setState(() {
+                                      loadGeo = false;
+                                    });
+                                  }catch(e){
+                                    setState(() {
+                                      loadGeo = false;
+                                    });
                                   }
-                                  if (permission == LocationPermission.deniedForever) {
-                                    // Permissions are denied forever, handle appropriately.
-                                    return Future.error(
-                                        'Location permissions are permanently denied, we cannot request permissions.');
-                                  }
-                                  // When we reach here, permissions are granted and we can
-                                  // continue accessing the position of the device.
-                                  _currentLocation=  await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-
-                                       if(_currentLocation!=null) {
-                                         List<
-                                             Placemark> placemarks = await placemarkFromCoordinates(
-                                             _currentLocation.latitude,
-                                             _currentLocation.longitude);
-                                         Placemark place = placemarks[0];
-                                         String address = '${place
-                                             .street}, ${place
-                                             .subLocality}, ${place
-                                             .locality}, ${place
-                                             .postalCode}, ${place.country}';
-                                         if (selectObject == null) {
-                                           formResults[item['field'][i]['label']] = address;
-                                               controller[i]..text=address;
-                                         } else {
-                                           controller[i]..text=address;
-                                           setNewValueObject(item['field'][i]['label'],
-                                               controller[i].value.text, item['title']);
-                                         }
-
-                                       }
-                                  setState(() {
-                                    loadGeo=false;
-                                  });
-
 
 
                                  // recuperare adress dalla posizione attuale
@@ -1147,12 +1166,20 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
 
       if (item['type'] == "note") {
-        if (listaNote.isEmpty || listaNote == null) {
-          for (var i = 0; i < item['label'].length; i++) {
-            listaNote.add(Nota(titolo: item['label'][i], testo: ""));
-            controllerNote.add(TextEditingController());
-            controllerNoteDesc.add(TextEditingController());
+        if(!noteInizialized) {
+          if (listaNote.isEmpty || listaNote == null) {
+            for (var i = 0; i < item['label'].length; i++) {
+              listaNote.add(Nota(titolo: item['label'][i], testo: ""));
+              controllerNote.add(TextEditingController());
+              controllerNoteDesc.add(TextEditingController());
+            }
+            formResults[item['title']] = listaNote;
+            _handleChanged();
           }
+          setState(() {
+            noteInizialized=true;
+          });
+
         }
         listWidget.add(Column(
           children: [
