@@ -45,7 +45,7 @@ class ListaAziendeState extends State<ListaAziende> {
     this.items = listaAziende2
         .map((item) => _AZItem(
             nomeAzienda: item.nome!,
-            tag: item.nome![0].toUpperCase(),
+            tag: item.nome![0],
             azienda: item))
         .toList();
 
@@ -447,7 +447,7 @@ class ListaAziendeState extends State<ListaAziende> {
       padding: EdgeInsets.only(left: 21.w),
       child: Container(
         alignment: Alignment.centerLeft,
-        child: Text('$tag',
+        child: Text('a',
             softWrap: false,
             style: TextStyle(
                 fontSize: 20.126488.sp,

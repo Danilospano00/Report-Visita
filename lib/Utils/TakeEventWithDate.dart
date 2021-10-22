@@ -1,7 +1,12 @@
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TakeEventWithDate {
+
+
+ // SharedPreferences prefs = await SharedPreferences.getInstance();
+  //int sogliaMedia = int.parse(prefs.getString("prioritaMedia").toString();
 
 
   //questo metodo prende una lista di eventi e una data, li compara e ritorna una nuova lista eventi che ha la data uguale a quella
@@ -17,7 +22,16 @@ class TakeEventWithDate {
         }
       }
       return list;
-    }
-    else return [];
+    } else
+      return [];
   }
+
+  /*static void calcolaSogliaAllerta(
+      String valoreSoglia, List<Azienda> listaAziende) {
+    if (listaAziende.isNotEmpty) {
+      for (int i = 0; i < listaAziende.length; i++) {
+
+      }
+    }
+  }*/
 }

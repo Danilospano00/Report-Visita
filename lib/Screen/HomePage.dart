@@ -246,6 +246,7 @@ class MyHomePageState extends State<MyHomePage> {
 
         element['label'].forEach((notaConfig) {
           bool trovata = false;
+
           response["note"].forEach((notaResponse) {
             if (notaConfig == notaResponse.titolo) {
               trovata = true;
@@ -291,7 +292,7 @@ class MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
                   child: AutoSizeText(
-                      "è stato rilevato un cambiamento della configuraziona,"
+                      "E' stato rilevato un cambiamento della configuraziona,"
                       "vuoi sostituirla ?"))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [

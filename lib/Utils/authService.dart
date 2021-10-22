@@ -236,19 +236,16 @@ class AuthService {
                           ),
                         )
                       : Container(),
-                  Row(
+                  listaAziende.isEmpty?Divider():Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(
-                          left: 16.w,
-                        ),
+                      Expanded(
+                        flex: 8,
                         child: Divider(),
                       ),
                       ElevatedButton(
                         child: Text(
-                          "vedi tutti",
+                          "vedi tutte",
                           style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
