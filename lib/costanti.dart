@@ -24,8 +24,8 @@ String config=json.encode([
     "hint": "Nome Cliente",
     "entity": "Azienda",
     "field": [
-      {"label": "indirizzo", "required": true},
-      {"label": "partitaIva", "required": true},
+      {"label": "indirizzo", "required": false},
+      {"label": "partitaIva", "required": false},
     ],
     "empty": false,
     "validation": true

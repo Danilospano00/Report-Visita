@@ -124,88 +124,95 @@ class MyHomePageState extends State<MyHomePage> {
     formKeyBodyMain.currentState!.saveAndValidate();
     _report = Report();
 
-    if (response["azienda"] != null) {
-      _report.azienda.target = response["azienda"];
-    } else if (response["aziendaName"] != null) {
-      _report.azienda.target = Azienda()..nome = response["aziendaName"];
+    if(response.length!=0)
+    {
+      if (response["azienda"] != null) {
+        _report.azienda.target = response["azienda"];
+      } else if (response["aziendaName"] != null) {
+        _report.azienda.target = Azienda()
+          ..nome = response["aziendaName"];
 
-      if (response["indirizzo"] != null) {
-        List<Location> locations;
-        try {
-          locations = await locationFromAddress(response["indirizzo"]);
-        } on Exception catch (e) {
-          _showSnackBar("Indirizzo non valido");
-          return;
+        if (response["indirizzo"] != null) {
+          List<Location> locations;
+          try {
+            locations = await locationFromAddress(response["indirizzo"]);
+          } on Exception catch (e) {
+            _showSnackBar("Indirizzo non valido");
+            return;
+          }
+
+          _report.azienda.target!.indirizzo = response["indirizzo"];
+          _report.azienda.target!.lat = locations[0].latitude;
+          _report.azienda.target!.lng = locations[0].longitude;
         }
-
-        _report.azienda.target!.indirizzo = response["indirizzo"];
-        _report.azienda.target!.lat = locations[0].latitude;
-        _report.azienda.target!.lng = locations[0].longitude;
+        if (response["partitaIva"] != null) {
+          _report.azienda.target!.partitaIva = response["partitaIva"];
+        }
+      } else {
+        _showSnackBar("Campi mancanti");
+        return;
       }
-      if (response["partitaIva"] != null) {
-        _report.azienda.target!.partitaIva = response["partitaIva"];
+      if (response["contatto"] != null) {
+        List<Contact> contact = response["contatto"];
+        contact.forEach((contact) {
+          _report.referente.add(Referente(
+              nome: contact.givenName ?? " ",
+              cognome: contact.familyName ?? " ",
+              telefono: contact.phones!.isNotEmpty
+                  ? contact.phones!.elementAt(0).value
+                  : null,
+              // id: contact.identifier!=null?int.parse(contact.identifier!):-1,
+              email: contact.emails!.isNotEmpty
+                  ? contact.emails!.elementAt(0).value
+                  : null));
+        });
       }
-    } else {
-      _showSnackBar("Campi mancanti");
-      return;
-    }
-    if (response["contatto"] != null) {
-      List<Contact> contact = response["contatto"];
-      contact.forEach((contact) {
-        _report.referente.add(Referente(
-            nome: contact.givenName ?? " ",
-            cognome: contact.familyName ?? " ",
-            telefono: contact.phones!.isNotEmpty
-                ? contact.phones!.elementAt(0).value
-                : null,
-            // id: contact.identifier!=null?int.parse(contact.identifier!):-1,
-            email: contact.emails!.isNotEmpty
-                ? contact.emails!.elementAt(0).value
-                : null));
-      });
-    }
 
-    if (response["file"] != null) {
-      File file = response["file"];
+      if (response["file"] != null) {
+        File file = response["file"];
 
-      //ByteData fileByteData = await rootBundle.load(file.path);
-      Uint8List fileUint8List = await file.readAsBytes();
-      //fileByteData.buffer.asUint8List(fileByteData.offsetInBytes, fileByteData.lengthInBytes);
-      List<int> fileListInt = fileUint8List.cast<int>();
-      _report.byteListFile = fileListInt;
-    }
+        //ByteData fileByteData = await rootBundle.load(file.path);
+        Uint8List fileUint8List = await file.readAsBytes();
+        //fileByteData.buffer.asUint8List(fileByteData.offsetInBytes, fileByteData.lengthInBytes);
+        List<int> fileListInt = fileUint8List.cast<int>();
+        _report.byteListFile = fileListInt;
+      }
 
-    if (response["dateCompilazione"] != null)
-      _report.compilazione = DateTime.parse(response["dateCompilazione"]);
-    else {
-      _report.compilazione = DateTime.now();
-    }
+      if (response["dateCompilazione"] != null)
+        _report.compilazione = DateTime.parse(response["dateCompilazione"]);
+      else {
+        _report.compilazione = DateTime.now();
+      }
 
-    if (response["prossimaVisita"] != null) {
-      _report.prossimaVisita = DateTime.parse(response["prossimaVisita"]);
+      if (response["prossimaVisita"] != null) {
+        _report.prossimaVisita = DateTime.parse(response["prossimaVisita"]);
 
-      Event evento = Event();
-      evento.date = DateTime.parse(response["prossimaVisita"]);
-      evento.azienda.target = _report.azienda.target;
-      evento.referente.addAll(_report.referente);
-      int idEvento = mainStore!.box<Event>().put(evento);
+        Event evento = Event();
+        evento.date = DateTime.parse(response["prossimaVisita"]);
+        evento.azienda.target = _report.azienda.target;
+        evento.referente.addAll(_report.referente);
+        int idEvento = mainStore!.box<Event>().put(evento);
 
-      evento = mainStore!.box<Event>().get(idEvento)!;
-      _report.azienda.target!.events.add(evento);
-    }
+        evento = mainStore!.box<Event>().get(idEvento)!;
+        _report.azienda.target!.events.add(evento);
+      }
 
-    if (response["note"] != null) _report.note.addAll(response["note"]);
+      if (response["note"] != null) _report.note.addAll(response["note"]);
 
-    //int count = await mainStore!.box<Report>().put(_report);
-    //print('\n\n\n\nre-read rPORT: ${mainStore!.box<Report>().get(count)}');
+      //int count = await mainStore!.box<Report>().put(_report);
+      //print('\n\n\n\nre-read rPORT: ${mainStore!.box<Report>().get(count)}');
 
-    //controllo se la config è cambiata solo sulle note
-    if (checkChange()) {
-      List<dynamic> mappaJsonConfigurazione = json.decode(configurazione);
-      showSConafigChange(mappaJsonConfigurazione);
-    } else {
-      //se non è cambiata setto la config nel report
-      addToDBReport(configurazione,"report salvato");
+      List<dynamic> mappaJsonConfigurazione = json.decode(config);
+
+      //controllo se la config è cambiata solo sulle note
+      if (checkChange(mappaJsonConfigurazione)) {
+        showSConafigChange(mappaJsonConfigurazione);
+      } else {
+        //se non è cambiata setto la config nel report
+        addToDBReport(config, "report salvato");
+      }
+    }else{
+
     }
   }
 
@@ -214,19 +221,19 @@ class MyHomePageState extends State<MyHomePage> {
     _report.configurationJson = configDaSalvare;
     int id = await mainStore!.box<Report>().put(_report);
     if (id > 0) {
-      setState(() {
+
         response = [];
-      });
+
       _showSnackBar(msg);
     } else {
       _showSnackBar("Errore aggiunta Report");
     }
   }
 
-  bool checkChange() {
+  bool checkChange(List<dynamic> mappaJsonConfigurazione) {
     bool change = false;
 
-    List<dynamic> mappaJsonConfigurazione = json.decode(configurazione);
+
 
     //ciclo la configurazione trasformandola in una mappa
     mappaJsonConfigurazione.forEach((element) {
@@ -240,7 +247,7 @@ class MyHomePageState extends State<MyHomePage> {
         element['label'].forEach((notaConfig) {
           bool trovata = false;
           response["note"].forEach((notaResponse) {
-            if (notaConfig == notaResponse) {
+            if (notaConfig == notaResponse.titolo) {
               trovata = true;
             }
           });
@@ -299,7 +306,7 @@ class MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
-                  addToDBReport(configurazione,"report salvato");
+                  addToDBReport(config,"report salvato");
                   Navigator.pop(context);
                 },
               ),

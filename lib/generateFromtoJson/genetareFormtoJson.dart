@@ -614,14 +614,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 autofocus: false,
                 readOnly: true,
                 controller:
-                    TextEditingController()..text=widget.initialReport != null ? widget.initialReport!.prossimaVisita!.toString()
-                        :_datevalueMap[item["title"]]!=null?_datevalueMap[item["title"]]!:"",
-                validator: (String? value) {
+                    TextEditingController()..text=widget.initialReport != null ?
+                    widget.initialReport!.prossimaVisita!=null?
+                    widget.initialReport!.prossimaVisita!.toString():
+                        _datevalueMap[item["title"]]!=null?_datevalueMap[item["title"]]!:"":
+                    _datevalueMap[item["title"]]!=null?_datevalueMap[item["title"]]!:"",
+               /* validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return 'Please  cannot be empty';
                   }
                   return null;
-                },
+                },*/
                 onChanged: (String value) {
                   _handleChanged();
                 },
@@ -1231,12 +1234,12 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             formResults[item['title']] = listaNote;
                             _handleChanged();
                           },
-                          validator: (String? value) {
+                          /*validator: (String? value) {
                             if (value!.isEmpty) {
                               return 'Please ${item['title']} cannot be empty';
                             }
                             return null;
-                          },
+                          },*/
                           cursorColor: Colors.grey[700],
                           decoration: InputDecoration(
                             suffix: IconButton(
@@ -1272,7 +1275,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
                           controller: controllerNoteDesc[i]
                             ..text = listaNote[i].testo!,
-                          validator: FormBuilderValidators.required(context),
+                          //validator: FormBuilderValidators.required(context),
                           decoration: InputDecoration(
                             alignLabelWithHint: true,
                             labelStyle:
