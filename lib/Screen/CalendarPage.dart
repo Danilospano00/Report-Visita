@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
+import 'package:report_visita_danilo/Utils/MyDrawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -74,7 +75,7 @@ class CalendarPageState extends State<CalendarPage> {
       extendBodyBehindAppBar: true,
       key: _keyDrawer,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      endDrawer: myDrawer(),
+      endDrawer: MyDrawer(),
       body: loading
           ? Center(child: CircularProgressIndicator(color: Colors.red,))
           : StreamBuilder<List<Event>>(
@@ -409,7 +410,7 @@ class CalendarPageState extends State<CalendarPage> {
     }
   }
 
-  Widget? myDrawer() {
+  /*Widget? myDrawer() {
     bool bassa = true;
     bool media = true;
     bool alta = true;
@@ -531,5 +532,5 @@ class CalendarPageState extends State<CalendarPage> {
       ),
     );
   //});
-  }
+  }*/
 }

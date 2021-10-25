@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TakeEventWithDate {
+      
 
-
- // SharedPreferences prefs = await SharedPreferences.getInstance();
   //int sogliaMedia = int.parse(prefs.getString("prioritaMedia").toString();
 
 
