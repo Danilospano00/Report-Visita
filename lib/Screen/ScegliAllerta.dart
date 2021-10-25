@@ -297,7 +297,7 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                       indent: 16.w,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 85.h),
+                      padding: EdgeInsets.only(top: 50.h),
                       child: Container(
                         padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
                         alignment: Alignment.bottomRight,

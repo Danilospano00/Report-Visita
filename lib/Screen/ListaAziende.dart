@@ -45,7 +45,7 @@ class ListaAziendeState extends State<ListaAziende> {
     this.items = listaAziende2
         .map((item) => _AZItem(
             nomeAzienda: item.nome!,
-            tag: item.nome![0],
+            tag: item.nome![0].toUpperCase(),
             azienda: item))
         .toList();
 
@@ -58,10 +58,11 @@ class ListaAziendeState extends State<ListaAziende> {
   initState() {
     super.initState();
     creaListaAzienda();
-    Timer(Duration(seconds: 5), () {
       initList(listaAziende2);
-      _prepareMarker();
       _getCurrentLocation();
+      _prepareMarker();
+    setState(() {
+      hasBeenInitialized = true;
     });
   }
 
@@ -125,10 +126,6 @@ class ListaAziendeState extends State<ListaAziende> {
         return marker;
       }).toList();
     }
-
-    setState(() {
-      hasBeenInitialized = true;
-    });
   }
 
   @override
@@ -146,7 +143,7 @@ class ListaAziendeState extends State<ListaAziende> {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
             ))
           : !hasBeenInitialized && !locationInitialized
-              ? Center(child: CircularProgressIndicator(color: Colors.red))
+          ? Center(child: CircularProgressIndicator(color: Colors.red))
               : Stack(
                   children: [
                     Visibility(
@@ -350,7 +347,7 @@ class ListaAziendeState extends State<ListaAziende> {
 
   Widget _buildListItem(_AZItem item) {
     final tag = item.getSuspensionTag();
-    final offstage = false; //!item.isShowSuspension;
+    final offstage = !item.isShowSuspension;
 
     return GestureDetector(
       onTap: () {
@@ -447,7 +444,7 @@ class ListaAziendeState extends State<ListaAziende> {
       padding: EdgeInsets.only(left: 21.w),
       child: Container(
         alignment: Alignment.centerLeft,
-        child: Text('a',
+        child: Text('$tag',
             softWrap: false,
             style: TextStyle(
                 fontSize: 20.126488.sp,

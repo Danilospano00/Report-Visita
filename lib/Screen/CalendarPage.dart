@@ -76,7 +76,7 @@ class CalendarPageState extends State<CalendarPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       endDrawer: myDrawer(),
       body: loading
-          ? CircularProgressIndicator()
+          ? Center(child: CircularProgressIndicator(color: Colors.red,))
           : StreamBuilder<List<Event>>(
               stream: stream,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

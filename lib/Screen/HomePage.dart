@@ -142,8 +142,11 @@ class MyHomePageState extends State<MyHomePage> {
           }
 
           _report.azienda.target!.indirizzo = response["indirizzo"];
+          print("Indirizzo: "+ _report.azienda.target!.indirizzo.toString());
           _report.azienda.target!.lat = locations[0].latitude;
+          print("Latitudine: "+_report.azienda.target!.lat.toString());
           _report.azienda.target!.lng = locations[0].longitude;
+          print("Longitudine: "+_report.azienda.target!.lng.toString());
         }
         if (response["partitaIva"] != null) {
           _report.azienda.target!.partitaIva = response["partitaIva"];
