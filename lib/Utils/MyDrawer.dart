@@ -1,7 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:report_visita_danilo/Utils/theme.dart';
+import 'package:report_visita_danilo/Models/factory/filter.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
@@ -27,6 +28,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
+
     return Drawer(
       child: ListView(
         children: [
@@ -55,6 +57,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     setState(() {
                       bassa = value!;
                     });
+                    context.read<FilterModel>().setFilter(bassa, media, alta);
                   },
                 ),
                 Expanded(
@@ -86,6 +89,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     setState(() {
                       media = value!;
                     });
+                    context.read<FilterModel>().setFilter(bassa, media, alta);
                   },
                 ),
                 Expanded(
@@ -117,6 +121,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     setState(() {
                       alta = value!;
                     });
+                    context.read<FilterModel>().setFilter(bassa, media, alta);
                   },
                 ),
                 Expanded(

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:report_visita_danilo/Models/factory/filter.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/MyDrawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,239 +73,246 @@ class CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      key: _keyDrawer,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      endDrawer: MyDrawer(),
-      body: loading
-          ? Center(child: CircularProgressIndicator(color: Colors.red,))
-          : StreamBuilder<List<Event>>(
-              stream: stream,
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  List<Event> listaEvent = [];
-                  listaEventi = [];
-                  listaEvent = snapshot.data;
-                  listaEvent.sort((a, b) {
-                    return a.date!.compareTo(b.date!);
-                  });
-                  for (int x = 0; x < listaEvent.length; x++) {
-                    if (listaEvent[x].date!.isAfter(DateTime.now())) {
-                      listaEventi.add(listaEvent[x]);
-                    } else if (listaEvent[x].date!.day ==
-                            (DateTime.now().day) &&
-                        listaEvent[x].date!.month == (DateTime.now().month) &&
-                        listaEvent[x].date!.year == (DateTime.now().year)) {
-                      listaEventi.add(listaEvent[x]);
+
+    return ChangeNotifierProvider(
+      create: (context) => FilterModel(),
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        key: _keyDrawer,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        endDrawer: MyDrawer(),
+        body: loading
+            ? Center(child: CircularProgressIndicator(color: Colors.red,))
+            : StreamBuilder<List<Event>>(
+                stream: stream,
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.hasData) {
+                    List<Event> listaEvent = [];
+                    listaEventi = [];
+                    listaEvent = snapshot.data;
+                    listaEvent.sort((a, b) {
+                      return a.date!.compareTo(b.date!);
+                    });
+                    for (int x = 0; x < listaEvent.length; x++) {
+                      if (listaEvent[x].date!.isAfter(DateTime.now())) {
+                        listaEventi.add(listaEvent[x]);
+                      } else if (listaEvent[x].date!.day ==
+                              (DateTime.now().day) &&
+                          listaEvent[x].date!.month == (DateTime.now().month) &&
+                          listaEvent[x].date!.year == (DateTime.now().year)) {
+                        listaEventi.add(listaEvent[x]);
+                      }
                     }
+                  } else {
+                    listaEventi = [];
                   }
-                } else {
-                  listaEventi = [];
-                }
-                return Stack(
-                  children: [
-                    SafeArea(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 16.w, left: 16.w),
-                          child: listaEventi.isEmpty
-                              ? Center(child: Text("Non ci sono eventi"))
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ListView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: listaEventi.length,
-                                      itemBuilder: (context, index) {
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ritornaDataEvento(index),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      FormatDate
-                                                          .fromDateTimeToString(
-                                                              listaEventi[index]
-                                                                  .date!,
-                                                              "orario"),
+                  var filter=context.watch<FilterModel>().map;
+                  print(filter.toString());
+
+                  return Stack(
+                    children: [
+                      SafeArea(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 16.w, left: 16.w),
+                            child: listaEventi.isEmpty
+                                ? Center(child: Text("Non ci sono eventi"))
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: listaEventi.length,
+                                        itemBuilder: (context, index) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ritornaDataEvento(index),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        FormatDate
+                                                            .fromDateTimeToString(
+                                                                listaEventi[index]
+                                                                    .date!,
+                                                                "orario"),
+                                                        textAlign: TextAlign.left,
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                12.075892.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            letterSpacing: 2.w),
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 8.0),
+                                                        child:
+                                                            calcolaLivelloAllerta(
+                                                                index),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.only(top: 8.h),
+                                                    child: Text(
+                                                      listaEventi[index]
+                                                          .azienda
+                                                          .target!
+                                                          .nome
+                                                          .toString(),
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(
-                                                          fontSize:
-                                                              12.075892.sp,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          letterSpacing: 2.w),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 8.0),
-                                                      child:
-                                                          calcolaLivelloAllerta(
-                                                              index),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      EdgeInsets.only(top: 8.h),
-                                                  child: Text(
-                                                    listaEventi[index]
-                                                        .azienda
-                                                        .target!
-                                                        .nome
-                                                        .toString(),
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontSize: 20.126488.sp,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      letterSpacing: 0.25,
-                                                      color: Colors.grey[700],
+                                                        fontSize: 20.126488.sp,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        letterSpacing: 0.25,
+                                                        color: Colors.grey[700],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      width: 250.w,
-                                                      child: AutoSizeText(
-                                                        "${listaEventi[index].azienda.target!.indirizzo.toString()}",
-                                                        textAlign: TextAlign.left,
-                                                        maxLines: 2,
-                                                        style: TextStyle(
-                                                          fontSize: 12.075892.sp,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          letterSpacing: 0.4,
-                                                          color: Colors.grey[700],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    ElevatedButton(
-                                                      child: Text(
-                                                        "map",
-                                                        style: TextStyle(
-                                                            fontSize: 10.sp,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                        width: 250.w,
+                                                        child: AutoSizeText(
+                                                          "${listaEventi[index].azienda.target!.indirizzo.toString()}",
+                                                          textAlign: TextAlign.left,
+                                                          maxLines: 2,
+                                                          style: TextStyle(
+                                                            fontSize: 12.075892.sp,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      onPressed: () {
-                                                        openMap(
-                                                            listaEventi[index]
-                                                                .azienda
-                                                                .target!
-                                                                .lat!,
-                                                            listaEventi[index]
-                                                                .azienda
-                                                                .target!
-                                                                .lng!);
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        minimumSize:
-                                                            Size(18.w, 25.h),
-                                                        primary: Colors.red,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      32.0),
+                                                                FontWeight.w400,
+                                                            letterSpacing: 0.4,
+                                                            color: Colors.grey[700],
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Divider(
-                                              height: 1,
-                                              thickness: 2,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
+                                                      ElevatedButton(
+                                                        child: Text(
+                                                          "map",
+                                                          style: TextStyle(
+                                                              fontSize: 10.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        onPressed: () {
+                                                          openMap(
+                                                              listaEventi[index]
+                                                                  .azienda
+                                                                  .target!
+                                                                  .lat!,
+                                                              listaEventi[index]
+                                                                  .azienda
+                                                                  .target!
+                                                                  .lng!);
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          minimumSize:
+                                                              Size(18.w, 25.h),
+                                                          primary: Colors.red,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        32.0),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(
+                                                height: 1,
+                                                thickness: 2,
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: ElevatedButton.icon(
-                          icon: Icon(
-                            Icons.add,
-                            color: Colors.red,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AggiungiEvento()));
-                          },
-                          label: Text(
-                            "EVENT",
-                            style: TextStyle(
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.add,
                               color: Colors.red,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.25,
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size(125.w, 56.h),
-                            primary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.0),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AggiungiEvento()));
+                            },
+                            label: Text(
+                              "EVENT",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.25,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: Size(125.w, 56.h),
+                              primary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              }),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        actions: [
-          Padding(
-            //ho dovuto cambiare il padding a 12 perchè sennò diventava troppo piccolo il fab
-            padding: EdgeInsets.only(right: 16.w, top: 2.h),
-            child: ElevatedButton(
-              onPressed: () {
-                print("aperto");
-                _keyDrawer.currentState!.openEndDrawer();
-              },
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                primary: Colors.red,
-                minimumSize: Size(20, 10),
-                shadowColor: Colors.transparent,
-              ),
-              child: Icon(
-                Icons.filter_list_outlined,
-                size: 36,
+                    ],
+                  );
+                }),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          actions: [
+            Padding(
+              //ho dovuto cambiare il padding a 12 perchè sennò diventava troppo piccolo il fab
+              padding: EdgeInsets.only(right: 16.w, top: 2.h),
+              child: ElevatedButton(
+                onPressed: () {
+                  print("aperto");
+                  _keyDrawer.currentState!.openEndDrawer();
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(),
+                  primary: Colors.red,
+                  minimumSize: Size(20, 10),
+                  shadowColor: Colors.transparent,
+                ),
+                child: Icon(
+                  Icons.filter_list_outlined,
+                  size: 36,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1178,7 +1178,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               controllerNoteDesc.add(TextEditingController());
             }
             formResults[item['title']] = listaNote;
-            _handleChanged();
+           // _handleChanged();
           }
           setState(() {
             noteInizialized=true;

@@ -54,8 +54,7 @@ class MyHomePageState extends State<MyHomePage> {
     startTimer();
   }
 
-  startTimer() {
-    Future.delayed(Duration(seconds: 5), () async {
+  startTimer(){
       if (mainStore == null) {
         openStore().then((Store store) {
           _store = store;
@@ -72,9 +71,9 @@ class MyHomePageState extends State<MyHomePage> {
       setState(() {
         configurazione = config;
         formKeyBodyMain = formKeyBody;
-      });
         hasBeenInitialized = true;
-    });
+
+      });
 
   }
   @override

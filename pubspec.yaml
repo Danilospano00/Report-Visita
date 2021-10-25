@@ -52,7 +52,6 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   json_to_form: ^0.0.4
   json_annotation: ^4.0.1
-  provider: ^5.0.0
   shared_preferences: ^2.0.5
   objectbox: ^1.1.1
   objectbox_flutter_libs: any
@@ -69,8 +68,7 @@ dependencies:
   places_service: ^0.1.0+2
   #google_place: ^0.4.3
 
-
-
+  provider: ^6.0.1
   localize_and_translate: ^4.1.1
 
 
