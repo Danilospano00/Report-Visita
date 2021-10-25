@@ -213,7 +213,7 @@ class AuthService {
                                           padding: EdgeInsets.only(
                                               top: 2.h, bottom: 2.h)),
                                       Text(
-                                        "Sono passati ${aziendaRandom.events[aziendaRandom.events.length - 2].date!.difference(DateTime.now()).inDays.abs().toString()} giorni dall'ultima visita",
+                                        "Sono passati ${DateTime.now().difference(aziendaRandom.events[aziendaRandom.events.length - 2].date!).inDays.abs().toString()} giorni dall'ultima visita",
                                         textAlign: TextAlign.start,
                                         maxLines: 2,
                                         style: TextStyle(

@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 
+import 'Models/Azienda.dart';
 import 'objectbox.g.dart';
 
  Store? mainStore;
@@ -15,6 +16,11 @@ var configPreferences;
 final String keyConfigurazione="configurazioni";
 
 bool accessoEffettuato = false;
+
+List<Azienda> listaAziende= [];
+List<Azienda> listaAziendeConSogliaBassa = [];
+List<Azienda> listaAziendeConSogliaMedia= [];
+List<Azienda> listaAziendeConSogliaAlta= [];
 
 
 String config=json.encode([

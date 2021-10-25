@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -19,7 +20,6 @@ import 'package:report_visita_danilo/costanti.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../objectbox.g.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -49,32 +49,34 @@ class MyHomePageState extends State<MyHomePage> {
   List<Report> listaReportPerRicerca = [];
 
   @override
-  void initState() {
+  initState(){
     super.initState();
-
-    if (mainStore == null) {
-      openStore().then((Store store) {
-        _store = store;
-        mainStore = _store;
-        setState(() {
-          hasBeenInitialized = true;
-          listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
-          listaReportPerRicerca = mainStore!.box<Report>().getAll();
-        });
-      });
-    } else {
-      _store = mainStore!;
-      setState(() {
-        hasBeenInitialized = true;
-      });
-    }
-
-    setState(() {
-      configurazione = config;
-      formKeyBodyMain = formKeyBody;
-    });
+    startTimer();
   }
 
+  startTimer() {
+    Future.delayed(Duration(seconds: 5), () async {
+      if (mainStore == null) {
+        openStore().then((Store store) {
+          _store = store;
+          mainStore = _store;
+          setState(() {
+            listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
+            listaReportPerRicerca = mainStore!.box<Report>().getAll();
+          });
+        });
+      } else {
+        _store = mainStore!;
+      }
+
+      setState(() {
+        configurazione = config;
+        formKeyBodyMain = formKeyBody;
+      });
+        hasBeenInitialized = true;
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +84,7 @@ class MyHomePageState extends State<MyHomePage> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: !hasBeenInitialized
-          ? Center(
-              child: CircularProgressIndicator(
-              color: Colors.red,
-            ))
+          ? Center(child: CircularProgressIndicator(color: Colors.red,))
           : Padding(
               padding: EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w),
               child: SafeArea(

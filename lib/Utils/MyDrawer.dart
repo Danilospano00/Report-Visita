@@ -6,7 +6,6 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 class MyDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() =>_MyDrawerState();
-
 }
 
 class _MyDrawerState extends State<MyDrawer> {
