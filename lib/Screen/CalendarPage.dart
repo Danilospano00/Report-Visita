@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 import '../costanti.dart';
 import '../objectbox.g.dart';
 import 'AggiungiEvento.dart';
@@ -57,7 +56,7 @@ class CalendarPageState extends State<CalendarPage> {
         loading = false;
       });
       print("Alta" + prefs.getString("prioritaAlta").toString());
-      print("Media" + prefs.getString("prioritaMedia").toString());
+      print("Media " + prefs.getString("prioritaMedia").toString());
       print("Bassa " + prefs.getString("prioritaBassa").toString());
     });
 
@@ -73,7 +72,6 @@ class CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
       create: (context) => FilterModel(),
       child: Scaffold(
@@ -82,33 +80,23 @@ class CalendarPageState extends State<CalendarPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         endDrawer: MyDrawer(),
         body: loading
-            ? Center(child: CircularProgressIndicator(color: Colors.red,))
+            ? Center(
+                child: CircularProgressIndicator(
+                color: Colors.red,
+              ))
             : StreamBuilder<List<Event>>(
                 stream: stream,
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
+                    var filter = context.watch<FilterModel>().map;
                     List<Event> listaEvent = [];
-                    listaEventi = [];
                     listaEvent = snapshot.data;
                     listaEvent.sort((a, b) {
                       return a.date!.compareTo(b.date!);
                     });
-                    for (int x = 0; x < listaEvent.length; x++) {
-                      if (listaEvent[x].date!.isAfter(DateTime.now())) {
-                        listaEventi.add(listaEvent[x]);
-                      } else if (listaEvent[x].date!.day ==
-                              (DateTime.now().day) &&
-                          listaEvent[x].date!.month == (DateTime.now().month) &&
-                          listaEvent[x].date!.year == (DateTime.now().year)) {
-                        listaEventi.add(listaEvent[x]);
-                      }
-                    }
-                  } else {
-                    listaEventi = [];
+                    listaEventi = calcoloSoglia(filter, listaEvent);
                   }
-                  var filter=context.watch<FilterModel>().map;
-                  print(filter.toString());
-
                   return Stack(
                     children: [
                       SafeArea(
@@ -118,7 +106,8 @@ class CalendarPageState extends State<CalendarPage> {
                             child: listaEventi.isEmpty
                                 ? Center(child: Text("Non ci sono eventi"))
                                 : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       ListView.builder(
                                         shrinkWrap: true,
@@ -140,10 +129,12 @@ class CalendarPageState extends State<CalendarPage> {
                                                       Text(
                                                         FormatDate
                                                             .fromDateTimeToString(
-                                                                listaEventi[index]
+                                                                listaEventi[
+                                                                        index]
                                                                     .date!,
                                                                 "orario"),
-                                                        textAlign: TextAlign.left,
+                                                        textAlign:
+                                                            TextAlign.left,
                                                         style: TextStyle(
                                                             fontSize:
                                                                 12.075892.sp,
@@ -152,8 +143,9 @@ class CalendarPageState extends State<CalendarPage> {
                                                             letterSpacing: 2.w),
                                                       ),
                                                       Padding(
-                                                        padding: EdgeInsets.only(
-                                                            left: 8.0),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 8.0),
                                                         child:
                                                             calcolaLivelloAllerta(
                                                                 index),
@@ -161,8 +153,8 @@ class CalendarPageState extends State<CalendarPage> {
                                                     ],
                                                   ),
                                                   Padding(
-                                                    padding:
-                                                        EdgeInsets.only(top: 8.h),
+                                                    padding: EdgeInsets.only(
+                                                        top: 8.h),
                                                     child: Text(
                                                       listaEventi[index]
                                                           .azienda
@@ -188,14 +180,17 @@ class CalendarPageState extends State<CalendarPage> {
                                                         width: 250.w,
                                                         child: AutoSizeText(
                                                           "${listaEventi[index].azienda.target!.indirizzo.toString()}",
-                                                          textAlign: TextAlign.left,
+                                                          textAlign:
+                                                              TextAlign.left,
                                                           maxLines: 2,
                                                           style: TextStyle(
-                                                            fontSize: 12.075892.sp,
+                                                            fontSize:
+                                                                12.075892.sp,
                                                             fontWeight:
                                                                 FontWeight.w400,
                                                             letterSpacing: 0.4,
-                                                            color: Colors.grey[700],
+                                                            color: Colors
+                                                                .grey[700],
                                                           ),
                                                         ),
                                                       ),
@@ -419,127 +414,81 @@ class CalendarPageState extends State<CalendarPage> {
     }
   }
 
-  /*Widget? myDrawer() {
-    bool bassa = true;
-    bool media = true;
-    bool alta = true;
+  List<Event> calcoloSoglia(Map<String, bool> filter, List<Event> listaEvent) {
+    List<Event> listaEventiMetodo = [];
+    for (int x = 0; x < listaEvent.length; x++) {
+      if (listaEvent[x].date!.isAfter(DateTime.now()) ||
+          listaEvent[x].date!.day == (DateTime.now().day) &&
+              listaEvent[x].date!.month == (DateTime.now().month) &&
+              listaEvent[x].date!.year == (DateTime.now().year)) {
+        bool? bassa = filter["bassa"];
+        bool? media = filter["media"];
+        bool? alta = filter["alta"];
+        if (bassa!) {
+          Event e = listaEvent[x];
+          List<Event> list = e.azienda.target!.events;
 
-    /* StatefulBuilder(
-        builder: (context, setState) {*/
-    return Drawer(
-      child: ListView(
-        children: [
-          ListTile(
-            title: AutoSizeText(
-              'Filtra per urgenza',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.sp),
-            ),
-            leading: IconButton(
-              icon: Icon(Icons.close, size: 30),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * .20,
-                left: 16.w,
-                right: 16.w),
-            child: Form(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Checkbox(
-                    value: bassa,
-                    activeColor: Colors.grey,
-                    onChanged: (value) {
-                      setState(() {
-                        bassa = value!;
-                      });
-                    },
-                  ),
-                  Expanded(
-                    child: AutoSizeText(
-                      'Priorità Bassa',
-                      style: TextStyle(color: Colors.black, fontSize: 16.sp),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: Icon(
-                      Icons.circle,
-                      color: Colors.greenAccent,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
-            child: Row(
-              children: [
-                Checkbox(
-                  value: media,
-                  activeColor: Colors.grey,
-                  onChanged: (value) {
-                    setState(() {
-                      media = value!;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: AutoSizeText(
-                    'Priorità Media',
-                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 8.w),
-                  child: Icon(
-                    Icons.circle,
-                    color: Colors.yellowAccent,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
-            child: Row(
-              children: [
-                Checkbox(
-                  value: alta,
-                  activeColor: Colors.grey,
-                  onChanged: (value) {
-                    setState(() {
-                      alta = value!;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: AutoSizeText(
-                    'Priorità Alta',
-                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 8.w),
-                  child: Icon(
-                    Icons.circle,
-                    color: Colors.redAccent,
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  //});
-  }*/
+          list.sort((a, b) {
+            return a.date!.compareTo(b.date!);
+          });
+          late int differenzaGiorni=0;
+          for (int y = 0; y < list.length; y++) {
+            if (list[y].id == e.id && list[y].date == e.date) {
+              if (y != 0) {
+                Event event = list[y - 1];
+                differenzaGiorni = e.date!.difference(event.date!).inDays;
+              }
+              if (differenzaGiorni <=
+                  int.parse(prefs.getString("prioritaBassa") ?? "0")) {
+                listaEventiMetodo.add(e);
+              }
+            }
+          }
+        }
+        if (media!) {
+          Event e = listaEvent[x];
+          List<Event> list = e.azienda.target!.events;
+
+          list.sort((a, b) {
+            return a.date!.compareTo(b.date!);
+          });
+          late int differenzaGiorni=0;
+          for (int y = 0; y < list.length; y++) {
+            if (list[y].id == e.id && list[y].date == e.date) {
+              if (y != 0) {
+                Event event = list[y - 1];
+                differenzaGiorni = e.date!.difference(event.date!).inDays;
+              }
+              if (differenzaGiorni >=
+                  int.parse(prefs.getString("prioritaMedia") ?? "30")) {
+                listaEventiMetodo.add(e);
+              }
+            }
+          }
+        }
+        if (alta!) {
+          Event e = listaEvent[x];
+          List<Event> list = e.azienda.target!.events;
+
+          list.sort((a, b) {
+            return a.date!.compareTo(b.date!);
+          });
+          late int differenzaGiorni=0;
+          for (int y = 0; y < list.length; y++) {
+            if (list[y].id == e.id && list[y].date == e.date) {
+              if (y != 0) {
+                Event event = list[y - 1];
+                differenzaGiorni = e.date!.difference(event.date!).inDays;
+              }
+              if (differenzaGiorni >=
+                  int.parse(prefs.getString("prioritaAlta") ?? "60")) {
+                listaEventiMetodo.add(e);
+              }
+            }
+          }
+        }
+      }
+    }
+    return listaEventiMetodo;
+  }
 }

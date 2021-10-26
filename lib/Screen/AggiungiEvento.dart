@@ -79,10 +79,8 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                 padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
                 child: GestureDetector(
                   onTap: () async {
-                    if(_keyFormAggiungiEvento.currentState!.saveAndValidate()) {
                       _addEvent();
                       Navigator.pop(context);
-                    }
                   },
                   child: Container(
                     height: 56.w,
@@ -117,12 +115,8 @@ class AggiungiEventoState extends State<AggiungiEvento> {
     );
   }
 
-  //i dati inseriti nel form sono stringhe ma devo trasformarle in azienda/referente, prima devo cercare
-  // di aggiungere le aziende alla DB in modo da non doverle ciclare ogni volta
-
-
   void _addEvent() async {
-    _keyFormAggiungiEvento.currentState!.saveAndValidate();
+    _keyFormAggiungiEvento.currentState!.save();
     Report _report = Report();
     if (response["azienda"] != null) {
       _report.azienda.target = response["azienda"];
@@ -141,10 +135,11 @@ class AggiungiEventoState extends State<AggiungiEvento> {
       _showSnackBar("Campi mancanti");
       return;
     }
-
+    Event evento = Event();
     if (response["descrizione"] != null) {
-      Event evento = Event();
       evento.descrizione = response["descrizione"];
+    }
+    else evento.descrizione ="";
       evento.date = DateTime.parse(response["prossimaVisita"]);
       Azienda azienda = response["azienda"];
       evento.azienda.target = azienda;
@@ -153,10 +148,6 @@ class AggiungiEventoState extends State<AggiungiEvento> {
 
       evento = mainStore!.box<Event>().get(idEvento)!;
       _report.azienda.target!.events.add(evento);
-    } else {
-      _showSnackBar("Campi mancanti");
-      return;
-    }
 
     int count = await mainStore!.box<Report>().put(_report);
     print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
