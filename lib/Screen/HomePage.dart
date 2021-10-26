@@ -51,30 +51,27 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   initState(){
     super.initState();
-    startTimer();
-  }
-
-  startTimer(){
-      if (mainStore == null) {
-        openStore().then((Store store) {
-          _store = store;
-          mainStore = _store;
-          setState(() {
-            listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
-            listaReportPerRicerca = mainStore!.box<Report>().getAll();
-          });
+    if (mainStore == null) {
+      openStore().then((Store store) {
+        _store = store;
+        mainStore = _store;
+        setState(() {
+          hasBeenInitialized = true;
+          listaAziendePerRicerca = mainStore!.box<Azienda>().getAll();
+          listaReportPerRicerca = mainStore!.box<Report>().getAll();
         });
-      } else {
-        _store = mainStore!;
-      }
-
-      setState(() {
-        configurazione = config;
-        formKeyBodyMain = formKeyBody;
-        hasBeenInitialized = true;
-
       });
+    } else {
+      _store = mainStore!;
+      setState((){
+        hasBeenInitialized = true;
+      });
+    }
 
+    setState(() {
+      configurazione = config;
+      formKeyBodyMain = formKeyBody;
+    });
   }
   @override
   Widget build(BuildContext context) {
