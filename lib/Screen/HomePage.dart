@@ -32,9 +32,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  final formKeyBody = GlobalKey<FormBuilderState>();
+  GlobalKey<FormBuilderState> formKeyBody = GlobalKey<FormBuilderState>();
 
-  static final _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late Store _store;
   bool hasBeenInitialized = false;

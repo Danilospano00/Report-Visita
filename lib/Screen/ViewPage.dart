@@ -26,7 +26,6 @@ class ViewPageState extends State<ViewPage> {
   int _selectedIndex = 0;
   final PageStorageBucket bucket = PageStorageBucket();
 
-  late Report _report;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +57,12 @@ class ViewPageState extends State<ViewPage> {
                 icon: Icon(Icons.move_to_inbox_rounded),
                 color: Colors.white,
                 onPressed: () {
-                  setState(() {
-                    if (_selectedIndex != 2) {
+                  if (_selectedIndex != 2) {
+                    setState(() {
                       _selectedIndex = 2;
                       controller.jumpToPage(_selectedIndex);
-                    }
-                  });
+                    });
+                  }
                 },
               ),
               IconButton(
@@ -71,7 +70,10 @@ class ViewPageState extends State<ViewPage> {
                 color: Colors.white,
                 onPressed: () {
                   if (_selectedIndex != 1) {
-                    _selectedIndex = 1;
+                    setState(() {
+                      _selectedIndex = 1;
+
+                    });
                     controller.jumpToPage(_selectedIndex);
                   }
                 },

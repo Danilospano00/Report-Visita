@@ -661,7 +661,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
           Event? e;
           DateTime dataprossimo=DateTime.parse(DateFormat('yyyy-MM-dd').format(widget.initialReport!.prossimaVisita!));
-          widget.initialReport!.azienda.target!.events!.forEach((element) {
+          widget.initialReport!.azienda.target!.events.forEach((element) {
             DateTime dataEvento=DateTime.parse(DateFormat('yyyy-MM-dd').format(element.date!));
             if(dataprossimo==dataEvento)
               e=element;

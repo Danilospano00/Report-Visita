@@ -416,15 +416,17 @@ class CalendarPageState extends State<CalendarPage> {
 
   List<Event> calcoloSoglia(Map<String, bool> filter, List<Event> listaEvent) {
     List<Event> listaEventiMetodo = [];
+
     for (int x = 0; x < listaEvent.length; x++) {
       if (listaEvent[x].date!.isAfter(DateTime.now()) ||
           listaEvent[x].date!.day == (DateTime.now().day) &&
               listaEvent[x].date!.month == (DateTime.now().month) &&
               listaEvent[x].date!.year == (DateTime.now().year)) {
+        String? soglia;
         bool? bassa = filter["bassa"];
         bool? media = filter["media"];
         bool? alta = filter["alta"];
-        if (bassa!) {
+
           Event e = listaEvent[x];
           List<Event> list = e.azienda.target!.events;
 
@@ -440,12 +442,28 @@ class CalendarPageState extends State<CalendarPage> {
               }
               if (differenzaGiorni <=
                   int.parse(prefs.getString("prioritaBassa") ?? "0")) {
-                listaEventiMetodo.add(e);
+                soglia="bassa";
+              }else if(differenzaGiorni >=
+                  int.parse(prefs.getString("prioritaMedia") ?? "30")){
+                soglia="media";
+              }else if(differenzaGiorni >=  int.parse(prefs.getString("prioritaAlta") ?? "60")){
+                soglia ="alta";
               }
+
+              switch(soglia){
+                case "bassa": if(bassa!) listaEventiMetodo.add(e);
+                  break;
+                case "media": if(media!) listaEventiMetodo.add(e);
+                break;
+                case "alta": if(alta!) listaEventiMetodo.add(e);
+                break;
+
+              }
+
             }
           }
-        }
-        if (media!) {
+
+       /* if (media!) {
           Event e = listaEvent[x];
           List<Event> list = e.azienda.target!.events;
 
@@ -486,7 +504,7 @@ class CalendarPageState extends State<CalendarPage> {
               }
             }
           }
-        }
+        }*/
       }
     }
     return listaEventiMetodo;
