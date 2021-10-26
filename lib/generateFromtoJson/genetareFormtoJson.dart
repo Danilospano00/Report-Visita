@@ -13,11 +13,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:places_service/places_service.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Nota.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import '../objectbox.g.dart';
 import 'package:path/path.dart' as p;
+import 'package:intl/intl.dart';
+
 
 
 
@@ -653,6 +656,35 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 ),
               )),
         );
+
+        if(widget.initialReport!=null && widget.initialReport!.prossimaVisita!=null){
+
+          Event? e;
+          DateTime dataprossimo=DateTime.parse(DateFormat('yyyy-MM-dd').format(widget.initialReport!.prossimaVisita!));
+          widget.initialReport!.azienda.target!.events!.forEach((element) {
+            DateTime dataEvento=DateTime.parse(DateFormat('yyyy-MM-dd').format(element.date!));
+            if(dataprossimo==dataEvento)
+              e=element;
+          });
+
+          if(e!=null){
+            listWidget.add(
+              Container(
+                margin: EdgeInsets.only(top: 10.0, bottom: 10),
+                child: AutoSizeText(
+                  e!.descrizione??"",
+                  maxLines: 5,
+                  style: homePageMainTextStyle,
+
+                ),
+              )
+            );
+
+
+          }
+
+        }
+
       }
 
       if (item['type'] == 'radio') {
@@ -1125,7 +1157,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       name: item['field'][i]['label'],
                       enabled: widget.active,
                       controller: controller[i]
-                        ..text = selectObject != null
+                        ..text = widget.initialReport != null ? getValueFieldReport(item['field'][i]['label'], item['type']):
+                             selectObject != null
                             ? getValueField(item['field'][i]['label'])
                             : controller[i].value.text,
                       textInputAction: TextInputAction.next,
@@ -1171,7 +1204,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
       if (item['type'] == "note") {
         if(!noteInizialized) {
-          if (listaNote.isEmpty || listaNote == null) {
+          if(widget.initialReport != null ){
+            listaNote=widget.initialReport!.note;
+            for (var i = 0; i < listaNote.length; i++) {
+              controllerNote.add(TextEditingController());
+              controllerNoteDesc.add(TextEditingController());
+            }
+          } else if (listaNote.isEmpty || listaNote == null) {
             for (var i = 0; i < item['label'].length; i++) {
               listaNote.add(Nota(titolo: item['label'][i], testo: ""));
               controllerNote.add(TextEditingController());
@@ -1365,6 +1404,21 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     Map<String, dynamic> objectMap = selectObject.toMap();
     return objectMap[field] ?? "";
   }
+
+
+  dynamic getValueFieldReport(String field,String type) {
+    Map<String, dynamic> objectMap = widget.initialReport!.toMap();
+
+    if(type!="note")
+    return objectMap[field] ?? "";
+    else{
+      for(int i=0;i<objectMap[field].length;i++){
+        if(objectMap[field][i].titolo=="field")
+          return objectMap[field][i].testo;
+      }
+    }
+  }
+
 
   void setNewValueObject(String field, String value, String title) {
     Map<String, dynamic> objectMap = selectObject.toMap();

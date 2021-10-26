@@ -18,4 +18,25 @@ class Report{
    final azienda=ToOne<Azienda>();
    final referente=ToMany<Referente>();
    final note=ToMany<Nota>();
+
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id":this.id,
+      'Azienda':this.azienda.target!.nome,
+      'indirizzo':this.azienda.target!.indirizzo,
+      "partitaIva":this.azienda.target!.partitaIva,
+      'cap':this.azienda.target!.cap,
+      'citta':this.azienda.target!.citta,
+      'codiceFiscale':this.azienda.target!.codiceFiscale,
+      'lat':this.azienda.target!.lat,
+      'lng':this.azienda.target!.lng,
+      "note":this.note
+    };
+  }
+
+
+
+
 }
