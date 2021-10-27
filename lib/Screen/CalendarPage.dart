@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -119,118 +120,84 @@ class CalendarPageState extends State<CalendarPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              ritornaDataEvento(index),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
+                                              Card(
+                                                elevation: 5,
+                                                shadowColor: Colors.grey,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(15)),
+                                                margin: EdgeInsets.only(
+                                                    top: 8.h, bottom: 8.h),
+                                                child: Container(
+                                                  height: 70.h,
+                                                  width: 500.w,
+                                                  child: Stack(
                                                     children: [
-                                                      Text(
-                                                        FormatDate
-                                                            .fromDateTimeToString(
-                                                                listaEventi[
-                                                                        index]
-                                                                    .date!,
-                                                                "orario"),
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                12.075892.sp,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            letterSpacing: 2.w),
+                                                      Positioned(
+                                                        top: 12,
+                                                        left: 5.w,
+                                                        child: Container(
+                                                          child: RotationTransition(
+                                                            turns: new AlwaysStoppedAnimation(-20/360),
+                                                            child: Image.asset(
+                                                              "assets/palazzo.png",
+                                                              height: 50.h,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      calcolaLivelloAllerta(index),
+                                                      Align(
+                                                        alignment:
+                                                        Alignment.centerRight,
+                                                        child: Container(
+                                                          height: 70.h,
+                                                          width: 280.w,
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                                                          ),
+                                                        ),
                                                       ),
                                                       Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 8.0),
-                                                        child:
-                                                            calcolaLivelloAllerta(
-                                                                index),
+                                                        padding: EdgeInsets.only(left:60.w, top: 5.h),
+                                                        child: Text(listaEventi[index]
+                                                            .azienda
+                                                            .target!
+                                                            .nome!,style: TextStyle(
+                                                          fontSize: 15.126488.sp,
+                                                          fontWeight:
+                                                          FontWeight.w700,
+                                                          letterSpacing: 0.25,
+                                                          color: Colors.grey[700],
+                                                        ),),
                                                       ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(left: 60.w, top:22.h),
+                                                        child: listaEventi[index].referente.length>0?
+                                                        Text(listaEventi[index].referente.elementAt(0).nome!, style: TextStyle(
+                                                          fontSize: 12.126488.sp,
+                                                          fontWeight:
+                                                          FontWeight.w400,
+                                                          letterSpacing: 0.25,
+                                                          color: Colors.grey[700],
+                                                        ),): Text(listaEventi[index]
+                                                            .azienda
+                                                            .target!
+                                                            .indirizzo!,style: TextStyle(
+                                                          fontSize: 13.sp,
+                                                          fontWeight:
+                                                          FontWeight.w400,
+                                                          letterSpacing: 0.25,
+                                                          color: Colors.grey[700],
+                                                        ),),
+                                                      ),
+                                                      Align(alignment: Alignment.bottomRight,child: ritornaDataEvento(index),
+                                                      )
                                                     ],
                                                   ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 8.h),
-                                                    child: Text(
-                                                      listaEventi[index]
-                                                          .azienda
-                                                          .target!
-                                                          .nome
-                                                          .toString(),
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(
-                                                        fontSize: 20.126488.sp,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        letterSpacing: 0.25,
-                                                        color: Colors.grey[700],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Container(
-                                                        width: 250.w,
-                                                        child: AutoSizeText(
-                                                          "${listaEventi[index].azienda.target!.indirizzo.toString()}",
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          maxLines: 2,
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                12.075892.sp,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            letterSpacing: 0.4,
-                                                            color: Colors
-                                                                .grey[700],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      ElevatedButton(
-                                                        child: Text(
-                                                          "map",
-                                                          style: TextStyle(
-                                                              fontSize: 10.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        onPressed: () {
-                                                          openMap(
-                                                              listaEventi[index]
-                                                                  .azienda
-                                                                  .target!
-                                                                  .lat!,
-                                                              listaEventi[index]
-                                                                  .azienda
-                                                                  .target!
-                                                                  .lng!);
-                                                        },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          minimumSize:
-                                                              Size(18.w, 25.h),
-                                                          primary: Colors.red,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        32.0),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                ),
                                               ),
                                               Divider(
                                                 height: 1,
@@ -333,25 +300,41 @@ class CalendarPageState extends State<CalendarPage> {
 
       if (differenzaGiorni >=
           int.parse(prefs.getString("prioritaAlta") ?? "60")) {
-        return Icon(
-          Icons.circle,
-          color: Colors.redAccent,
+        return Container(
+          width: 70.w,
+          height: 70.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 0, 0, 70),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+          ),
         );
       } else if (differenzaGiorni >=
           int.parse(prefs.getString("prioritaMedia") ?? "30")) {
-        return Icon(
-          Icons.circle,
-          color: Colors.yellowAccent,
+        return Container(
+          width: 70.w,
+          height: 70.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 255, 0, 70),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+          ),
         );
       } else
-        return Icon(
-          Icons.circle,
-          color: Colors.greenAccent,
+        return Container(
+          width: 70.w,
+          height: 70.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(185, 246, 202, 70),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+          ),
         );
     } else
-      return Icon(
-        Icons.circle,
-        color: Colors.greenAccent,
+      return Container(
+        width: 70.w,
+        height: 70.h,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(185, 246, 202, 70),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+        ),
       );
   }
 
@@ -376,12 +359,12 @@ class CalendarPageState extends State<CalendarPage> {
     if (i == 0) {
       dataGiaStampata = true;
       return Padding(
-        padding: EdgeInsets.only(top: 50.h, bottom: 10.h),
-        child: AutoSizeText(
-          FormatDate.fromDateTimeToString(listaEventi[i].date!, "data"),
+        padding: EdgeInsets.only(right:15.w, bottom: 5.h),
+        child: AutoSizeText("Prossima visita\n"+
+            FormatDate.fromDateTimeToString(listaEventi[i].date!, "data"),textAlign: TextAlign.end,
           style: TextStyle(
-            color: Colors.grey[500],
-            fontSize: 20.126488.sp,
+            color: Colors.grey[700],
+            fontSize: 12.sp,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.25,
           ),
@@ -397,12 +380,12 @@ class CalendarPageState extends State<CalendarPage> {
               .toString()
           : "1";
       return Padding(
-        padding: EdgeInsets.only(top: 73.h, bottom: 7.h),
-        child: AutoSizeText(
-          FormatDate.fromDateTimeToString(listaEventi[i].date!, "data"),
+        padding: EdgeInsets.only(right:15.w, bottom: 5.h),
+        child: AutoSizeText("Prossima visita\n"+
+          FormatDate.fromDateTimeToString(listaEventi[i].date!, "data"),textAlign: TextAlign.end,
           style: TextStyle(
-            color: Colors.grey[500],
-            fontSize: 20.126488.sp,
+            color: Colors.grey[700],
+            fontSize: 12.sp,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.25,
           ),
@@ -427,43 +410,47 @@ class CalendarPageState extends State<CalendarPage> {
         bool? media = filter["media"];
         bool? alta = filter["alta"];
 
-          Event e = listaEvent[x];
-          List<Event> list = e.azienda.target!.events;
+        Event e = listaEvent[x];
+        List<Event> list = e.azienda.target!.events;
 
-          list.sort((a, b) {
-            return a.date!.compareTo(b.date!);
-          });
-          late int differenzaGiorni=0;
-          for (int y = 0; y < list.length; y++) {
-            if (list[y].id == e.id && list[y].date == e.date) {
-              if (y != 0) {
-                Event event = list[y - 1];
-                differenzaGiorni = e.date!.difference(event.date!).inDays;
-              }
-              if (differenzaGiorni <=
-                  int.parse(prefs.getString("prioritaBassa") ?? "0")) {
-                soglia="bassa";
-              }else if(differenzaGiorni >=
-                  int.parse(prefs.getString("prioritaMedia") ?? "30")){
-                soglia="media";
-              }else if(differenzaGiorni >=  int.parse(prefs.getString("prioritaAlta") ?? "60")){
-                soglia ="alta";
-              }
+        list.sort((a, b) {
+          return a.date!.compareTo(b.date!);
+        });
+        late int differenzaGiorni = 0;
+        for (int y = 0; y < list.length; y++) {
+          if (list[y].id == e.id && list[y].date == e.date) {
+            if (y != 0) {
+              Event event = list[y - 1];
+              differenzaGiorni = e.date!.difference(event.date!).inDays;
+            }
+            if (differenzaGiorni <=
+                int.parse(prefs.getString("prioritaBassa") ?? "0")) {
+              soglia = "bassa";
+            } else if (differenzaGiorni >=
+                    int.parse(prefs.getString("prioritaMedia") ?? "30") &&
+                differenzaGiorni <
+                    int.parse(prefs.getString("prioritaAlta") ?? "60")) {
+              soglia = "media";
+            } else if (differenzaGiorni >=
+                int.parse(prefs.getString("prioritaAlta") ?? "60")) {
+              soglia = "alta";
+            }
 
-              switch(soglia){
-                case "bassa": if(bassa!) listaEventiMetodo.add(e);
-                  break;
-                case "media": if(media!) listaEventiMetodo.add(e);
+            switch (soglia) {
+              case "bassa":
+                if (bassa!) listaEventiMetodo.add(e);
                 break;
-                case "alta": if(alta!) listaEventiMetodo.add(e);
+              case "media":
+                if (media!) listaEventiMetodo.add(e);
                 break;
-
-              }
-
+              case "alta":
+                if (alta!) listaEventiMetodo.add(e);
+                break;
             }
           }
+        }
 
-       /* if (media!) {
+        /* if (media!) {
           Event e = listaEvent[x];
           List<Event> list = e.azienda.target!.events;
 

@@ -6,18 +6,28 @@ import 'package:provider/provider.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() =>_MyDrawerState();
+  State<StatefulWidget> createState() => _MyDrawerState();
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  static bool bassa=true;
-  static bool media=true;
-  static bool alta=true;
+  late var filter;
+  late bool bassa;
+  late bool media;
+  late bool alta;
 
   @override
   void initState() {
     super.initState();
     print("open");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    filter = context.watch<FilterModel>().map;
+    bassa = filter["bassa"];
+    media = filter["media"];
+    alta = filter["alta"];
   }
 
   @override
@@ -28,27 +38,31 @@ class _MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
       child: ListView(
         children: [
           ListTile(
-            title:  AutoSizeText('Filtra per urgenza',
+            title: AutoSizeText(
+              'Filtra per urgenza',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18.sp
-              ),),
-            leading: IconButton(icon: Icon(Icons.close,size:30),onPressed: (){
-              Navigator.pop(context);
-            },),
+                  fontSize: 18.sp),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.close, size: 30),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
           Padding(
-            padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*.20,left: 16.w,right: 16.w),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * .20,
+                left: 16.w,
+                right: 16.w),
             child: Row(
               mainAxisSize: MainAxisSize.max,
-
-
               children: [
                 Checkbox(
                   value: bassa,
@@ -61,14 +75,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   },
                 ),
                 Expanded(
-                  child:AutoSizeText('Priorità Bassa',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.sp
-                    ),) ,
+                  child: AutoSizeText(
+                    'Priorità Bassa',
+                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                  ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(right: 8.w),
+                  padding: EdgeInsets.only(right: 8.w),
                   child: Icon(
                     Icons.circle,
                     color: Colors.greenAccent,
@@ -78,9 +91,8 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top:16.h,left: 16.w,right: 16.w),
+            padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
             child: Row(
-
               children: [
                 Checkbox(
                   value: media,
@@ -93,14 +105,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   },
                 ),
                 Expanded(
-                  child:AutoSizeText('Priorità Media',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.sp
-                    ),) ,
+                  child: AutoSizeText(
+                    'Priorità Media',
+                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                  ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(right: 8.w),
+                  padding: EdgeInsets.only(right: 8.w),
                   child: Icon(
                     Icons.circle,
                     color: Colors.yellowAccent,
@@ -110,9 +121,8 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top:16.h,left: 16.w,right: 16.w),
+            padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
             child: Row(
-
               children: [
                 Checkbox(
                   value: alta,
@@ -125,14 +135,13 @@ class _MyDrawerState extends State<MyDrawer> {
                   },
                 ),
                 Expanded(
-                  child:AutoSizeText('Priorità Alta',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.sp
-                    ),) ,
+                  child: AutoSizeText(
+                    'Priorità Alta',
+                    style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                  ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(right: 8.w),
+                  padding: EdgeInsets.only(right: 8.w),
                   child: Icon(
                     Icons.circle,
                     color: Colors.redAccent,

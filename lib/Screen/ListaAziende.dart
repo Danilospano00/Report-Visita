@@ -82,9 +82,9 @@ class ListaAziendeState extends State<ListaAziende> {
   }
 
   void _prepareMarker() {
+    Key _key = GlobalKey();
     if (searchresult.isEmpty) {
       _markers = listaAziende2.map((element) {
-        Key _key = GlobalKey();
         element.setKey(_key);
         Marker marker = Marker(
             key: _key,
@@ -105,7 +105,6 @@ class ListaAziendeState extends State<ListaAziende> {
       }).toList();
     } else {
       _markers = searchresult.map((element) {
-        Key _key = GlobalKey();
         element.setKey(_key);
         Marker marker = Marker(
             key: _key,

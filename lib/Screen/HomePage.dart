@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   GlobalKey<FormBuilderState> formKeyBody = GlobalKey<FormBuilderState>();
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  static GlobalKey<ScaffoldState> _scaffoldKeyHomePage = GlobalKey<ScaffoldState>();
 
   late Store _store;
   bool hasBeenInitialized = false;
@@ -77,7 +77,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      key: _scaffoldKey,
+      key: _scaffoldKeyHomePage,
       backgroundColor: Colors.white,
       body: !hasBeenInitialized
           ? Center(child: CircularProgressIndicator(color: Colors.red,))
@@ -271,12 +271,12 @@ class MyHomePageState extends State<MyHomePage> {
           borderRadius: BorderRadius.all(Radius.circular(10))),
       behavior: SnackBarBehavior.floating,
     );
-    ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(snackBar);
+    ScaffoldMessenger.of(_scaffoldKeyHomePage.currentContext!).showSnackBar(snackBar);
   }
 
   void showSConafigChange(List<dynamic> mappa) {
     showDialog(
-      context: _scaffoldKey.currentContext!,
+      context: _scaffoldKeyHomePage.currentContext!,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -394,8 +394,6 @@ class MyHomePageState extends State<MyHomePage> {
                     itemCount: searchresult.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int i) {
-                      bool istanza = searchresult[i] is Azienda;
-                      print(istanza);
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
