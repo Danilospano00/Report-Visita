@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:intl/intl.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:azlistview/azlistview.dart';
@@ -11,9 +12,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Screen/AziendaDettaglio.dart';
+import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/ZoomButtonsPluginOption.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/costanti.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../objectbox.g.dart';
 
@@ -26,7 +29,8 @@ class ListaAziendeState extends State<ListaAziende> {
   late final MapController _mapController;
   List<Marker> _markers = [];
   Position? _currentLocation;
-
+  late SharedPreferences prefs;
+  List<Event> listaEventi = [];
   bool viewMap = false;
   final TextEditingController _controller = new TextEditingController();
   List<Azienda> searchresult = [];
@@ -57,10 +61,13 @@ class ListaAziendeState extends State<ListaAziende> {
   @override
   initState() {
     super.initState();
-    creaListaAzienda();
+    SharedPreferences.getInstance().then((value) {
+      prefs = value;
+      creaListaAzienda();
       initList(listaAziende2);
       _getCurrentLocation();
       _prepareMarker();
+    });
     setState(() {
       hasBeenInitialized = true;
     });
@@ -142,7 +149,7 @@ class ListaAziendeState extends State<ListaAziende> {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
             ))
           : !hasBeenInitialized && !locationInitialized
-          ? Center(child: CircularProgressIndicator(color: Colors.red))
+              ? Center(child: CircularProgressIndicator(color: Colors.red))
               : Stack(
                   children: [
                     Visibility(
@@ -363,71 +370,80 @@ class ListaAziendeState extends State<ListaAziende> {
             child: Card(
               elevation: 5,
               shadowColor: Colors.grey,
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               margin: EdgeInsets.only(top: 8.h, bottom: 8.h),
               child: Container(
-                height: 60.h,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                height: 70.h,
+                width: 500.w,
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 12.w),
-                          child: Text(
-                            item.nomeAzienda,
-                            style: TextStyle(
-                                fontSize: 15.712129.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey[700]),
+                    Positioned(
+                      top: 12,
+                      left: 5.w,
+                      child: Container(
+                        child: RotationTransition(
+                          turns: new AlwaysStoppedAnimation(-20 / 360),
+                          child: Image.asset(
+                            "assets/palazzo.png",
+                            height: 50.h,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: Text(
-                            item.azienda.events.isNotEmpty
-                                ? item.azienda.events
-                                        .elementAt(0)
-                                        .date!
-                                        .day
-                                        .toString() +
-                                    "/" +
-                                    item.azienda.events
-                                        .elementAt(0)
-                                        .date!
-                                        .month
-                                        .toString() +
-                                    "/" +
-                                    item.azienda.events
-                                        .elementAt(0)
-                                        .date!
-                                        .year
-                                        .toString()
-                                : "",
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 13.748113.sp,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(right: 12.w, bottom: 4.h, top: 8.h),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Icon(
-                          Icons.circle,
-                          color: item.azienda.events.isNotEmpty
-                              ? Colors.lightGreenAccent
-                              : Colors.blue,
-                          size: 16,
                         ),
                       ),
                     ),
+                    calcolaLivelloAllerta(item),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        height: 70.h,
+                        width: 245.w,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(15),
+                              bottomRight: Radius.circular(15)),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 50.w, top: 5.h),
+                      child: Text(
+                        item.azienda.nome!,
+                        style: TextStyle(
+                          fontSize: 15.126488.sp,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.25,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 50.w, top: 22.h),
+                      child: item.azienda.referenti.length > 0
+                          ? Text(
+                              item.azienda.referenti!.elementAt(0).nome!,
+                              style: TextStyle(
+                                fontSize: 12.126488.sp,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.25,
+                                color: Colors.grey[700],
+                              ),
+                            )
+                          : Text(
+                              item.azienda.indirizzo!,
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.25,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: ritornaDataEvento(item),
+                    )
                   ],
                 ),
               ),
@@ -615,6 +631,112 @@ class ListaAziendeState extends State<ListaAziende> {
         azienda: azienda,
         nomeAzienda: azienda.nome!);
     return item;
+  }
+
+  Azienda fromAZItemtoAzienda(_AZItem item) {
+    Azienda azienda;
+    azienda = item.azienda;
+    return azienda;
+  }
+
+  Widget calcolaLivelloAllerta(_AZItem item) {
+    Azienda azienda = fromAZItemtoAzienda(item);
+    print(azienda.nome!);
+    List<Event> list = azienda.events;
+
+    if (list.length >= 2) {
+      list.sort((a, b) {
+        return a.date!.compareTo(b.date!);
+      });
+      Event e = list[list.length - 2];
+      late int differenzaGiorni;
+      for (int x = 0; x < list.length; x++) {
+        if (x != 0) {
+          Event event = list[x];
+          differenzaGiorni = e.date!.difference(event.date!).inDays.abs();
+          print(differenzaGiorni);
+        } else{
+          differenzaGiorni = 0;
+        }
+      }
+      if (differenzaGiorni >=
+          int.parse(prefs.getString("prioritaAlta") ?? "60")) {
+        return Container(
+          width: 70.w,
+          height: 70.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 0, 0, 70),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+          ),
+        );
+      } else if (differenzaGiorni >=
+          int.parse(prefs.getString("prioritaMedia") ?? "30")) {
+        return Container(
+          width: 70.w,
+          height: 70.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 255, 0, 70),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+          ),
+        );
+      } else
+        return Container(
+          width: 70.w,
+          height: 70.h,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(185, 246, 202, 70),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+          ),
+        );
+    } else
+      return Container(
+        width: 70.w,
+        height: 70.h,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(185, 246, 202, 70),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+        ),
+      );
+  }
+
+  Widget ritornaDataEvento(_AZItem azItem) {
+    Azienda item = fromAZItemtoAzienda(azItem);
+    listaEventi = item.events
+        .where((element) => element.date!.isAfter(DateTime.now()))
+        .toList();
+    if (listaEventi.length > 0) {
+      return Padding(
+        padding: EdgeInsets.only(right: 15.w, bottom: 5.h),
+        child: AutoSizeText(
+          "Prossima visita\n" +
+              FormatDate.fromDateTimeToString(listaEventi[0].date!, "data"),
+          textAlign: TextAlign.end,
+          style: TextStyle(
+            color: Colors.grey[700],
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.25,
+          ),
+        ),
+      );
+    } else
+      return Padding(
+        padding: EdgeInsets.only(right: 15.w, bottom: 5.h),
+        child: AutoSizeText(
+          "Prossima visita\n - -",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.grey[700],
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.25,
+          ),
+        ),
+      );
   }
 }
 
