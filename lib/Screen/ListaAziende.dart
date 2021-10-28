@@ -696,7 +696,7 @@ class ListaAziendeState extends State<ListaAziende> {
         width: 70.w,
         height: 70.h,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(185, 246, 202, 70),
+          color: Color.fromRGBO(0, 0, 255, 70),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
         ),
