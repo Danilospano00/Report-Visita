@@ -1,26 +1,26 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppLocalizations {
-  final Locale locale;
+   final Locale locale;
 
   AppLocalizations(this.locale);
-
-  Map<String, String>? _localizedStrings;
-
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
 
   static AppLocalizations? of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+  _AppLocalizationsDelegate();
+
+  Map<String, String> _localizedStrings={};
+
   Future<bool> load() async {
     String jsonString =
-        await rootBundle.loadString('i18n/${locale.languageCode}.json');
+    await rootBundle.loadString('lang/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizedStrings = jsonMap.map((key, value) {
@@ -31,7 +31,7 @@ class AppLocalizations {
   }
 
   String? translate(String key) {
-    return _localizedStrings?[key];
+    return _localizedStrings[key];
   }
 }
 

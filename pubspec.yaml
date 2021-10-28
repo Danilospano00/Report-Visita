@@ -23,6 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   shape_of_view_null_safe: ^2.0.0
   flutter_form_builder: ^6.0.0
   material_dialogs: ^1.1.0
@@ -69,7 +71,6 @@ dependencies:
   #google_place: ^0.4.3
 
   provider: ^6.0.1
-  localize_and_translate: ^4.1.1
 
 
 
