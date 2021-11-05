@@ -9,6 +9,7 @@ import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/factory/filter.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/MyDrawer.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -104,7 +105,7 @@ class CalendarPageState extends State<CalendarPage> {
                       child: Padding(
                         padding: EdgeInsets.only(right: 16.w, left: 16.w),
                         child: listaEventi.isEmpty
-                            ? Center(child: Text("Non ci sono eventi"))
+                            ? Center(child: Text( AppLocalizations.of(context).translate('eventiAssenti')))
                             : Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
@@ -179,7 +180,7 @@ class CalendarPageState extends State<CalendarPage> {
                                             Container(
                                               width: 250.w,
                                               child: AutoSizeText(
-                                                "${listaEventi[index].azienda.target!.indirizzo.toString()}",
+                                                "${listaEventi[index].azienda.target!.indirizzo}",
                                                 textAlign:
                                                 TextAlign.left,
                                                 maxLines: 2,
@@ -196,7 +197,7 @@ class CalendarPageState extends State<CalendarPage> {
                                             ),
                                             ElevatedButton(
                                               child: Text(
-                                                "map",
+                                                AppLocalizations.of(context).translate('mappa'),
                                                 style: TextStyle(
                                                     fontSize: 10.sp,
                                                     fontWeight:

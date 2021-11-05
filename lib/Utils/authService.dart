@@ -20,6 +20,7 @@ import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/PaginaListaAziendeConSogliaRossa.dart';
 import 'package:report_visita_danilo/Utils/TakeEventWithDate.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -113,7 +114,7 @@ class AuthService {
                               Column(
                                 children: [
                                   Text(
-                                    "Hai $meet meeting oggi",
+                                    AppLocalizations.of(context).translate('hai') +"$meet"+ AppLocalizations.of(context).translate('meetingOggi'),
                                     style: TextStyle(
                                         color: Colors.red,
                                         fontWeight: FontWeight.bold,
@@ -123,8 +124,8 @@ class AuthService {
                                       padding:
                                           EdgeInsets.only(top: 2, bottom: 2)),
                                   Text(
-                                    "Controlla il planner",
-                                    style: TextStyle(
+                                      AppLocalizations.of(context).translate('controllaIlPlanner'),
+                                      style: TextStyle(
                                         fontSize: 18, color: Colors.grey[700]),
                                   ),
                                 ],
@@ -169,7 +170,7 @@ class AuthService {
                         child: Column(
                           children: [
                             Text(
-                              "Aziende",
+                              AppLocalizations.of(context).translate('aziende'),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
@@ -213,6 +214,7 @@ class AuthService {
                                           padding: EdgeInsets.only(
                                               top: 2.h, bottom: 2.h)),
                                       Text(
+                                        //TODO devo capire come tradurre questa frase perchè in inglese cambia l'ordine delle parole
                                         "Sono passati ${DateTime.now().difference(aziendaRandom.events[aziendaRandom.events.length - 2].date!).inDays.abs().toString()} giorni dall'ultima visita",
                                         textAlign: TextAlign.start,
                                         maxLines: 2,
@@ -245,7 +247,7 @@ class AuthService {
                       ),
                       ElevatedButton(
                         child: Text(
-                          "vedi tutte",
+                          AppLocalizations.of(context).translate('vediTutte'),
                           style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w700,
@@ -359,7 +361,7 @@ class AuthService {
                                             padding: const EdgeInsets.only(
                                                 left: 20.0),
                                             child: Text(
-                                              "Ciao\nAccedi al tuo account",
+                                              AppLocalizations.of(context).translate('ciaoAccedi'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 13.9.sp,
@@ -382,7 +384,7 @@ class AuthService {
                               textAlign: TextAlign.start,
                               text: TextSpan(
                                 text:
-                                    "Scopri tutti i vantaggi di un account registrato\n\n",
+                                AppLocalizations.of(context).translate('vantaggiAccount'),
                                 style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.bold,
@@ -418,7 +420,7 @@ class AuthService {
                           Container(
                             width: 200,
                             child: AutoSizeText(
-                              "Vuoi accedere a tutte le funzionalità complete?",
+                              AppLocalizations.of(context).translate('funzionalitaComplete'),
                               maxLines: 2,
                               style: TextStyle(
                                   color: Colors.white,
@@ -429,8 +431,9 @@ class AuthService {
                           ),
                           RichText(
                               text: TextSpan(
-                            text: 'CONTATTACI',
-                            style: new TextStyle(
+                            text:                               AppLocalizations.of(context).translate('contattaci'),
+
+                                style: new TextStyle(
                               color: Colors.orange,
                               fontSize: ScreenUtil().setSp(13.748113),
                               fontWeight: FontWeight.w700,
@@ -468,16 +471,10 @@ class AuthService {
   signIn(String email, String password, context) async {
     return await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    /*.
-    then((value) => (value){
-      UserCredential res=value;
-    }).catchError((e){
-      showError(e.toString(), context);
-    });*/
   }
 
   singUp(String email, String password) {
-    //ritorna le credensiali o un errore da catturare
+    //ritorna le credenziali o un errore da catturare
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
   }
@@ -619,38 +616,5 @@ class AuthService {
         await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  void showError(String mess, context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          title: Text(
-            "ATTENZIONE!",
-            textAlign: TextAlign.center,
-          ),
-          content: Text(mess),
-          actions: [
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: rvTheme.canvasColor),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  //Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 }

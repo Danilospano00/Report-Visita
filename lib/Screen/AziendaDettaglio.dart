@@ -5,6 +5,7 @@ import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/costanti.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
 import 'DettaglioReport.dart';
 
@@ -30,7 +31,9 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dettaglio"),
+        title: Text(
+          AppLocalizations.of(context).translate('dettaglioAzienda'),
+        ),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
@@ -57,7 +60,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
-                    "Indirizzo: ${widget.azienda.indirizzo.toString()} ",
+                    AppLocalizations.of(context).translate('indirizzo')+":" +widget.azienda.indirizzo!,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.075892.sp,
@@ -70,7 +73,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
-                    "Partita IVA: ${widget.azienda.partitaIva.toString()} ",
+                    AppLocalizations.of(context).translate('partitaIVA')+widget.azienda.partitaIva.toString(),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.075892.sp,
@@ -124,7 +127,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 8.h),
                                       child: AutoSizeText(
-                                        "Data creazione: " +
+                                        AppLocalizations.of(context).translate('dataCreazioneEvento') +" :"+
                                             FormatDate.fromDateTimeToString(
                                                 report[index].compilazione!,
                                                 "data"),
@@ -139,7 +142,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                                     ),
                                     ElevatedButton(
                                       child: Text(
-                                        "vedi",
+                                        AppLocalizations.of(context).translate('vedi'),
                                         style: TextStyle(
                                             fontSize: 10.sp,
                                             fontWeight: FontWeight.bold),
@@ -148,7 +151,10 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => DettaglioReport(report: report[index],)));
+                                                builder: (context) =>
+                                                    DettaglioReport(
+                                                      report: report[index],
+                                                    )));
                                       },
                                       style: ElevatedButton.styleFrom(
                                         minimumSize: Size(18.w, 25.h),

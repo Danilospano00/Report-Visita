@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/User.dart';
 import 'package:report_visita_danilo/Utils/authService.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -53,8 +54,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   Padding(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
                     child: AutoSizeText(
-                      "Registrati",
-                      maxLines: 1,
+                      AppLocalizations.of(context).translate('registrati'),                      maxLines: 1,
                       style: TextStyle(fontSize: ScreenUtil().setSp(24)),
                     ),
                   ),
@@ -65,7 +65,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       controller: emailController,
 
                       decoration: InputDecoration(
-                        labelText: "Email Address",
+                        labelText: AppLocalizations.of(context).translate('indirizzoEmail'),
                         prefixIcon:
                             Icon(Icons.account_box, color: rvTheme.hintColor),
                       ),
@@ -75,9 +75,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Email Address';
+                          return AppLocalizations.of(context).translate('indirizzoEmail');
                         } else if (!value.contains('@')) {
-                          return 'Please enter a valid email address!';
+                          return AppLocalizations.of(context).translate("inserisciEmailValida");
                         }
                         return null;
                       },
@@ -101,9 +101,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Enter Password';
+                          return AppLocalizations.of(context).translate("inserisciPassword");
                         } else if (value.length < 6) {
-                          return 'Password must be atleast 6 characters!';
+                          return AppLocalizations.of(context).translate("passwordTroppoCorta");
                         }
                         return null;
                       },
@@ -116,7 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       obscureText: true,
                       controller: passwordRepeatController,
                       decoration: InputDecoration(
-                          labelText: "Conferma Password",
+                          labelText: AppLocalizations.of(context).translate("confermaPassword"),
                           prefixIcon: Icon(
                             Icons.vpn_key_outlined,
                             color: rvTheme.hintColor,
@@ -127,11 +127,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Enter Password';
+                          return AppLocalizations.of(context).translate("inserisciPassword");
                         } else if (value.length < 6) {
-                          return 'Password must be atleast 6 characters!';
+                          return AppLocalizations.of(context).translate("passwordTroppoCorta");
                         } else if (value != passwordController.text) {
-                          return 'Password non uguale';
+                          return AppLocalizations.of(context).translate("passwordNonUguale");
                         }
                         return null;
                       },
@@ -154,14 +154,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           child: Container(
                               child: RichText(
                                   text: new TextSpan(
-                            text: 'Ho preso viosne dei ',
+                            text: AppLocalizations.of(context).translate("hoPresoVisione"),
                             style: new TextStyle(
                               color: Colors.black,
                               fontSize: ScreenUtil().setSp(12),
                             ),
                             children: [
                               new TextSpan(
-                                text: 'Termini e Condizioni',
+                                text: AppLocalizations.of(context).translate("terminiECondizioni"),
                                 style: new TextStyle(
                                     color: Colors.black,
                                     fontSize: ScreenUtil().setSp(12),
@@ -170,7 +170,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ..onTap = () {},
                               ),
                               new TextSpan(
-                                text: ' e la ',
+                                text: AppLocalizations.of(context).translate("e"),
                                 style: new TextStyle(
                                   color: Colors.black,
                                   fontSize: ScreenUtil().setSp(12),
@@ -223,7 +223,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               }
                             },
                       child: Text(
-                        'REGISTRATI',
+                          AppLocalizations.of(context).translate("registrati"),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -249,7 +249,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "ATTENZIONE!",
+            AppLocalizations.of(context).translate("attenzione"),
             textAlign: TextAlign.center,
           ),
           content: Text(mess),

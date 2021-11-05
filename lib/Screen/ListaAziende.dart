@@ -16,6 +16,7 @@ import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/ZoomButtonsPluginOption.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/costanti.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../objectbox.g.dart';
@@ -144,7 +145,7 @@ class ListaAziendeState extends State<ListaAziende> {
       body: listaAziende2.length == 0
           ? Center(
               child: Text(
-              "Non ci sono aziende",
+                AppLocalizations.of(context).translate('aziendeAssenti'),
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
             ))
@@ -422,7 +423,7 @@ class ListaAziendeState extends State<ListaAziende> {
                       padding: EdgeInsets.only(left: 50.w, top: 22.h),
                       child: item.azienda.referenti.length > 0
                           ? Text(
-                              item.azienda.referenti!.elementAt(0).nome!,
+                              item.azienda.referenti.elementAt(0).nome!,
                               style: TextStyle(
                                 fontSize: 12.126488.sp,
                                 fontWeight: FontWeight.w400,
@@ -712,7 +713,7 @@ class ListaAziendeState extends State<ListaAziende> {
       return Padding(
         padding: EdgeInsets.only(right: 15.w, bottom: 5.h),
         child: AutoSizeText(
-          "Prossima visita\n" +
+            AppLocalizations.of(context).translate('prossimaVisita')+"\n" +
               FormatDate.fromDateTimeToString(listaEventi[0].date!, "data"),
           textAlign: TextAlign.end,
           style: TextStyle(
@@ -727,7 +728,7 @@ class ListaAziendeState extends State<ListaAziende> {
       return Padding(
         padding: EdgeInsets.only(right: 15.w, bottom: 5.h),
         child: AutoSizeText(
-          "Prossima visita\n - -",
+          AppLocalizations.of(context).translate('prossimaVisita')+"\n - -",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.grey[700],

@@ -6,6 +6,7 @@ import 'package:report_visita_danilo/Models/User.dart';
 import 'package:report_visita_danilo/Utils/authService.dart';
 import 'package:report_visita_danilo/Utils/horizontaldivider.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../costanti.dart';
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
                   child: AutoSizeText(
-                    "Effettua il logIn",
+                    AppLocalizations.of(context).translate('effettuaIlLogin'),
                     maxLines: 1,
                     style: TextStyle(fontSize: ScreenUtil().setSp(24)),
                   ),
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       FormBuilderTextField(
                         name: 'email',
                         decoration: InputDecoration(
-                          labelText: "email non valida",
+                          labelText: AppLocalizations.of(context).translate('emailNonValida'),
                           prefixIcon:
                               Icon(Icons.account_box, color: rvTheme.hintColor),
                         ),
@@ -86,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       FormBuilderTextField(
                         name: 'password',
                         decoration: InputDecoration(
-                          labelText: "password non valida",
+                          labelText: AppLocalizations.of(context).translate('passwordNonValida'),
                           prefixIcon: Icon(
                             Icons.vpn_key_outlined,
                             color: rvTheme.hintColor,
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: InkWell(
                               onTap: () {},
                               child: AutoSizeText(
-                                "Hai dimenticato\n la password?",
+                                AppLocalizations.of(context).translate('passwordDimenticata'),
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: ScreenUtil().setSp(14),
@@ -123,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Container(
                             // width: ScreenUtil().setWidth(100),
                             child: MaterialButton(
-                              child: setUpButtonChild("Accedi"),
+                              child: setUpButtonChild(AppLocalizations.of(context).translate('accedi'),),
                               color: rvTheme.primaryColorDark,
                               onPressed: () async {
                                 if (_formKey.currentState?.validate() ??
@@ -152,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       HorizontalOrLine(
                           color: rvTheme.unselectedWidgetColor,
                           height: ScreenUtil().setHeight(1),
-                          label: "Oppure"),
+                          label: AppLocalizations.of(context).translate('oppure')),
                       SizedBox(
                         height: ScreenUtil().setHeight(16),
                       ),
@@ -212,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
                         child: AutoSizeText(
-                          "non hai un account?",
+                          AppLocalizations.of(context).translate("nonHaiUnAccount"),
                           maxLines: 1,
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(24),
@@ -232,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 builder: (context) => RegistrationScreen()),
                           );
                         },
-                        child: setUpButtonChild("Registrati"),
+                        child: setUpButtonChild( AppLocalizations.of(context).translate('registrati'),),
                         elevation: 4.0,
                         minWidth: double.infinity,
                         height: 48.0.h,
@@ -287,21 +288,4 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = false;
     });
   }
-
-/* Future<void> _setFirstAccess() async {
-    final SharedPreferences prefs = await _prefs;
-    if (!(prefs.containsKey("isFirstAccess") ||
-        prefs.getBool("isFirstAccess") == false)) {
-      prefs.setBool("isFirstAccess", true);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Preferences()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
-      );
-    }
-  }*/
 }

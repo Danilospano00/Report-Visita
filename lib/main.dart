@@ -31,7 +31,10 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(360, 640),
       builder: () => MaterialApp(
-        supportedLocales: [Locale('en', 'US'), Locale('it', 'IT')],
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('it', 'IT'),
+        ],
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -40,7 +43,7 @@ class MyApp extends StatelessWidget {
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocale in supportedLocales) {
             if (supportedLocale.languageCode == locale!.languageCode &&
-                supportedLocale.countryCode == locale!.countryCode) {
+                supportedLocale.countryCode == locale.countryCode) {
               return supportedLocale;
             }
           }

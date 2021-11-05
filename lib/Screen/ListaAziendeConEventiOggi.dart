@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
 import 'AziendaDettaglio.dart';
 
@@ -24,7 +25,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
         shadowColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.grey[700]),
       ),
-      body: widget.listaEventiDiOggi.isEmpty?Center(child: Text("Oggi non ci sono eventi")): SingleChildScrollView(
+      body: widget.listaEventiDiOggi.isEmpty?Center(child: Text(AppLocalizations.of(context).translate('nessunEventoOggi'))): SingleChildScrollView(
         child: Column(
           children: [
             Padding(
@@ -33,7 +34,7 @@ class ListaAziendeConEventiOggiState extends State<ListaAziendeConEventiOggi> {
                   left: ScreenUtil().setWidth(16),
                   right: ScreenUtil().setWidth(16)),
               child: AutoSizeText(
-                "Eventi in programma oggi",
+                AppLocalizations.of(context).translate('eventiInProgrammaOggi'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 24.sp,

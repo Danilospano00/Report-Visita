@@ -5,6 +5,7 @@ import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
 import '../costanti.dart';
 import '../objectbox.g.dart';
@@ -42,7 +43,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
         shadowColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.grey[700]),
         title: Text(
-          "Aggiungi evento",
+          AppLocalizations.of(context).translate('aggiungiEvento'),
           textAlign: TextAlign.left,
           style: TextStyle(
               fontSize: 24.151785.sp,
@@ -70,7 +71,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                       },
                       store: _store,
                       active: true,
-                      initialReport: null,
+                      initialReport: null, export: false,
                     ),
                   ),
                 ),
@@ -95,7 +96,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Aggiungi Evento",
+                          Text(AppLocalizations.of(context).translate('aggiungiEvento'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.sp,
@@ -153,9 +154,9 @@ class AggiungiEventoState extends State<AggiungiEvento> {
     print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
 
     if (count > 0) {
-      _showSnackBar("Evento aggiunto correttamente");
+      _showSnackBar(AppLocalizations.of(context).translate('snackBarAggiuntaTesto'));
     } else {
-      _showSnackBar("Errore aggiunta Report");
+      _showSnackBar(AppLocalizations.of(context).translate("snackBarErroreAggiuntaTesto"));
     }
   }
 

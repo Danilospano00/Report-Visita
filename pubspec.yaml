@@ -57,7 +57,9 @@ dependencies:
   shared_preferences: ^2.0.5
   objectbox: ^1.1.1
   objectbox_flutter_libs: any
-
+  pdf: ^3.6.1
+  path_provider: ^2.0.6
+  open_file: ^3.2.1
   flutter_typeahead: ^3.2.1
   geocoding: ^2.0.1
   flutter_map: any
@@ -106,6 +108,7 @@ dependency_overrides:
 flutter:
   assets:
     - assets/
+    - lib/i18n/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

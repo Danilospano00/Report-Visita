@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:report_visita_danilo/Screen/whitePage.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../costanti.dart';
@@ -46,7 +46,7 @@ class PreferencesState extends State<Preferences> {
             Padding(
               padding: EdgeInsets.all(ScreenUtil().setHeight(16)),
               child: AutoSizeText(
-                "Seleziona la tipologia di configurazione che vuoi usare",
+                AppLocalizations.of(context).translate('scegliConfigurazione'),
                 maxLines: 2,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(20),
@@ -138,7 +138,9 @@ class PreferencesState extends State<Preferences> {
                                     ),
                                   );
                                 },
-                                child: Text("Seleziona",
+                                child: Text(
+                                    AppLocalizations.of(context)
+                                        .translate('seleziona'),
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 15.712129.sp,
@@ -195,6 +197,7 @@ class PreferencesState extends State<Preferences> {
                 form: configurazione,
                 store: mainStore!,
                 active: false,
+                export: false,
                 initialReport: null,
                 onChanged: (dynamic value) {
                   print(value);
@@ -219,7 +222,7 @@ class PreferencesState extends State<Preferences> {
                     );
                   },
                   child: Text(
-                    "ACCETTA",
+                    AppLocalizations.of(context).translate('accetta'),
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 14.sp,

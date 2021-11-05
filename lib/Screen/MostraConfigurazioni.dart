@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
 import '../costanti.dart';
 
@@ -53,7 +54,7 @@ class MostraConfigurazioniState extends State<MostraConfigurazioni> {
           child: Stack(
             children: [
               GeneratorFormToJson(
-                form: configurazione,
+                form: configurazione,export: false,
                 store: mainStore!,
                 initialReport: null,
               active: false,
@@ -70,7 +71,7 @@ class MostraConfigurazioniState extends State<MostraConfigurazioni> {
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Text(
-                    "ACCETTA",
+                    AppLocalizations.of(context).translate('accetta'),
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 14.sp,

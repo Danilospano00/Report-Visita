@@ -19,6 +19,7 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../objectbox.g.dart';
 
@@ -34,7 +35,8 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   GlobalKey<FormBuilderState> formKeyBody = GlobalKey<FormBuilderState>();
 
-  static GlobalKey<ScaffoldState> _scaffoldKeyHomePage = GlobalKey<ScaffoldState>();
+  static GlobalKey<ScaffoldState> _scaffoldKeyHomePage =
+      GlobalKey<ScaffoldState>();
 
   late Store _store;
   bool hasBeenInitialized = false;
@@ -49,7 +51,7 @@ class MyHomePageState extends State<MyHomePage> {
   List<Report> listaReportPerRicerca = [];
 
   @override
-  initState(){
+  initState() {
     super.initState();
     if (mainStore == null) {
       openStore().then((Store store) {
@@ -63,7 +65,7 @@ class MyHomePageState extends State<MyHomePage> {
       });
     } else {
       _store = mainStore!;
-      setState((){
+      setState(() {
         hasBeenInitialized = true;
       });
     }
@@ -73,6 +75,7 @@ class MyHomePageState extends State<MyHomePage> {
       formKeyBodyMain = formKeyBody;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +83,10 @@ class MyHomePageState extends State<MyHomePage> {
       key: _scaffoldKeyHomePage,
       backgroundColor: Colors.white,
       body: !hasBeenInitialized
-          ? Center(child: CircularProgressIndicator(color: Colors.red,))
+          ? Center(
+              child: CircularProgressIndicator(
+              color: Colors.red,
+            ))
           : Padding(
               padding: EdgeInsets.only(top: 4.h, left: 16.w, right: 16.w),
               child: SafeArea(
@@ -93,6 +99,7 @@ class MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.only(top: 50),
                           child: GeneratorFormToJson(
                             store: _store,
+                            export: false,
                             form: configurazione,
                             active: true,
                             initialReport: null,
@@ -119,35 +126,34 @@ class MyHomePageState extends State<MyHomePage> {
     formKeyBodyMain.currentState!.saveAndValidate();
     _report = Report();
 
-    if(response.length!=0)
-    {
+    if (response.length != 0) {
       if (response["azienda"] != null) {
         _report.azienda.target = response["azienda"];
       } else if (response["aziendaName"] != null) {
-        _report.azienda.target = Azienda()
-          ..nome = response["aziendaName"];
+        _report.azienda.target = Azienda()..nome = response["aziendaName"];
 
         if (response["indirizzo"] != null) {
           List<Location> locations;
           try {
             locations = await locationFromAddress(response["indirizzo"]);
           } on Exception catch (e) {
-            _showSnackBar("Indirizzo non valido");
+            _showSnackBar(
+                AppLocalizations.of(context).translate('indirizzoNonValido'));
             return;
           }
 
           _report.azienda.target!.indirizzo = response["indirizzo"];
-          print("Indirizzo: "+ _report.azienda.target!.indirizzo.toString());
+          print("Indirizzo: " + _report.azienda.target!.indirizzo.toString());
           _report.azienda.target!.lat = locations[0].latitude;
-          print("Latitudine: "+_report.azienda.target!.lat.toString());
+          print("Latitudine: " + _report.azienda.target!.lat.toString());
           _report.azienda.target!.lng = locations[0].longitude;
-          print("Longitudine: "+_report.azienda.target!.lng.toString());
+          print("Longitudine: " + _report.azienda.target!.lng.toString());
         }
         if (response["partitaIva"] != null) {
           _report.azienda.target!.partitaIva = response["partitaIva"];
         }
       } else {
-        _showSnackBar("Campi mancanti");
+        _showSnackBar(AppLocalizations.of(context).translate('campiMancanti'));
         return;
       }
       if (response["contatto"] != null) {
@@ -207,31 +213,27 @@ class MyHomePageState extends State<MyHomePage> {
         showSConafigChange(mappaJsonConfigurazione);
       } else {
         //se non è cambiata setto la config nel report
-        addToDBReport(config, "report salvato");
+        addToDBReport(config,
+            AppLocalizations.of(context).translate('msgSnackBarReportSalvato'));
       }
-    }else{
-
-    }
+    } else {}
   }
 
-
- void addToDBReport(String configDaSalvare,String msg)async{
+  void addToDBReport(String configDaSalvare, String msg) async {
     _report.configurationJson = configDaSalvare;
     int id = await mainStore!.box<Report>().put(_report);
     if (id > 0) {
-
-        response = [];
+      response = [];
 
       _showSnackBar(msg);
     } else {
-      _showSnackBar("Errore aggiunta Report");
+      _showSnackBar(AppLocalizations.of(context)
+          .translate('snackBarErroreAggiuntaTesto'));
     }
   }
 
   bool checkChange(List<dynamic> mappaJsonConfigurazione) {
     bool change = false;
-
-
 
     //ciclo la configurazione trasformandola in una mappa
     mappaJsonConfigurazione.forEach((element) {
@@ -271,7 +273,8 @@ class MyHomePageState extends State<MyHomePage> {
           borderRadius: BorderRadius.all(Radius.circular(10))),
       behavior: SnackBarBehavior.floating,
     );
-    ScaffoldMessenger.of(_scaffoldKeyHomePage.currentContext!).showSnackBar(snackBar);
+    ScaffoldMessenger.of(_scaffoldKeyHomePage.currentContext!)
+        .showSnackBar(snackBar);
   }
 
   void showSConafigChange(List<dynamic> mappa) {
@@ -282,16 +285,15 @@ class MyHomePageState extends State<MyHomePage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "ATTENZIONE",
+            AppLocalizations.of(context).translate('attenzione').toUpperCase(),
             textAlign: TextAlign.center,
           ),
           content: Container(
               width: MediaQuery.of(context).size.width * .60,
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
-                  child: AutoSizeText(
-                      "E' stato rilevato un cambiamento della configuraziona,"
-                      "vuoi sostituirla ?"))),
+                  child: AutoSizeText(AppLocalizations.of(context)
+                      .translate('rilevatoCambioConfigurazione')))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             ButtonTheme(
@@ -301,11 +303,14 @@ class MyHomePageState extends State<MyHomePage> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  "Indietro",
+                  AppLocalizations.of(context).translate('indietro'),
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
-                  addToDBReport(config,"report salvato");
+                  addToDBReport(
+                      config,
+                      AppLocalizations.of(context)
+                          .translate('msgSnackBarReportSalvato'));
                   Navigator.pop(context);
                 },
               ),
@@ -317,7 +322,7 @@ class MyHomePageState extends State<MyHomePage> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  "Sostituisci",
+                  AppLocalizations.of(context).translate('sostituisci'),
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () async {
@@ -327,13 +332,16 @@ class MyHomePageState extends State<MyHomePage> {
                   });
 
                   for (var i = 0; i < mappa.length; i++) {
-                    if (mappa[i]['type'] == "note")
-                      mappa[i]['label'] = label;
+                    if (mappa[i]['type'] == "note") mappa[i]['label'] = label;
                   }
-                  String newConfig=json.encode(mappa);
-                  SharedPreferences pref= await SharedPreferences.getInstance();
-                  pref.setString(keyConfigurazione,newConfig);
-                  addToDBReport(newConfig,"Report salvato e configurazione sostituita");
+                  String newConfig = json.encode(mappa);
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.setString(keyConfigurazione, newConfig);
+                  addToDBReport(
+                      newConfig,
+                      AppLocalizations.of(context)
+                          .translate('reportSalvatoEConfigCambiata'));
                   Navigator.pop(context);
                 },
               ),
@@ -353,7 +361,7 @@ class MyHomePageState extends State<MyHomePage> {
       child: Row(
         children: [
           Text(
-            "Nuovo Report",
+            AppLocalizations.of(context).translate('nuovoReport'),
             style: TextStyle(
               fontSize: 24.151785.sp,
               color: Colors.grey[700],

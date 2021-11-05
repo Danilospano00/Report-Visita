@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'HomePage.dart';
@@ -16,24 +17,39 @@ class ScegliAllerta extends StatefulWidget {
 
 class ScegliAllertaState extends State<ScegliAllerta> {
   final formKeyScegliAllerta = GlobalKey<FormBuilderState>();
-
-  List<Widget> lista = [Text("Giorni")];
+  late final List<String> scegliPeriodoSoglia=[];
 
   late int _valoreSoglia1 = 1;
   late int _valoreSoglia2 = 1;
   late int _valoreSoglia3 = 1;
-  final List<String> scegliPeriodoSoglia = [
-    "Giorni",
-    "Settimane",
-    "Mesi",
-    "Anni"
-  ];
+  late String giorni;
+  late String settimane;
+  late String mesi;
+  late String anni;
+
+  @override
+  initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero,() {
+      giorni = AppLocalizations.of(context).translate('giorni');
+      settimane = AppLocalizations.of(context).translate('settimane');
+      mesi = AppLocalizations.of(context).translate('mesi');
+      anni = AppLocalizations.of(context).translate('anni');
+      scegliPeriodoSoglia.add(giorni);
+      scegliPeriodoSoglia.add(settimane);
+      scegliPeriodoSoglia.add(mesi);
+      scegliPeriodoSoglia.add(anni);
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(left: 16.w,right: 16.w, top: 52.h,bottom: 52.h),
+        padding:
+            EdgeInsets.only(left: 16.w, right: 16.w, top: 52.h, bottom: 52.h),
         child: Card(
           child: Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w),
@@ -45,11 +61,14 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: IconButton(onPressed: (){
-                        Navigator.pop(context);
-                      },
-
-                          icon:Icon(Icons.arrow_back,size: 36,),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 36,
+                        ),
                       ),
                     ),
                     Padding(
@@ -58,7 +77,8 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                           left: ScreenUtil().setWidth(16),
                           right: ScreenUtil().setWidth(16)),
                       child: AutoSizeText(
-                        "Definisci le soglie di allerta",
+                        AppLocalizations.of(context)
+                            .translate('definisciSoglieAllerta'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 24.sp,
@@ -70,7 +90,8 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                     Padding(
                       padding: EdgeInsets.only(top: 16.h),
                       child: AutoSizeText(
-                        "Seleziona l'intervallo di tempo che fà passare il report alla fascia di allerta successiva. Se non definiti saranno usati i valori preimpostati dal sistema.",
+                        AppLocalizations.of(context)
+                            .translate('testoScegliAllerta'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 16.sp,
@@ -129,14 +150,16 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                             width: 120.w,
                             child: FormBuilderDropdown(
                               decoration: InputDecoration(
-                                labelText: 'Giorni',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('giorni'),
                                 labelStyle: TextStyle(color: Colors.black),
                                 alignLabelWithHint: true,
                                 floatingLabelStyle:
                                     TextStyle(color: Colors.transparent),
                               ),
                               items: scegliPeriodoSoglia
-                                  .map<DropdownMenuItem<String>>((String value) {
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -201,14 +224,16 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                             width: 120.w,
                             child: FormBuilderDropdown(
                               decoration: InputDecoration(
-                                labelText: 'Giorni',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('giorni'),
                                 labelStyle: TextStyle(color: Colors.black),
                                 alignLabelWithHint: true,
                                 floatingLabelStyle:
                                     TextStyle(color: Colors.transparent),
                               ),
                               items: scegliPeriodoSoglia
-                                  .map<DropdownMenuItem<String>>((String value) {
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -273,14 +298,16 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                             width: 120.w,
                             child: FormBuilderDropdown(
                               decoration: InputDecoration(
-                                labelText: 'Giorni',
+                                labelText: AppLocalizations.of(context)
+                                    .translate('giorni'),
                                 labelStyle: TextStyle(color: Colors.black),
                                 alignLabelWithHint: true,
                                 floatingLabelStyle:
                                     TextStyle(color: Colors.transparent),
                               ),
                               items: scegliPeriodoSoglia
-                                  .map<DropdownMenuItem<String>>((String value) {
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -303,7 +330,8 @@ class ScegliAllertaState extends State<ScegliAllerta> {
                         alignment: Alignment.bottomRight,
                         child: RichText(
                           text: TextSpan(
-                            text: 'Conferma',
+                            text: AppLocalizations.of(context)
+                                .translate('conferma'),
                             style: new TextStyle(
                                 fontSize: ScreenUtil().setSp(18),
                                 fontWeight: FontWeight.w700,

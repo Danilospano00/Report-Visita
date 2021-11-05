@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/factory/filter.dart';
 import 'package:provider/provider.dart';
+import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class _MyDrawerState extends State<MyDrawer> {
         children: [
           ListTile(
             title: AutoSizeText(
-              'Filtra per urgenza',
+              AppLocalizations.of(context).translate('filtraPerUrgenza'),
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -76,7 +77,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 Expanded(
                   child: AutoSizeText(
-                    'Priorità Bassa',
+                      AppLocalizations.of(context).translate('prioritaBassa'),
                     style: TextStyle(color: Colors.black, fontSize: 16.sp),
                   ),
                 ),
@@ -106,7 +107,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 Expanded(
                   child: AutoSizeText(
-                    'Priorità Media',
+                    AppLocalizations.of(context).translate('prioritaMedia'),
                     style: TextStyle(color: Colors.black, fontSize: 16.sp),
                   ),
                 ),
@@ -136,7 +137,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 Expanded(
                   child: AutoSizeText(
-                    'Priorità Alta',
+                      AppLocalizations.of(context).translate('prioritaAlta'),
                     style: TextStyle(color: Colors.black, fontSize: 16.sp),
                   ),
                 ),
