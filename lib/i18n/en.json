@@ -62,5 +62,9 @@
   "filtraPerUrgenza": "Filter for urgency",
   "prioritaAlta":"High priority",
   "prioritaMedia": "Medium priority",
-  "prioritaBassa": "Low priority"
+  "prioritaBassa": "Low priority",
+  "esporta": "Export",
+  "esportaReport": "Export report",
+  "testo": "Text",
+  "scegliFormato": "Choose the format to share the report with"
 }

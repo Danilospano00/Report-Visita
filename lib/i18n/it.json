@@ -62,5 +62,9 @@
   "filtraPerUrgenza": "Filtra per urgenza",
   "prioritaAlta": "Priorità alta",
   "prioritaMedia": "Priorità media",
-  "prioritaBassa": "Priorità bassa"
+  "prioritaBassa": "Priorità bassa",
+  "esporta": "Esporta",
+  "esportaReport": "Esporta report",
+  "testo": "Testo",
+  "scegliFormato": "Scegli il formato con il quale condividere il report"
 }

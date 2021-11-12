@@ -105,7 +105,7 @@ class CalendarPageState extends State<CalendarPage> {
                       child: Padding(
                         padding: EdgeInsets.only(right: 16.w, left: 16.w),
                         child: listaEventi.isEmpty
-                            ? Center(child: Text( AppLocalizations.of(context).translate('eventiAssenti')))
+                            ? Center(child: Text( AppLocalizations.of(context).translate('eventiAssenti'),style: TextStyle(fontWeight: FontWeight.w700),))
                             : Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
