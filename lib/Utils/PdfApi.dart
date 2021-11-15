@@ -7,11 +7,13 @@ import 'package:open_file/open_file.dart';
 class PdfApi {
   static Future<File> generatePdf(String nomeAzienda) async {
     final pdf = Document();
-    pdf.addPage(Page(
-      build: (context) => Center(
-        child: Text(nomeAzienda),
+    pdf.addPage(
+      Page(
+        build: (context) => Center(
+          child: Text(nomeAzienda),
+        ),
       ),
-    ));
+    );
 
     return saveDocument(name: 'Report $nomeAzienda.pdf', pdf: pdf);
   }

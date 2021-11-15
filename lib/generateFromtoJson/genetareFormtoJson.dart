@@ -2490,10 +2490,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
-                      final file = PdfApi.generatePdf(widget.initialReport.toString());
-                      var pdf;
-                      PdfApi.pickFile().then((value) => pdf = value);
-                      Share.shareFiles(pdf);
+                      File file = await PdfApi.generatePdf(widget.initialReport.toString());
+                      //var pdf;
+                     // PdfApi.pickFile().then((value) => pdf = value);
+                      Share.shareFiles([file.path]);
                     }),
               ),
             ],
