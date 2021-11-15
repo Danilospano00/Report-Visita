@@ -130,4 +130,18 @@ String configurazioneAggiuntaEvento=json.encode([
     "label": "Descrizione",
     "required": "yes",
   },
+  {
+    "title": "note",
+    "type": "note",
+    "label": [
+      "Scopo della visita/Argomenti discussi/Problemi riscontrati/Opportunita/Dubbi e domande",
+      "Richieste/Prospettive/Potenzialita/ Future Opportunita e rischi",
+      "Criteri cliente importanti e secondari",
+      "Punti forti concorrenza",
+      "Punti deboli concorrenza",
+      "Prossime azioni/Chi fa cosa/Tempi/Proposte alla direzione",
+      "Prossimi Step",
+      "Note"
+    ]
+  }
 ]);

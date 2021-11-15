@@ -29,7 +29,7 @@ class DettaglioReportState extends State<DettaglioReport> {
   @override
   initState() {
     super.initState();
-    //widget.report.configurationJson=configPreferences;
+    widget.report.configurationJson=configPreferences;
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:mime/mime.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:file_picker/file_picker.dart';
@@ -2490,7 +2491,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
-                      File file = await PdfApi.generatePdf(widget.initialReport.toString());
+                      File file = await PdfApi.generatePdf("Danilo");
                       //var pdf;
                      // PdfApi.pickFile().then((value) => pdf = value);
                       Share.shareFiles([file.path]);

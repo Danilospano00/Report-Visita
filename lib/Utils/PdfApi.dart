@@ -15,7 +15,7 @@ class PdfApi {
       ),
     );
 
-    return saveDocument(name: 'Report $nomeAzienda.pdf', pdf: pdf);
+    return saveDocument(name: 'Report$nomeAzienda', pdf: pdf);
   }
 
   static Future<File> saveDocument({
@@ -25,7 +25,7 @@ class PdfApi {
     final bytes = await pdf.save();
 
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$name');
+    final file = File('${dir.path}/$name.pdf');
 
     await file.writeAsBytes(bytes);
 
