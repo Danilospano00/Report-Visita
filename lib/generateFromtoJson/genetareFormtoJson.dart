@@ -1810,11 +1810,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   focusColor: Colors.red,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      checkboxExportValue[item['field'][0]['label']] =
+                                      checkboxExportValue[item['field'][i]['label']] =
                                           value!;
                                     });
                                   },
-                                  value: checkboxExportValue[item['field'][0]['label']],
+                                  value: checkboxExportValue[item['field'][i]['label']],
                                 ),
                               ],
                             ),
@@ -2490,7 +2490,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
-                      //final file = PdfApi.generatePdf(widget.report.azienda.target!.nome!);
+                      final file = PdfApi.generatePdf(widget.initialReport.toString());
+                      var pdf;
+                      PdfApi.pickFile().then((value) => pdf = value);
+                      Share.shareFiles(pdf);
                     }),
               ),
             ],
