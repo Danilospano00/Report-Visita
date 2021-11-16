@@ -19,7 +19,6 @@ import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../objectbox.g.dart';
 
@@ -99,7 +98,6 @@ class MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.only(top: 50),
                           child: GeneratorFormToJson(
                             store: _store,
-                            export: false,
                             form: configurazione,
                             active: true,
                             initialReport: null,
@@ -110,6 +108,7 @@ class MyHomePageState extends State<MyHomePage> {
                               });
                               print(response.toString());
                             },
+                            export: false,
                           ),
                         ),
                         cambiaAppBar(),
@@ -137,8 +136,7 @@ class MyHomePageState extends State<MyHomePage> {
           try {
             locations = await locationFromAddress(response["indirizzo"]);
           } on Exception catch (e) {
-            _showSnackBar(
-                AppLocalizations.of(context).translate('indirizzoNonValido'));
+            _showSnackBar("Indirizzo non valido");
             return;
           }
 
@@ -153,7 +151,7 @@ class MyHomePageState extends State<MyHomePage> {
           _report.azienda.target!.partitaIva = response["partitaIva"];
         }
       } else {
-        _showSnackBar(AppLocalizations.of(context).translate('campiMancanti'));
+        _showSnackBar("Campi mancanti");
         return;
       }
       if (response["contatto"] != null) {
@@ -213,8 +211,7 @@ class MyHomePageState extends State<MyHomePage> {
         showSConafigChange(mappaJsonConfigurazione);
       } else {
         //se non è cambiata setto la config nel report
-        addToDBReport(config,
-            AppLocalizations.of(context).translate('msgSnackBarReportSalvato'));
+        addToDBReport(config, "report salvato");
       }
     } else {}
   }
@@ -227,8 +224,7 @@ class MyHomePageState extends State<MyHomePage> {
 
       _showSnackBar(msg);
     } else {
-      _showSnackBar(AppLocalizations.of(context)
-          .translate('snackBarErroreAggiuntaTesto'));
+      _showSnackBar("Errore aggiunta Report");
     }
   }
 
@@ -285,15 +281,16 @@ class MyHomePageState extends State<MyHomePage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            AppLocalizations.of(context).translate('attenzione').toUpperCase(),
+            "ATTENZIONE",
             textAlign: TextAlign.center,
           ),
           content: Container(
               width: MediaQuery.of(context).size.width * .60,
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
-                  child: AutoSizeText(AppLocalizations.of(context)
-                      .translate('rilevatoCambioConfigurazione')))),
+                  child: AutoSizeText(
+                      "E' stato rilevato un cambiamento della configuraziona,"
+                      "vuoi sostituirla ?"))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             ButtonTheme(
@@ -303,14 +300,11 @@ class MyHomePageState extends State<MyHomePage> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  AppLocalizations.of(context).translate('indietro'),
+                  "Indietro",
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
-                  addToDBReport(
-                      config,
-                      AppLocalizations.of(context)
-                          .translate('msgSnackBarReportSalvato'));
+                  addToDBReport(config, "report salvato");
                   Navigator.pop(context);
                 },
               ),
@@ -322,7 +316,7 @@ class MyHomePageState extends State<MyHomePage> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  AppLocalizations.of(context).translate('sostituisci'),
+                  "Sostituisci",
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () async {
@@ -339,9 +333,7 @@ class MyHomePageState extends State<MyHomePage> {
                       await SharedPreferences.getInstance();
                   pref.setString(keyConfigurazione, newConfig);
                   addToDBReport(
-                      newConfig,
-                      AppLocalizations.of(context)
-                          .translate('reportSalvatoEConfigCambiata'));
+                      newConfig, "Report salvato e configurazione sostituita");
                   Navigator.pop(context);
                 },
               ),
@@ -361,7 +353,7 @@ class MyHomePageState extends State<MyHomePage> {
       child: Row(
         children: [
           Text(
-            AppLocalizations.of(context).translate('nuovoReport'),
+            "Nuovo Report",
             style: TextStyle(
               fontSize: 24.151785.sp,
               color: Colors.grey[700],

@@ -31,7 +31,6 @@ class AggiungiEventoState extends State<AggiungiEvento> {
     if (mainStore != null) {
       _store = mainStore!;
     }
-    configurazione = configurazioneAggiuntaEvento;
   }
 
   @override
@@ -71,7 +70,8 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                       },
                       store: _store,
                       active: true,
-                      initialReport: null, export: false,
+                      initialReport: null,
+                      export: false,
                     ),
                   ),
                 ),
@@ -80,8 +80,8 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                 padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
                 child: GestureDetector(
                   onTap: () async {
-                      _addEvent();
-                      Navigator.pop(context);
+                    _addEvent();
+                    Navigator.pop(context);
                   },
                   child: Container(
                     height: 56.w,
@@ -96,7 +96,9 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(AppLocalizations.of(context).translate('aggiungiEvento'),
+                          Text(
+                              AppLocalizations.of(context)
+                                  .translate('aggiungiEvento'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.sp,
@@ -139,24 +141,26 @@ class AggiungiEventoState extends State<AggiungiEvento> {
     Event evento = Event();
     if (response["descrizione"] != null) {
       evento.descrizione = response["descrizione"];
-    }
-    else evento.descrizione ="";
-      evento.date = DateTime.parse(response["prossimaVisita"]);
-      Azienda azienda = response["azienda"];
-      evento.azienda.target = azienda;
-      evento.referente.addAll(azienda.referenti);
-      int idEvento = mainStore!.box<Event>().put(evento);
+    } else
+      evento.descrizione = "";
+    evento.date = DateTime.parse(response["prossimaVisita"]);
+    Azienda azienda = response["azienda"];
+    evento.azienda.target = azienda;
+    evento.referente.addAll(azienda.referenti);
+    int idEvento = mainStore!.box<Event>().put(evento);
 
-      evento = mainStore!.box<Event>().get(idEvento)!;
-      _report.azienda.target!.events.add(evento);
+    evento = mainStore!.box<Event>().get(idEvento)!;
+    _report.azienda.target!.events.add(evento);
 
     int count = await mainStore!.box<Report>().put(_report);
     print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
 
     if (count > 0) {
-      _showSnackBar(AppLocalizations.of(context).translate('snackBarAggiuntaTesto'));
+      _showSnackBar(
+          AppLocalizations.of(context).translate('snackBarAggiuntaTesto'));
     } else {
-      _showSnackBar(AppLocalizations.of(context).translate("snackBarErroreAggiuntaTesto"));
+      _showSnackBar(AppLocalizations.of(context)
+          .translate("snackBarErroreAggiuntaTesto"));
     }
   }
 

@@ -477,7 +477,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           item['type'] == 'integer' ||
           item['type'] == "password" ||
           item['type'] == "multiline") {
-
         //se checkboxExportValue[item['title']] non è ancora stato creato lo crea
         if (checkboxExportValue[item['title']] == null)
           checkboxExportValue[item['title']] = true;
@@ -1621,9 +1620,14 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       itemBuilder: (context, i) {
                         controller.add(TextEditingController());
                         if (item['field'][i]['label'] == "indirizzo") {
-                          if(checkboxExportValue[item['field'][0]['label']]==null)checkboxExportValue[item['field'][0]['label']]=true;
-                          if (widget.export && checkboxExportValue[item['field'][0]['label']]!) {
-                            checkboxExportValue[item['field'][0]['label']] = true;
+                          if (checkboxExportValue[item['field'][0]['label']] ==
+                              null)
+                            checkboxExportValue[item['field'][0]['label']] =
+                                true;
+                          if (widget.export &&
+                              checkboxExportValue[item['field'][0]['label']]!) {
+                            checkboxExportValue[item['field'][0]['label']] =
+                                true;
                           }
                           return Padding(
                             padding: EdgeInsets.only(bottom: 4.h),
@@ -1811,22 +1815,26 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   focusColor: Colors.red,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      checkboxExportValue[item['field'][i]['label']] =
-                                          value!;
+                                      checkboxExportValue[item['field'][i]
+                                          ['label']] = value!;
                                     });
                                   },
-                                  value: checkboxExportValue[item['field'][i]['label']],
+                                  value: checkboxExportValue[item['field'][i]
+                                      ['label']],
                                 ),
                               ],
                             ),
                           );
                         } else {
-                          if (checkboxExportValue[item['field'][i]['label']] == null)
-                            checkboxExportValue[item['field'][i]['label']] = true;
+                          if (checkboxExportValue[item['field'][i]['label']] ==
+                              null)
+                            checkboxExportValue[item['field'][i]['label']] =
+                                true;
 
                           if (widget.export &&
                               checkboxExportValue[item['field'][i]['label']]!) {
-                            checkboxExportValue[item['field'][i]['label']] = true;
+                            checkboxExportValue[item['field'][i]['label']] =
+                                true;
                           }
                           //TODO Wrap generico
                           return Row(
@@ -1890,10 +1898,12 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 focusColor: Colors.red,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    checkboxExportValue[item['field'][i]['label']] = value!;
+                                    checkboxExportValue[item['field'][i]
+                                        ['label']] = value!;
                                   });
                                 },
-                                value: checkboxExportValue[item['field'][i]['label']],
+                                value: checkboxExportValue[item['field'][i]
+                                    ['label']],
                               ),
                             ],
                           );
@@ -2409,29 +2419,32 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
     }
     if (!widget.active && widget.export) {
-      listWidget.add(GestureDetector(
-        onTap: showPopUpExport,
-        child: Container(
-          height: 56.w,
-          width: 328.w,
-          color: Colors.red,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 12.0,
-              right: 12,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(AppLocalizations.of(context).translate('esporta'),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.15,
-                    )),
-              ],
+      listWidget.add(Padding(
+        padding: EdgeInsets.only(bottom: 16.h),
+        child: GestureDetector(
+          onTap: showPopUpExport,
+          child: Container(
+            height: 56.w,
+            width: 328.w,
+            color: Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 12.0,
+                right: 12,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(AppLocalizations.of(context).translate('esporta'),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.15,
+                      )),
+                ],
+              ),
             ),
           ),
         ),
@@ -2493,7 +2506,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     onPressed: () async {
                       File file = await PdfApi.generatePdf("Danilo");
                       //var pdf;
-                     // PdfApi.pickFile().then((value) => pdf = value);
+                      // PdfApi.pickFile().then((value) => pdf = value);
                       Share.shareFiles([file.path]);
                     }),
               ),
@@ -2501,7 +2514,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           );
         });
   }
-
 
   //TODO devo permettere all'utente di deselezionare tutte le checkbox o è meglio che il nome cliente sia sempre selezionato?ù
   //Sennò se l'utente non seleziona nessuna checkbox posso mostrare una snackbar
@@ -2511,14 +2523,15 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       testoDaGenerare =
           "Nome azienda: ${widget.initialReport!.azienda.target!.nome}\n";
     }
-    if(checkboxExportValue["indirizzo"]!){
+    if (checkboxExportValue["indirizzo"]!) {
       String text = "";
       text = "Indirizzo: ${widget.initialReport!.azienda.target!.indirizzo}\n";
       testoDaGenerare += text;
     }
-    if(checkboxExportValue["partitaIva"]!){
+    if (checkboxExportValue["partitaIva"]!) {
       String text = "";
-      text = "Partita IVA: ${widget.initialReport!.azienda.target!.partitaIva}\n";
+      text =
+          "Partita IVA: ${widget.initialReport!.azienda.target!.partitaIva}\n";
       testoDaGenerare += text;
     }
     if (checkboxExportValue["prossimaVisita"]!) {
