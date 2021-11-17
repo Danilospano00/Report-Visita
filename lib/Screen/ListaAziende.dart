@@ -145,7 +145,7 @@ class ListaAziendeState extends State<ListaAziende> {
       body: listaAziende2.length == 0
           ? Center(
               child: Text(
-                AppLocalizations.of(context).translate('aziendeAssenti'),
+              AppLocalizations.of(context).translate('aziendeAssenti'),
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
             ))
@@ -431,15 +431,17 @@ class ListaAziendeState extends State<ListaAziende> {
                                 color: Colors.grey[700],
                               ),
                             )
-                          : Text(
-                              item.azienda.indirizzo!,
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 0.25,
-                                color: Colors.grey[700],
-                              ),
-                            ),
+                          : item.azienda.indirizzo != null
+                              ? Text(
+                                  item.azienda.indirizzo!,
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 0.25,
+                                    color: Colors.grey[700],
+                                  ),
+                                )
+                              : Container(),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
@@ -656,7 +658,7 @@ class ListaAziendeState extends State<ListaAziende> {
           Event event = list[x];
           differenzaGiorni = e.date!.difference(event.date!).inDays.abs();
           print(differenzaGiorni);
-        } else{
+        } else {
           differenzaGiorni = 0;
         }
       }
@@ -713,7 +715,8 @@ class ListaAziendeState extends State<ListaAziende> {
       return Padding(
         padding: EdgeInsets.only(right: 15.w, bottom: 5.h),
         child: AutoSizeText(
-            AppLocalizations.of(context).translate('prossimaVisita')+"\n" +
+          AppLocalizations.of(context).translate('prossimaVisita') +
+              "\n" +
               FormatDate.fromDateTimeToString(listaEventi[0].date!, "data"),
           textAlign: TextAlign.end,
           style: TextStyle(
@@ -728,7 +731,7 @@ class ListaAziendeState extends State<ListaAziende> {
       return Padding(
         padding: EdgeInsets.only(right: 15.w, bottom: 5.h),
         child: AutoSizeText(
-          AppLocalizations.of(context).translate('prossimaVisita')+"\n - -",
+          AppLocalizations.of(context).translate('prossimaVisita') + "\n - -",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.grey[700],

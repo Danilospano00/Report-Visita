@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:mime/mime.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:file_picker/file_picker.dart';
@@ -2241,6 +2240,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             noteInizialized = true;
           });
         }
+        if (checkboxExportValue[item['title']] == null) {
+          checkboxExportValue[item['title']] = true;
+        }
+        //qui gli cambia il valore alla checkbox
+        if (widget.export && checkboxExportValue[item['title']]!) {
+          checkboxExportValue[item['title']] = true;
+        }
         listWidget.add(Row(
           children: [
             SizedBox(
@@ -2267,106 +2273,238 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       ],
                     ),
                   ),
-                  ListView.builder(
-                    addAutomaticKeepAlives: true,
-                    shrinkWrap: true,
-                    itemCount: listaNote.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, i) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.only(bottom: ScreenUtil().setHeight(16)),
-                        child: Column(
-                          children: [
-                            Padding(
+                  widget.export
+                      ? ListView.builder(
+                          addAutomaticKeepAlives: true,
+                          shrinkWrap: true,
+                          itemCount: listaNote.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            return Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: ScreenUtil().setHeight(16)),
+                                  child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * .78,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              bottom:
+                                                  ScreenUtil().setHeight(4)),
+                                          child: FormBuilderTextField(
+                                            name: listaNote[i].titolo!,
+                                            enabled: widget.active,
+                                            controller: controllerNote[i]
+                                              ..text = listaNote[i].titolo!,
+                                            minLines: 2,
+                                            maxLines: 6,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            onChanged: (value) {
+                                              listaNote[i].titolo =
+                                                  controllerNote[i].value.text;
+                                            },
+                                            onSubmitted: (value) {
+                                              formResults[item['title']] =
+                                                  listaNote;
+                                              _handleChanged();
+                                            },
+                                            /*validator: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please ${item['title']} cannot be empty';
+                                        }
+                                        return null;
+                                      },*/
+                                            cursorColor: Colors.grey[700],
+                                            decoration: InputDecoration(
+                                              suffix: IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      listaNote.removeAt(i);
+                                                      formResults[
+                                                              item['title']] =
+                                                          listaNote;
+                                                      _handleChanged();
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                      Icons.cancel_rounded,
+                                                      color: Colors.black)),
+                                              fillColor: Colors.grey.shade300,
+                                              filled: true,
+                                              border: InputBorder.none,
+                                              //labelText: listaNote[i].titolo==""?"Titolo":listaNote[i].titolo,
+                                              focusedBorder:
+                                                  formUnderlineInputBorder,
+                                              labelStyle: homePageMainTextStyle,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 8, bottom: 8),
+                                          child: FormBuilderTextField(
+                                            name: listaNote[i].titolo! + "desc",
+                                            enabled: widget.active,
+
+                                            //keyboardType: TextInputType.multiline,
+                                            minLines: 2,
+                                            maxLines: 5,
+                                            maxLength: 1000,
+                                            textInputAction:
+                                                TextInputAction.done,
+
+                                            controller: controllerNoteDesc[i]
+                                              ..text = listaNote[i].testo!,
+                                            //validator: FormBuilderValidators.required(context),
+                                            decoration: InputDecoration(
+                                              alignLabelWithHint: true,
+                                              labelStyle: TextStyle(
+                                                  decorationColor:
+                                                      Colors.grey[800]),
+                                              floatingLabelBehavior:
+                                                  FloatingLabelBehavior.never,
+                                              filled: true,
+                                              fillColor: Colors.grey.shade300,
+                                              labelText: "Inserisci testo...",
+                                              border: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                            ),
+                                            onSubmitted: (value) {
+                                              formResults[item['title']] =
+                                                  listaNote;
+                                              _handleChanged();
+                                            },
+                                            onChanged: (value) {
+                                              listaNote[i].testo =
+                                                  controllerNoteDesc[i]
+                                                      .value
+                                                      .text;
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Checkbox(
+                                  activeColor: Colors.red,
+                                  focusColor: Colors.red,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      checkboxExportValue[item['title']] =
+                                          value!;
+                                    });
+                                  },
+                                  value: checkboxExportValue[item['title']],
+                                ),
+                              ],
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          addAutomaticKeepAlives: true,
+                          shrinkWrap: true,
+                          itemCount: listaNote.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) {
+                            return Padding(
                               padding: EdgeInsets.only(
-                                  bottom: ScreenUtil().setHeight(4)),
-                              child: FormBuilderTextField(
-                                name: listaNote[i].titolo!,
-                                enabled: widget.active,
-                                controller: controllerNote[i]
-                                  ..text = listaNote[i].titolo!,
-                                minLines: 2,
-                                maxLines: 6,
-                                textInputAction: TextInputAction.done,
-                                onChanged: (value) {
-                                  listaNote[i].titolo =
-                                      controllerNote[i].value.text;
-                                },
-                                onSubmitted: (value) {
-                                  formResults[item['title']] = listaNote;
-                                  _handleChanged();
-                                },
-                                /*validator: (String? value) {
+                                  bottom: ScreenUtil().setHeight(16)),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: ScreenUtil().setHeight(4)),
+                                    child: FormBuilderTextField(
+                                      name: listaNote[i].titolo!,
+                                      enabled: widget.active,
+                                      controller: controllerNote[i]
+                                        ..text = listaNote[i].titolo!,
+                                      minLines: 2,
+                                      maxLines: 6,
+                                      textInputAction: TextInputAction.done,
+                                      onChanged: (value) {
+                                        listaNote[i].titolo =
+                                            controllerNote[i].value.text;
+                                      },
+                                      onSubmitted: (value) {
+                                        formResults[item['title']] = listaNote;
+                                        _handleChanged();
+                                      },
+                                      /*validator: (String? value) {
                                   if (value!.isEmpty) {
                                     return 'Please ${item['title']} cannot be empty';
                                   }
                                   return null;
                                 },*/
-                                cursorColor: Colors.grey[700],
-                                decoration: InputDecoration(
-                                  suffix: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          listaNote.removeAt(i);
-                                          formResults[item['title']] =
-                                              listaNote;
-                                          _handleChanged();
-                                        });
+                                      cursorColor: Colors.grey[700],
+                                      decoration: InputDecoration(
+                                        suffix: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                listaNote.removeAt(i);
+                                                formResults[item['title']] =
+                                                    listaNote;
+                                                _handleChanged();
+                                              });
+                                            },
+                                            icon: Icon(Icons.cancel_rounded,
+                                                color: Colors.black)),
+                                        fillColor: Colors.grey.shade300,
+                                        filled: true,
+                                        border: InputBorder.none,
+                                        //labelText: listaNote[i].titolo==""?"Titolo":listaNote[i].titolo,
+                                        focusedBorder: formUnderlineInputBorder,
+                                        labelStyle: homePageMainTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 8, bottom: 8),
+                                    child: FormBuilderTextField(
+                                      name: listaNote[i].titolo! + "desc",
+                                      enabled: widget.active,
+
+                                      //keyboardType: TextInputType.multiline,
+                                      minLines: 2,
+                                      maxLines: 5,
+                                      maxLength: 1000,
+                                      textInputAction: TextInputAction.done,
+
+                                      controller: controllerNoteDesc[i]
+                                        ..text = listaNote[i].testo!,
+                                      //validator: FormBuilderValidators.required(context),
+                                      decoration: InputDecoration(
+                                        alignLabelWithHint: true,
+                                        labelStyle: TextStyle(
+                                            decorationColor: Colors.grey[800]),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        filled: true,
+                                        fillColor: Colors.grey.shade300,
+                                        labelText: "Inserisci testo...",
+                                        border: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                      ),
+                                      onSubmitted: (value) {
+                                        formResults[item['title']] = listaNote;
+                                        _handleChanged();
                                       },
-                                      icon: Icon(Icons.cancel_rounded,
-                                          color: Colors.black)),
-                                  fillColor: Colors.grey.shade300,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  //labelText: listaNote[i].titolo==""?"Titolo":listaNote[i].titolo,
-                                  focusedBorder: formUnderlineInputBorder,
-                                  labelStyle: homePageMainTextStyle,
-                                ),
+                                      onChanged: (value) {
+                                        listaNote[i].testo =
+                                            controllerNoteDesc[i].value.text;
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 8, bottom: 8),
-                              child: FormBuilderTextField(
-                                name: listaNote[i].titolo! + "desc",
-                                enabled: widget.active,
-
-                                //keyboardType: TextInputType.multiline,
-                                minLines: 2,
-                                maxLines: 5,
-                                maxLength: 1000,
-                                textInputAction: TextInputAction.done,
-
-                                controller: controllerNoteDesc[i]
-                                  ..text = listaNote[i].testo!,
-                                //validator: FormBuilderValidators.required(context),
-                                decoration: InputDecoration(
-                                  alignLabelWithHint: true,
-                                  labelStyle: TextStyle(
-                                      decorationColor: Colors.grey[800]),
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.never,
-                                  filled: true,
-                                  fillColor: Colors.grey.shade300,
-                                  labelText: "Inserisci testo...",
-                                  border: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                ),
-                                onSubmitted: (value) {
-                                  formResults[item['title']] = listaNote;
-                                  _handleChanged();
-                                },
-                                onChanged: (value) {
-                                  listaNote[i].testo =
-                                      controllerNoteDesc[i].value.text;
-                                },
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                   widget.active
                       ? Padding(
                           padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
@@ -2490,6 +2628,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     ),
                     onPressed: () {
                       print(widget.initialReport!.toMap().toString());
+                      print(checkboxExportValue.toString());
                       Share.share(generateExportText());
                     }),
               ),
@@ -2515,34 +2654,46 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         });
   }
 
-  //TODO devo permettere all'utente di deselezionare tutte le checkbox o è meglio che il nome cliente sia sempre selezionato?ù
-  //Sennò se l'utente non seleziona nessuna checkbox posso mostrare una snackbar
   String generateExportText() {
     String testoDaGenerare = "";
+    String campoNonPresente =
+        AppLocalizations.of(context).translate('campoNonPresente') + "\n";
     if (checkboxExportValue["azienda"]!) {
-      testoDaGenerare =
-          "Nome azienda: ${widget.initialReport!.azienda.target!.nome}\n";
+      testoDaGenerare = AppLocalizations.of(context).translate('nomeAzienda') +
+          ": ${widget.initialReport!.azienda.target!.nome}\n";
     }
     if (checkboxExportValue["indirizzo"]!) {
-      String text = "";
-      text = "Indirizzo: ${widget.initialReport!.azienda.target!.indirizzo}\n";
+      String text = AppLocalizations.of(context).translate('indirizzo') + ": ";
+      if (widget.initialReport!.azienda.target!.indirizzo != null) {
+        text += "${widget.initialReport!.azienda.target!.indirizzo}\n";
+      } else {
+        text += campoNonPresente;
+      }
       testoDaGenerare += text;
     }
     if (checkboxExportValue["partitaIva"]!) {
-      String text = "";
-      text =
-          "Partita IVA: ${widget.initialReport!.azienda.target!.partitaIva}\n";
+      String text = AppLocalizations.of(context).translate('partitaIVA') + ": ";
+      if (widget.initialReport!.azienda.target!.partitaIva != null) {
+        text = "${widget.initialReport!.azienda.target!.partitaIva}\n";
+      } else {
+        text += campoNonPresente;
+      }
       testoDaGenerare += text;
     }
     if (checkboxExportValue["prossimaVisita"]!) {
-      String text = "";
-      text = "Prossima visita: ${widget.initialReport!.prossimaVisita}\n";
+      String text =
+          AppLocalizations.of(context).translate('prossimaVisita') + ": ";
+      if (widget.initialReport!.prossimaVisita != null) {
+        text = "${widget.initialReport!.prossimaVisita}\n";
+      } else {
+        text += campoNonPresente;
+      }
       testoDaGenerare += text;
     }
     if (checkboxExportValue["contatto"]! &&
         widget.initialReport!.referente.isNotEmpty) {
-      String text = "";
-      text = "Contatto: ${widget.initialReport!.referente.elementAt(0).nome}";
+      String text = AppLocalizations.of(context).translate('contatto') + ": ";
+      text = "${widget.initialReport!.referente.elementAt(0).nome}";
       testoDaGenerare += text;
       if (widget.initialReport!.referente.elementAt(0).cognome!.isNotEmpty) {
         String cognome = "";
@@ -2550,11 +2701,16 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         testoDaGenerare += cognome;
       }
     }
-    //TODO devo aggiungere la snackbar che dice di selezionare qualche elemento quando l'utente non attiva nessuna checkbox
-    if (testoDaGenerare.isEmpty) {
-      //dettaglioReport!._showSnackBar("Errore")
+    if (checkboxExportValue["note"]!) {
+      String text = AppLocalizations.of(context).translate('note') + ": \n";
+      for (var nota in widget.initialReport!.note) {
+        if (nota.testo!.isNotEmpty || nota.testo != null) {
+          text += nota.titolo! + ": \n" + nota.testo! + "\n";
+        }
+      }
+      if (text == null) text += campoNonPresente;
+      testoDaGenerare += text;
     }
-    //testoDaGenerare = checkboxExportValue.toString();
     return testoDaGenerare;
   }
 

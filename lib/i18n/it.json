@@ -18,7 +18,7 @@
   "indirizzoNonValido": "Indirizzo non valido",
   "campiMancanti": "Campi mancanti",
   "reportSalvatoEConfigCambiata": "Report salvato e configurazione sostituita",
-  "aziendeAssenti": "Nono ci sono aziende",
+  "aziendeAssenti": "Non ci sono aziende",
   "prossimaVisita": "Prossima visita",
   "nessunEventoOggi": "Oggi non ci sono eventi",
   "eventiInProgrammaOggi": "Eventi in programma oggi",
@@ -66,5 +66,9 @@
   "esporta": "Esporta",
   "esportaReport": "Esporta report",
   "testo": "Testo",
-  "scegliFormato": "Scegli il formato con il quale condividere il report"
+  "scegliFormato": "Scegli il formato con il quale condividere il report",
+  "nomeAzienda": "Nome azienda",
+  "campoNonPresente": "Campo non presente",
+  "contatto": "Contatto",
+  "note": "Note"
 }

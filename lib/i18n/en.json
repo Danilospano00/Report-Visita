@@ -66,5 +66,9 @@
   "esporta": "Export",
   "esportaReport": "Export report",
   "testo": "Text",
-  "scegliFormato": "Choose the format to share the report with"
+  "scegliFormato": "Choose the format to share the report with",
+  "nomeAzienda": "Azienda's name",
+  "campoNonPresente":"Field not present",
+  "contatto": "Contact",
+  "note": "Notes"
 }
