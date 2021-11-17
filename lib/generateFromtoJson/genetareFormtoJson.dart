@@ -2702,7 +2702,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
     }
     if (checkboxExportValue["note"]!) {
-      String text = AppLocalizations.of(context).translate('note') + ": \n";
+      String text = AppLocalizations.of(context).translate('informazioni') + ": \n";
       for (var nota in widget.initialReport!.note) {
         if (nota.testo!.isNotEmpty || nota.testo != null) {
           text += nota.titolo! + ": \n" + nota.testo! + "\n";

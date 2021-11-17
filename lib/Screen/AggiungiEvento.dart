@@ -29,6 +29,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
   initState() {
     super.initState();
     if (mainStore != null) {
+      configurazione = configurazioneAggiuntaEvento;
       _store = mainStore!;
     }
   }

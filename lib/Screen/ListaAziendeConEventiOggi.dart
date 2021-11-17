@@ -6,7 +6,7 @@ import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
-import 'AziendaDettaglio.dart';
+import 'DettaglioAzienda.dart';
 
 class ListaAziendeConEventiOggi extends StatefulWidget {
   List<Event> listaEventiDiOggi;

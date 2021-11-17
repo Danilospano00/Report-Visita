@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
-import 'package:report_visita_danilo/Screen/AziendaDettaglio.dart';
+import 'package:report_visita_danilo/Screen/DettaglioAzienda.dart';
 import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/ListaAziendeConEventiOggi.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';

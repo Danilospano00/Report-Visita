@@ -70,5 +70,6 @@
   "nomeAzienda": "Azienda's name",
   "campoNonPresente":"Field not present",
   "contatto": "Contact",
-  "note": "Notes"
+  "note": "Notes",
+  "informazioni": "Information"
 }

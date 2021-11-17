@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
-import 'package:report_visita_danilo/Screen/AziendaDettaglio.dart';
+import 'package:report_visita_danilo/Screen/DettaglioAzienda.dart';
 import 'package:report_visita_danilo/Utils/FormatDate.dart';
 import 'package:report_visita_danilo/Utils/ZoomButtonsPluginOption.dart';
 import 'package:report_visita_danilo/Models/Event.dart';

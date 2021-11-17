@@ -126,17 +126,20 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(top: 8.h),
-                                      child: AutoSizeText(
-                                        AppLocalizations.of(context).translate('dataCreazioneEvento') +" :"+
-                                            FormatDate.fromDateTimeToString(
-                                                report[index].compilazione!,
-                                                "data"),
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w400,
-                                          letterSpacing: 0.25,
-                                          color: Colors.grey[700],
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * .75,
+                                        child: AutoSizeText(
+                                          AppLocalizations.of(context).translate('dataCreazioneEvento') +": "+
+                                              FormatDate.fromDateTimeToString(
+                                                  report[index].compilazione!,
+                                                  "data"),
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            letterSpacing: 0.25,
+                                            color: Colors.grey[700],
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -7,7 +7,7 @@ import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
-import 'AziendaDettaglio.dart';
+import 'DettaglioAzienda.dart';
 
 class PaginaListaAziendeConSogliaRossa extends StatefulWidget {
   List<Azienda> listaAziendaConSogliaRossa;

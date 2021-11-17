@@ -102,3 +102,27 @@ String configPerConfigurazioniUtente = json.encode([
     ]
   }
 ]);
+String configurazioneAggiuntaEvento=json.encode([
+  {
+    "title": "azienda",
+    "type": "autocomplete",
+    "hint": "Nome Cliente",
+    "entity": "Azienda",
+    "field": [
+    ],
+    "empty": false,
+    "validation": true
+  },
+  {
+    "title": "prossimaVisita",
+    "label": "prossima visita",
+    "type": "date",
+    "required": "yes"
+  },
+  {
+    "title": "descrizione",
+    "type": "multiline",
+    "label": "Descrizione",
+    "required": "yes",
+  },
+]);
