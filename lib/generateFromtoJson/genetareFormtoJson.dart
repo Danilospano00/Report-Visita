@@ -1673,7 +1673,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                       controller: controller[i]
                                         ..text = widget.initialReport != null
                                             ? widget.initialReport!.azienda
-                                                .target!.indirizzo ?? ""
+                                                    .target!.indirizzo ??
+                                                ""
                                             : selectObject != null
                                                 ? getValueField(
                                                     item['field'][i]['label'])
@@ -2039,13 +2040,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   title: Text(suggestion.toString()),
                                 );
                               },
-                              
-                              textFieldConfiguration:  TextFieldConfiguration(
+                              textFieldConfiguration: TextFieldConfiguration(
                                 enabled: widget.active,
                                 controller: controller[i]
                                   ..text = widget.initialReport != null
                                       ? widget.initialReport!.azienda.target!
-                                          .indirizzo ?? ""
+                                              .indirizzo ??
+                                          ""
                                       : selectObject != null
                                           ? getValueField(
                                               item['field'][i]['label'])
@@ -2644,7 +2645,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
-                      File file = await PdfApi.generatePdf(generateExportText(), widget.initialReport!.azienda.target!.nome!);
+                      File file = await PdfApi.generatePdf(generateExportText(),
+                          widget.initialReport!.azienda.target!.nome!);
                       Share.shareFiles([file.path]);
                     }),
               ),
@@ -2657,11 +2659,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     String testoDaGenerare = "";
     String campoNonPresente =
         AppLocalizations.of(context).translate('campoNonPresente') + "\n";
-    if (checkboxExportValue["azienda"]!) {
+    if (checkboxExportValue["azienda"] != null &&
+        checkboxExportValue["azienda"]!) {
       testoDaGenerare = AppLocalizations.of(context).translate('nomeAzienda') +
           ": ${widget.initialReport!.azienda.target!.nome}\n";
     }
-    if (checkboxExportValue["indirizzo"]!) {
+    if (checkboxExportValue["indirizzo"] != null &&
+        checkboxExportValue["indirizzo"]!) {
       String text = AppLocalizations.of(context).translate('indirizzo') + ": ";
       if (widget.initialReport!.azienda.target!.indirizzo != null) {
         text += "${widget.initialReport!.azienda.target!.indirizzo}\n";
@@ -2670,7 +2674,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["partitaIva"]!) {
+    if (checkboxExportValue["partitaIva"] != null && checkboxExportValue["partitaIva"]!) {
       String text = AppLocalizations.of(context).translate('partitaIVA') + ": ";
       if (widget.initialReport!.azienda.target!.partitaIva != null) {
         text = "${widget.initialReport!.azienda.target!.partitaIva}\n";
@@ -2679,7 +2683,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["prossimaVisita"]!) {
+    if (checkboxExportValue["prossimaVisita"]!=null && checkboxExportValue["prossimaVisita"]!) {
       String text =
           AppLocalizations.of(context).translate('prossimaVisita') + ": ";
       if (widget.initialReport!.prossimaVisita != null) {
@@ -2689,7 +2693,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["contatto"]! &&
+    if (checkboxExportValue["contatto"] != null && checkboxExportValue["contatto"]! &&
         widget.initialReport!.referente.isNotEmpty) {
       String text = AppLocalizations.of(context).translate('contatto') + ": ";
       text = "${widget.initialReport!.referente.elementAt(0).nome}";
@@ -2701,7 +2705,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
     }
     if (checkboxExportValue["note"] != null && checkboxExportValue["note"]!) {
-      String text = AppLocalizations.of(context).translate('informazioni') + ": \n";
+      String text =
+          AppLocalizations.of(context).translate('informazioni') + ": \n";
       for (var nota in widget.initialReport!.note) {
         if (nota.testo!.isNotEmpty || nota.testo != null) {
           text += nota.titolo! + ": \n" + nota.testo! + "\n";

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 
@@ -45,24 +46,50 @@ class DettaglioReportState extends State<DettaglioReport> {
               color: Colors.grey[700]),
         ),
       ),
-      body: //widget.report.azienda.target!.events.contains(element)?
-          Padding(
-        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: GeneratorFormToJson(
-              store: mainStore!,
-              form: widget.report.configurationJson!,
-              active: false,
-              initialReport: widget.report,
-              onChanged: (dynamic value) {
-                print(value);
-              },
-              export: export,
+      body: trovaEventoRelativoAlReport(widget.report) is Event
+          ? Padding(
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: GeneratorFormToJson(
+                    store: mainStore!,
+                    form: configurazioneAggiuntaEvento,
+                    active: false,
+                    initialReport: widget.report,
+                    onChanged: (dynamic value) {
+                      print(value);
+                    },
+                    export: export,
+                  ),
+                ),
+              ),
+            )
+          : Padding(
+              padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: GeneratorFormToJson(
+                    store: mainStore!,
+                    form: widget.report.configurationJson!,
+                    active: false,
+                    initialReport: widget.report,
+                    onChanged: (dynamic value) {
+                      print(value);
+                    },
+                    export: export,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
+  }
+
+  dynamic trovaEventoRelativoAlReport(Report report) {
+    for (var i in report.azienda.target!.events) {
+      if (i.date == report.prossimaVisita) {
+        return i;
+      } else
+        return print("sji");
+    }
   }
 }
