@@ -2275,6 +2275,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       ],
                     ),
                   ),
+                  //trovaEventoRelativoAlReport(widget.initialReport)
                   widget.export
                       ? ListView.builder(
                           addAutomaticKeepAlives: true,
@@ -2558,6 +2559,22 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         ));
       }
     }
+    if (!widget.active &&
+        trovaEventoRelativoAlReport(widget.initialReport!) is Event) {
+      listWidget.add(
+        Padding(
+          padding: EdgeInsets.all(6.0),
+          child: TextFormField(
+            decoration: InputDecoration(
+                fillColor: Colors.grey.shade300,
+                filled: true,
+                border: InputBorder.none,
+                labelText: trovaEventoRelativoAlReport(widget.initialReport!)
+                    .descrizione),
+          ),
+        ),
+      );
+    }
     if (!widget.active && widget.export) {
       listWidget.add(Padding(
         padding: EdgeInsets.only(bottom: 16.h),
@@ -2674,7 +2691,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["partitaIva"] != null && checkboxExportValue["partitaIva"]!) {
+    if (checkboxExportValue["partitaIva"] != null &&
+        checkboxExportValue["partitaIva"]!) {
       String text = AppLocalizations.of(context).translate('partitaIVA') + ": ";
       if (widget.initialReport!.azienda.target!.partitaIva != null) {
         text = "${widget.initialReport!.azienda.target!.partitaIva}\n";
@@ -2683,7 +2701,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["prossimaVisita"]!=null && checkboxExportValue["prossimaVisita"]!) {
+    if (checkboxExportValue["prossimaVisita"] != null &&
+        checkboxExportValue["prossimaVisita"]!) {
       String text =
           AppLocalizations.of(context).translate('prossimaVisita') + ": ";
       if (widget.initialReport!.prossimaVisita != null) {
@@ -2693,7 +2712,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["contatto"] != null && checkboxExportValue["contatto"]! &&
+    if (checkboxExportValue["contatto"] != null &&
+        checkboxExportValue["contatto"]! &&
         widget.initialReport!.referente.isNotEmpty) {
       String text = AppLocalizations.of(context).translate('contatto') + ": ";
       text = "${widget.initialReport!.referente.elementAt(0).nome}";
@@ -2836,6 +2856,14 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     return new File(filePath).writeAsBytes(
         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }*/
+  dynamic trovaEventoRelativoAlReport(Report report) {
+    for (var i in report.azienda.target!.events) {
+      if (i.date == report.prossimaVisita) {
+        return i;
+      } else
+        return print("sji");
+    }
+  }
 
   getFileIcon() {
     final extension = p.extension(fileSelected!.path);

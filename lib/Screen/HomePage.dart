@@ -404,7 +404,8 @@ class MyHomePageState extends State<MyHomePage> {
                                     ListTile(
                                       dense: true,
                                       title: Text(searchresult[i].nome),
-                                      subtitle: Text(searchresult[i].indirizzo),
+                                      subtitle:
+                                          Text(searchresult[i].indirizzo ?? ""),
                                       leading: Icon(
                                         Icons.location_city_outlined,
                                       ),

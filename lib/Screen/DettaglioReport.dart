@@ -46,14 +46,13 @@ class DettaglioReportState extends State<DettaglioReport> {
               color: Colors.grey[700]),
         ),
       ),
-      body: trovaEventoRelativoAlReport(widget.report) is Event
-          ? Padding(
+      body: Padding(
               padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h),
               child: SafeArea(
                 child: SingleChildScrollView(
                   child: GeneratorFormToJson(
                     store: mainStore!,
-                    form: configurazioneAggiuntaEvento,
+                    form:  widget.report.configurationJson!,
                     active: false,
                     initialReport: widget.report,
                     onChanged: (dynamic value) {
@@ -64,32 +63,8 @@ class DettaglioReportState extends State<DettaglioReport> {
                 ),
               ),
             )
-          : Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 4.h),
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  child: GeneratorFormToJson(
-                    store: mainStore!,
-                    form: widget.report.configurationJson!,
-                    active: false,
-                    initialReport: widget.report,
-                    onChanged: (dynamic value) {
-                      print(value);
-                    },
-                    export: export,
-                  ),
-                ),
-              ),
-            ),
     );
   }
 
-  dynamic trovaEventoRelativoAlReport(Report report) {
-    for (var i in report.azienda.target!.events) {
-      if (i.date == report.prossimaVisita) {
-        return i;
-      } else
-        return print("sji");
-    }
-  }
+
 }
