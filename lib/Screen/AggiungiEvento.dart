@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -81,8 +83,10 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                 padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
                 child: GestureDetector(
                   onTap: () async {
-                    _addEvent();
-                    Navigator.pop(context);
+                    if(_keyFormAggiungiEvento.currentState!.saveAndValidate()){
+                      _addEvent();
+                      Navigator.pop(context);
+                    }
                   },
                   child: Container(
                     height: 56.w,
@@ -140,10 +144,9 @@ class AggiungiEventoState extends State<AggiungiEvento> {
       return;
     }
     Event evento = Event();
-    if (response["descrizione"] != null) {
-      evento.descrizione = response["descrizione"];
-    } else
-      evento.descrizione = "";
+    evento.descrizione = response["descrizione"] ?? "Nessuna descrizione";
+
+
     evento.date = DateTime.parse(response["prossimaVisita"]);
     Azienda azienda = response["azienda"];
     evento.azienda.target = azienda;
@@ -152,6 +155,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
 
     evento = mainStore!.box<Event>().get(idEvento)!;
     _report.azienda.target!.events.add(evento);
+    _report.configurationJson = config;
 
     int count = await mainStore!.box<Report>().put(_report);
     print('re-read rPORT: ${mainStore!.box<Report>().get(count)}');
@@ -164,6 +168,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
           .translate("snackBarErroreAggiuntaTesto"));
     }
   }
+
 
   void _showSnackBar(String text) {
     final snackBar = SnackBar(

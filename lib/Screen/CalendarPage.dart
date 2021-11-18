@@ -180,7 +180,7 @@ class CalendarPageState extends State<CalendarPage> {
                                             Container(
                                               width: 250.w,
                                               child: AutoSizeText(
-                                                "${listaEventi[index].azienda.target!.indirizzo}",
+                                                listaEventi[index].azienda.target!.indirizzo ?? "Indirizzo non presente",
                                                 textAlign:
                                                 TextAlign.left,
                                                 maxLines: 2,
@@ -460,6 +460,7 @@ class CalendarPageState extends State<CalendarPage> {
               break;
 
             }
+            print(e.azienda.target!.nome);
 
           }
         }

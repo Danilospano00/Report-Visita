@@ -5,17 +5,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
 class PdfApi {
-  static Future<File> generatePdf(String nomeAzienda) async {
+  static Future<File> generatePdf(String testoDaInserireInPDF, String nomeAzienda) async {
     final pdf = Document();
     pdf.addPage(
       Page(
         build: (context) => Center(
-          child: Text(nomeAzienda),
+          child: Text(testoDaInserireInPDF, textAlign: TextAlign.left),
         ),
       ),
     );
 
-    return saveDocument(name: 'Report$nomeAzienda', pdf: pdf);
+    return saveDocument(name: 'Report $nomeAzienda', pdf: pdf);
   }
 
   static Future<File> saveDocument({

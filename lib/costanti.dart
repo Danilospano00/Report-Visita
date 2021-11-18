@@ -123,6 +123,33 @@ String configurazioneAggiuntaEvento=json.encode([
     "title": "descrizione",
     "type": "multiline",
     "label": "Descrizione",
-    "required": "yes",
+    "required": "no",
+  },
+]);
+
+
+//
+String configShowReportOnAddEvent= json.encode([
+  {
+    "title": "azienda",
+    "type": "autocomplete",
+    "hint": "Nome Cliente",
+    "entity": "Azienda",
+    "field": [
+      {"label": "indirizzo", "required": false},
+      {"label": "partitaIva", "required": false},
+    ],
+    "empty": false,
+    "validation": true
+  },
+  {
+    "title": "prossimaVisita",
+    "label": "prossima visita",
+    "type": "date",
+    "required": "no"
+  },
+  {
+    "title": "contatto",
+    "type": "contact",
   },
 ]);

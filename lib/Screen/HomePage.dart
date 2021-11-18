@@ -212,7 +212,7 @@ class MyHomePageState extends State<MyHomePage> {
       } else {
         //se non è cambiata setto la config nel report
         addToDBReport(config, "report salvato");
-        //TODO mappaJsonConfigurazione= {};
+        mappaJsonConfigurazione = [];
       }
     } else {}
   }

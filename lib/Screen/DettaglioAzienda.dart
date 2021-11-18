@@ -57,6 +57,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                     ),
                   ),
                 ),
+                widget.azienda.indirizzo != null ?
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
@@ -69,7 +70,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                       color: Colors.grey[700],
                     ),
                   ),
-                ),
+                ): Container(),
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
@@ -112,8 +113,8 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: report.length,
                     itemBuilder: (context, index) {
-                      if (report[index].azienda.target!.partitaIva ==
-                          widget.azienda.partitaIva) {
+                      if (report[index].azienda.target!.id ==
+                          widget.azienda.id) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -133,6 +134,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                                               FormatDate.fromDateTimeToString(
                                                   report[index].compilazione!,
                                                   "data"),
+                                          maxLines: 1,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontSize: 16.sp,

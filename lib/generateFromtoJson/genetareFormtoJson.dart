@@ -1673,7 +1673,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                       controller: controller[i]
                                         ..text = widget.initialReport != null
                                             ? widget.initialReport!.azienda
-                                                .target!.indirizzo
+                                                .target!.indirizzo ?? ""
                                             : selectObject != null
                                                 ? getValueField(
                                                     item['field'][i]['label'])
@@ -2039,12 +2039,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   title: Text(suggestion.toString()),
                                 );
                               },
-                              textFieldConfiguration: TextFieldConfiguration(
+                              
+                              textFieldConfiguration:  TextFieldConfiguration(
                                 enabled: widget.active,
                                 controller: controller[i]
                                   ..text = widget.initialReport != null
                                       ? widget.initialReport!.azienda.target!
-                                          .indirizzo
+                                          .indirizzo ?? ""
                                       : selectObject != null
                                           ? getValueField(
                                               item['field'][i]['label'])
@@ -2643,9 +2644,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
-                      File file = await PdfApi.generatePdf("Danilo");
-                      //var pdf;
-                      // PdfApi.pickFile().then((value) => pdf = value);
+                      File file = await PdfApi.generatePdf(generateExportText(), widget.initialReport!.azienda.target!.nome!);
                       Share.shareFiles([file.path]);
                     }),
               ),
@@ -2701,7 +2700,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         testoDaGenerare += cognome;
       }
     }
-    if (checkboxExportValue["note"]!) {
+    if (checkboxExportValue["note"] != null && checkboxExportValue["note"]!) {
       String text = AppLocalizations.of(context).translate('informazioni') + ": \n";
       for (var nota in widget.initialReport!.note) {
         if (nota.testo!.isNotEmpty || nota.testo != null) {
