@@ -126,7 +126,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "Seleziona Referente",
+            AppLocalizations.of(context).translate('selezionaReferente'),
             textAlign: TextAlign.center,
           ),
           content: Container(
@@ -145,31 +145,25 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         itemCount: _contacts.length,
                         itemBuilder: (BuildContext context, int index) {
                           late Contact contact = _contacts.elementAt(index);
-                          return ListTile(
+                          return contact.phones!.isNotEmpty?
+                          ListTile(
                               contentPadding: const EdgeInsets.only(
                                   top: 2, bottom: 2, left: 18, right: 18),
-                              leading: (contact.avatar != null &&
-                                      contact.avatar!.isNotEmpty)
-                                  ? CircleAvatar(
-                                      backgroundImage:
-                                          MemoryImage(contact.avatar!),
-                                    )
-                                  : CircleAvatar(
-                                      child: Text(
-                                        contact.initials(),
-                                        style: TextStyle(
-                                            color: rvTheme.canvasColor),
-                                      ),
-                                      backgroundColor: rvTheme.primaryColor,
-                                    ),
-                              title: Text(contact.displayName ?? ''),
+                              leading: CircleAvatar(
+                                child: Text(
+                                  contact.initials(),
+                                  style: TextStyle(color: rvTheme.canvasColor),
+                                ),
+                                backgroundColor: rvTheme.primaryColor,
+                              ),
+                              title: Text(contact.displayName!),
                               //This can be further expanded to showing contacts detail
                               onTap: () {
                                 contattoSelezionato.add(contact);
                                 formResults[title] = contattoSelezionato;
                                 _handleChanged();
                                 Navigator.pop(context);
-                              });
+                              }):Container();
                         },
                       )
                     : Center(child: Text("Nessun Contatto Presente")),
@@ -209,7 +203,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "Aggiungi o Seleziona un Referente",
+            AppLocalizations.of(context)
+                .translate('aggiungiOSelezionaUnReferente'),
             textAlign: TextAlign.center,
           ),
           content: Container(
@@ -217,7 +212,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
                   child: AutoSizeText(
-                      "Puoi selezionare un referente dai tuoi contatti o creare un nuovo referente."))),
+                AppLocalizations.of(context)
+                    .translate('puoiSelezionareUnReferente'),
+              ))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             ButtonTheme(
@@ -227,7 +224,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  "Seleziona",
+                  AppLocalizations.of(context).translate('seleziona'),
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
@@ -244,7 +241,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  "Nuovo",
+                  AppLocalizations.of(context).translate('nuovo'),
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
