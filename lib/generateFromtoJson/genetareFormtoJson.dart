@@ -146,7 +146,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         itemBuilder: (BuildContext context, int index) {
                           late Contact contact = _contacts.elementAt(index);
                           return contact.phones!.isNotEmpty
-                              ? ListTile(
+                              ?
+                             contact.displayName!=null?
+                          ListTile(
                                   contentPadding: const EdgeInsets.only(
                                       top: 2, bottom: 2, left: 18, right: 18),
                                   leading: CircleAvatar(
@@ -164,7 +166,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                     formResults[title] = contattoSelezionato;
                                     _handleChanged();
                                     Navigator.pop(context);
-                                  })
+                                  }):Container()
                               : Container();
                         },
                       )
@@ -862,28 +864,90 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
         if (widget.initialReport != null &&
             widget.initialReport!.prossimaVisita != null) {
-          Event? e;
-          DateTime dataprossimo = DateTime.parse(DateFormat('yyyy-MM-dd')
-              .format(widget.initialReport!.prossimaVisita!));
-          widget.initialReport!.azienda.target!.events.forEach((element) {
-            DateTime dataEvento =
-                DateTime.parse(DateFormat('yyyy-MM-dd').format(element.date!));
-            if (dataprossimo == dataEvento) e = element;
-          });
 
-          if (e != null) {
-            listWidget.add(Container(
-              width: MediaQuery.of(context).size.width * .78,
-              margin: EdgeInsets.only(top: 10.0, bottom: 10),
-              child: AutoSizeText(
-                e!.descrizione ?? "",
-                maxLines: 5,
-                style: homePageMainTextStyle,
+
+          if (!widget.active &&
+              trovaEventoRelativoAlReport(widget.initialReport!) is Event) {
+            if (checkboxExportValue[item['title']] == null) {
+              checkboxExportValue[item['title']] = true;
+            }
+            if (widget.export && checkboxExportValue[item['title']]!) {
+              checkboxExportValue[item['title']] = true;
+            }
+            listWidget.add(
+              Column(
+                children:[
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          "Descrizione Evento",
+                          style: homePageMainTextStyle,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            child: Divider(
+                              color: Colors.grey[700],
+                              thickness: 3,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              widget.export
+                  ? Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .78,
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                          border: InputBorder.none,
+                          labelText: trovaEventoRelativoAlReport(
+                              widget.initialReport!)
+                              .descrizione),
+                    ),
+                  ),
+                  Checkbox(
+                    value: checkboxExportValue[item['title']],
+                    activeColor: rvTheme.primaryColor,
+                    onChanged: (value) {
+                      setState(() {
+                        checkboxExportValue[item['title']] =
+                        value!;
+                      });
+                    },
+                  ),
+                ],
+              )
+                  : TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    fillColor: Colors.grey.shade300,
+                    filled: true,
+                    border: InputBorder.none,
+                    labelText:
+                    trovaEventoRelativoAlReport(widget.initialReport!)
+                        .descrizione),
               ),
-            ));
+    ])
+            );
           }
+
         }
       }
+
+
+
+
+
+
+
 
       if (item['type'] == 'radio') {
         radioValueMap["${item["title"]}"] =
@@ -2540,55 +2604,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           ],
         ));
       }
-      if (!widget.active &&
-          trovaEventoRelativoAlReport(widget.initialReport!) is Event) {
-        if (checkboxExportValue[item['title']] == null) {
-          checkboxExportValue[item['title']] = true;
-        }
-        if (widget.export && checkboxExportValue[item['title']]!) {
-          checkboxExportValue[item['title']] = true;
-        }
-        listWidget.add(
-          widget.export
-              ? Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .78,
-                      child: TextFormField(
-                        readOnly: true,
-                        decoration: InputDecoration(
-                            fillColor: Colors.grey.shade300,
-                            filled: true,
-                            border: InputBorder.none,
-                            labelText: trovaEventoRelativoAlReport(
-                                    widget.initialReport!)
-                                .descrizione),
-                      ),
-                    ),
-                    Checkbox(
-                      value: checkboxExportValue[item['title']],
-                      activeColor: rvTheme.primaryColor,
-                      onChanged: (value) {
-                        setState(() {
-                          checkboxExportValue[item['title']] =
-                          value!;
-                        });
-                      },
-                    ),
-                  ],
-                )
-              : TextFormField(
-                readOnly: true,
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                    border: InputBorder.none,
-                    labelText:
-                        trovaEventoRelativoAlReport(widget.initialReport!)
-                            .descrizione),
-              ),
-        );
-      }
+
     }
 
     if (!widget.active && widget.export) {
@@ -2876,10 +2892,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     for (var i in report.azienda.target!.events) {
       if (i.date == report.prossimaVisita) {
         return i;
-      } else
-        return print("sji");
+      }
     }
-  }
+    return null;
+   }
 
   getFileIcon() {
     final extension = p.extension(fileSelected!.path);

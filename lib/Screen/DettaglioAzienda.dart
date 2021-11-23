@@ -61,7 +61,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
-                    AppLocalizations.of(context).translate('indirizzo')+":" +widget.azienda.indirizzo!,
+                    AppLocalizations.of(context).translate('indirizzo')+": " +widget.azienda.indirizzo!,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.075892.sp,
@@ -74,7 +74,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
-                    AppLocalizations.of(context).translate('partitaIVA')+widget.azienda.partitaIva.toString(),
+                    AppLocalizations.of(context).translate('partitaIVA')+" ${widget.azienda.partitaIva??"--"} ",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.075892.sp,

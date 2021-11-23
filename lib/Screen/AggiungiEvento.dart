@@ -5,9 +5,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
+import 'package:report_visita_danilo/Models/Nota.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
 import 'package:report_visita_danilo/generateFromtoJson/genetareFormtoJson.dart';
 import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../costanti.dart';
 import '../objectbox.g.dart';
@@ -124,6 +126,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
   }
 
   void _addEvent() async {
+
     _keyFormAggiungiEvento.currentState!.save();
     Report _report = Report();
     if (response["azienda"] != null) {
@@ -143,6 +146,19 @@ class AggiungiEventoState extends State<AggiungiEvento> {
       _showSnackBar("Campi mancanti");
       return;
     }
+
+    List<dynamic> mappa=json.decode(config);
+
+    mappa.forEach((element) {
+      if(element["type"]=="note") {
+        if (element["label"] != null) {
+          element["label"].forEach((item) {
+            _report.note.add(Nota(titolo: item, testo: ""));
+          });
+        }
+      }
+      });
+
     Event evento = Event();
     evento.descrizione = response["descrizione"] ?? "Nessuna descrizione";
 
