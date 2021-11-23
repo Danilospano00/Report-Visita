@@ -71,5 +71,9 @@
   "campoNonPresente":"Field not present",
   "contatto": "Contact",
   "note": "Notes",
-  "informazioni": "Information"
+  "informazioni": "Information",
+  "puoiSelezionareUnReferente": "You can select a contact person from your contacts or create a new contact person.",
+  "aggiungiOSelezionaUnReferente": "Add or select a contact person",
+  "nuovo": "New",
+  "selezionaReferente":"Select contact person"
 }

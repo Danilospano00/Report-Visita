@@ -126,7 +126,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "Seleziona Referente",
+            AppLocalizations.of(context).translate('selezionaReferente'),
             textAlign: TextAlign.center,
           ),
           content: Container(
@@ -145,31 +145,25 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         itemCount: _contacts.length,
                         itemBuilder: (BuildContext context, int index) {
                           late Contact contact = _contacts.elementAt(index);
-                          return ListTile(
+                          return contact.phones!.isNotEmpty?
+                          ListTile(
                               contentPadding: const EdgeInsets.only(
                                   top: 2, bottom: 2, left: 18, right: 18),
-                              leading: (contact.avatar != null &&
-                                      contact.avatar!.isNotEmpty)
-                                  ? CircleAvatar(
-                                      backgroundImage:
-                                          MemoryImage(contact.avatar!),
-                                    )
-                                  : CircleAvatar(
-                                      child: Text(
-                                        contact.initials(),
-                                        style: TextStyle(
-                                            color: rvTheme.canvasColor),
-                                      ),
-                                      backgroundColor: rvTheme.primaryColor,
-                                    ),
-                              title: Text(contact.displayName ?? ''),
+                              leading: CircleAvatar(
+                                child: Text(
+                                  contact.initials(),
+                                  style: TextStyle(color: rvTheme.canvasColor),
+                                ),
+                                backgroundColor: rvTheme.primaryColor,
+                              ),
+                              title: Text(contact.displayName!),
                               //This can be further expanded to showing contacts detail
                               onTap: () {
                                 contattoSelezionato.add(contact);
                                 formResults[title] = contattoSelezionato;
                                 _handleChanged();
                                 Navigator.pop(context);
-                              });
+                              }):Container();
                         },
                       )
                     : Center(child: Text("Nessun Contatto Presente")),
@@ -209,7 +203,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
-            "Aggiungi o Seleziona un Referente",
+            AppLocalizations.of(context)
+                .translate('aggiungiOSelezionaUnReferente'),
             textAlign: TextAlign.center,
           ),
           content: Container(
@@ -217,7 +212,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
                   child: AutoSizeText(
-                      "Puoi selezionare un referente dai tuoi contatti o creare un nuovo referente."))),
+                AppLocalizations.of(context)
+                    .translate('puoiSelezionareUnReferente'),
+              ))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             ButtonTheme(
@@ -227,7 +224,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  "Seleziona",
+                  AppLocalizations.of(context).translate('seleziona'),
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
@@ -244,7 +241,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 color: rvTheme.primaryColor,
                 elevation: 2,
                 child: Text(
-                  "Nuovo",
+                  AppLocalizations.of(context).translate('nuovo'),
                   style: TextStyle(color: rvTheme.canvasColor),
                 ),
                 onPressed: () {
@@ -1673,7 +1670,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                       controller: controller[i]
                                         ..text = widget.initialReport != null
                                             ? widget.initialReport!.azienda
-                                                .target!.indirizzo ?? ""
+                                                    .target!.indirizzo ??
+                                                ""
                                             : selectObject != null
                                                 ? getValueField(
                                                     item['field'][i]['label'])
@@ -2039,13 +2037,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   title: Text(suggestion.toString()),
                                 );
                               },
-                              
-                              textFieldConfiguration:  TextFieldConfiguration(
+                              textFieldConfiguration: TextFieldConfiguration(
                                 enabled: widget.active,
                                 controller: controller[i]
                                   ..text = widget.initialReport != null
                                       ? widget.initialReport!.azienda.target!
-                                          .indirizzo ?? ""
+                                              .indirizzo ??
+                                          ""
                                       : selectObject != null
                                           ? getValueField(
                                               item['field'][i]['label'])
@@ -2274,6 +2272,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       ],
                     ),
                   ),
+                  //trovaEventoRelativoAlReport(widget.initialReport)
                   widget.export
                       ? ListView.builder(
                           addAutomaticKeepAlives: true,
@@ -2557,6 +2556,22 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         ));
       }
     }
+    if (!widget.active &&
+        trovaEventoRelativoAlReport(widget.initialReport!) is Event) {
+      listWidget.add(
+        Padding(
+          padding: EdgeInsets.all(6.0),
+          child: TextFormField(
+            decoration: InputDecoration(
+                fillColor: Colors.grey.shade300,
+                filled: true,
+                border: InputBorder.none,
+                labelText: trovaEventoRelativoAlReport(widget.initialReport!)
+                    .descrizione),
+          ),
+        ),
+      );
+    }
     if (!widget.active && widget.export) {
       listWidget.add(Padding(
         padding: EdgeInsets.only(bottom: 16.h),
@@ -2644,7 +2659,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
-                      File file = await PdfApi.generatePdf(generateExportText(), widget.initialReport!.azienda.target!.nome!);
+                      File file = await PdfApi.generatePdf(generateExportText(),
+                          widget.initialReport!.azienda.target!.nome!);
                       Share.shareFiles([file.path]);
                     }),
               ),
@@ -2657,11 +2673,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     String testoDaGenerare = "";
     String campoNonPresente =
         AppLocalizations.of(context).translate('campoNonPresente') + "\n";
-    if (checkboxExportValue["azienda"]!) {
+    if (checkboxExportValue["azienda"] != null &&
+        checkboxExportValue["azienda"]!) {
       testoDaGenerare = AppLocalizations.of(context).translate('nomeAzienda') +
           ": ${widget.initialReport!.azienda.target!.nome}\n";
     }
-    if (checkboxExportValue["indirizzo"]!) {
+    if (checkboxExportValue["indirizzo"] != null &&
+        checkboxExportValue["indirizzo"]!) {
       String text = AppLocalizations.of(context).translate('indirizzo') + ": ";
       if (widget.initialReport!.azienda.target!.indirizzo != null) {
         text += "${widget.initialReport!.azienda.target!.indirizzo}\n";
@@ -2670,7 +2688,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["partitaIva"]!) {
+    if (checkboxExportValue["partitaIva"] != null &&
+        checkboxExportValue["partitaIva"]!) {
       String text = AppLocalizations.of(context).translate('partitaIVA') + ": ";
       if (widget.initialReport!.azienda.target!.partitaIva != null) {
         text = "${widget.initialReport!.azienda.target!.partitaIva}\n";
@@ -2679,7 +2698,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["prossimaVisita"]!) {
+    if (checkboxExportValue["prossimaVisita"] != null &&
+        checkboxExportValue["prossimaVisita"]!) {
       String text =
           AppLocalizations.of(context).translate('prossimaVisita') + ": ";
       if (widget.initialReport!.prossimaVisita != null) {
@@ -2689,7 +2709,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
       testoDaGenerare += text;
     }
-    if (checkboxExportValue["contatto"]! &&
+    if (checkboxExportValue["contatto"] != null &&
+        checkboxExportValue["contatto"]! &&
         widget.initialReport!.referente.isNotEmpty) {
       String text = AppLocalizations.of(context).translate('contatto') + ": ";
       text = "${widget.initialReport!.referente.elementAt(0).nome}";
@@ -2701,7 +2722,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
     }
     if (checkboxExportValue["note"] != null && checkboxExportValue["note"]!) {
-      String text = AppLocalizations.of(context).translate('informazioni') + ": \n";
+      String text =
+          AppLocalizations.of(context).translate('informazioni') + ": \n";
       for (var nota in widget.initialReport!.note) {
         if (nota.testo!.isNotEmpty || nota.testo != null) {
           text += nota.titolo! + ": \n" + nota.testo! + "\n";
@@ -2831,6 +2853,14 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     return new File(filePath).writeAsBytes(
         buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }*/
+  dynamic trovaEventoRelativoAlReport(Report report) {
+    for (var i in report.azienda.target!.events) {
+      if (i.date == report.prossimaVisita) {
+        return i;
+      } else
+        return print("sji");
+    }
+  }
 
   getFileIcon() {
     final extension = p.extension(fileSelected!.path);

@@ -71,5 +71,9 @@
   "campoNonPresente": "Campo non presente",
   "contatto": "Contatto",
   "note": "Note",
-  "informazioni": "Informazioni"
+  "informazioni": "Informazioni",
+  "puoiSelezionareUnReferente": "Puoi selezionare un referente dai tuoi contatti o creare un nuovo referente.",
+  "aggiungiOSelezionaUnReferente": "Aggiungi o seleziona un referente",
+  "nuovo": "Nuovo",
+  "selezionaReferente": "Seleziona referente"
 }
