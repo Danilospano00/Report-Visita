@@ -442,7 +442,7 @@ class CalendarPageState extends State<CalendarPage> {
               differenzaGiorni = e.date!.difference(event.date!).inDays;
             }
             if (differenzaGiorni <=
-                int.parse(prefs.getString("prioritaBassa") ?? "0")) {
+                int.parse(prefs.getString("prioritaBassa") ?? "29")) {
               soglia="bassa";
             }else if(differenzaGiorni >=
                 int.parse(prefs.getString("prioritaMedia") ?? "30")){
@@ -452,11 +452,17 @@ class CalendarPageState extends State<CalendarPage> {
             }
 
             switch(soglia){
-              case "bassa": if(bassa!) listaEventiMetodo.add(e);
+              case "bassa":
+                if(bassa!)
+                  listaEventiMetodo.add(e);
               break;
-              case "media": if(media!) listaEventiMetodo.add(e);
+              case "media":
+                if(media!)
+                  listaEventiMetodo.add(e);
               break;
-              case "alta": if(alta!) listaEventiMetodo.add(e);
+              case "alta":
+                if(alta!)
+                  listaEventiMetodo.add(e);
               break;
 
             }
