@@ -87,7 +87,6 @@ class AggiungiEventoState extends State<AggiungiEvento> {
                   onTap: () async {
                     if(_keyFormAggiungiEvento.currentState!.saveAndValidate()){
                       _addEvent();
-                      Navigator.pop(context);
                     }
                   },
                   child: Container(
@@ -126,7 +125,6 @@ class AggiungiEventoState extends State<AggiungiEvento> {
   }
 
   void _addEvent() async {
-
     _keyFormAggiungiEvento.currentState!.save();
     Report _report = Report();
     if (response["azienda"] != null) {
@@ -179,6 +177,7 @@ class AggiungiEventoState extends State<AggiungiEvento> {
     if (count > 0) {
       _showSnackBar(
           AppLocalizations.of(context).translate('snackBarAggiuntaTesto'));
+      Navigator.pop(context);
     } else {
       _showSnackBar(AppLocalizations.of(context)
           .translate("snackBarErroreAggiuntaTesto"));
@@ -188,8 +187,9 @@ class AggiungiEventoState extends State<AggiungiEvento> {
 
   void _showSnackBar(String text) {
     final snackBar = SnackBar(
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 2),
       content: Text(text),
+     margin: EdgeInsets.only(bottom: 60.h, left: 16.w, right: 16.w),
       backgroundColor: Colors.black,
       padding: EdgeInsets.all(15.0),
       shape: RoundedRectangleBorder(

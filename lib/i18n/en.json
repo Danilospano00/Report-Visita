@@ -67,7 +67,7 @@
   "esportaReport": "Export report",
   "testo": "Text",
   "scegliFormato": "Choose the format to share the report with",
-  "nomeAzienda": "Azienda's name",
+  "nomeAzienda": "Customer name",
   "campoNonPresente":"Field not present",
   "contatto": "Contact",
   "note": "Notes",
@@ -75,5 +75,5 @@
   "puoiSelezionareUnReferente": "You can select a contact person from your contacts or create a new contact person.",
   "aggiungiOSelezionaUnReferente": "Add or select a contact person",
   "nuovo": "New",
-  "selezionaReferente":"Select contact person"
+  "selezionaReferente":"Select contact person","titoloListaAziendeConEventiOggi": "Companies with events today"
 }

@@ -2713,47 +2713,52 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     }
     if (checkboxExportValue["partitaIva"] != null &&
         checkboxExportValue["partitaIva"]!) {
-      String text = AppLocalizations.of(context).translate('partitaIVA') + ": ";
+      String textPartitaIva = AppLocalizations.of(context).translate('partitaIVA') + ": ";
       if (widget.initialReport!.azienda.target!.partitaIva != null) {
-        text = "${widget.initialReport!.azienda.target!.partitaIva}\n";
+        textPartitaIva += "${widget.initialReport!.azienda.target!.partitaIva}\n";
       } else {
-        text += campoNonPresente;
+        textPartitaIva += campoNonPresente;
       }
-      testoDaGenerare += text;
+      testoDaGenerare += textPartitaIva;
     }
     if (checkboxExportValue["prossimaVisita"] != null &&
         checkboxExportValue["prossimaVisita"]!) {
-      String text =
+      String textProssimaVisita =
           AppLocalizations.of(context).translate('prossimaVisita') + ": ";
       if (widget.initialReport!.prossimaVisita != null) {
-        text = "${widget.initialReport!.prossimaVisita}\n";
+        textProssimaVisita += "${widget.initialReport!.prossimaVisita}\n";
       } else {
-        text += campoNonPresente;
+        textProssimaVisita += campoNonPresente;
       }
-      testoDaGenerare += text;
+      testoDaGenerare += textProssimaVisita;
     }
     if (checkboxExportValue["contatto"] != null &&
         checkboxExportValue["contatto"]! &&
         widget.initialReport!.referente.isNotEmpty) {
-      String text = AppLocalizations.of(context).translate('contatto') + ": ";
-      text = "${widget.initialReport!.referente.elementAt(0).nome}";
-      testoDaGenerare += text;
-      if (widget.initialReport!.referente.elementAt(0).cognome!.isNotEmpty) {
-        String cognome = "";
-        cognome = "${widget.initialReport!.referente.elementAt(0).cognome}\n";
-        testoDaGenerare += cognome;
+      for (var itemContatto in widget.initialReport!.referente) {
+        String textContatto = AppLocalizations.of(context).translate('contatto') + ": ";
+        textContatto += "${itemContatto.nome} ${itemContatto.cognome} \n";
+        textContatto += itemContatto.telefono ?? "";
+        textContatto += itemContatto.email ?? "";
+        textContatto += itemContatto.ruolo ?? "";
+        textContatto += "; \n";
+        testoDaGenerare += textContatto;
+        textContatto ="";
+
+      }
+    }
+    if(widget.initialReport!.note.isNotEmpty) {
+      testoDaGenerare +="Informazioni: \n";
+      for (var indexNota in widget.initialReport!.note) {
+        if (checkboxExportValue[indexNota.titolo] != null &&
+            checkboxExportValue[indexNota.titolo]!) {
+          String titoloNota = indexNota.titolo! + "\n";
+          String corpoNota = indexNota.testo! + "\n";
+          testoDaGenerare += titoloNota + corpoNota;
+        }
       }
     }
 
-    for (var indexNota in widget.initialReport!.note) {
-      if (checkboxExportValue[indexNota.titolo] != null &&
-          checkboxExportValue[indexNota.titolo]!) {
-        String? titoloNota = indexNota.titolo! + "\n";
-        String corpoNota = indexNota.testo! + "\n";
-        testoDaGenerare += titoloNota + corpoNota;
-      }
-    }
-   
     return testoDaGenerare;
   }
 
