@@ -146,27 +146,31 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         itemBuilder: (BuildContext context, int index) {
                           late Contact contact = _contacts.elementAt(index);
                           return contact.phones!.isNotEmpty
-                              ?
-                             contact.displayName!=null?
-                          ListTile(
-                                  contentPadding: const EdgeInsets.only(
-                                      top: 2, bottom: 2, left: 18, right: 18),
-                                  leading: CircleAvatar(
-                                    child: Text(
-                                      contact.initials(),
-                                      style:
-                                          TextStyle(color: rvTheme.canvasColor),
-                                    ),
-                                    backgroundColor: rvTheme.primaryColor,
-                                  ),
-                                  title: Text(contact.displayName!),
-                                  //This can be further expanded to showing contacts detail
-                                  onTap: () {
-                                    contattoSelezionato.add(contact);
-                                    formResults[title] = contattoSelezionato;
-                                    _handleChanged();
-                                    Navigator.pop(context);
-                                  }):Container()
+                              ? contact.displayName != null
+                                  ? ListTile(
+                                      contentPadding: const EdgeInsets.only(
+                                          top: 2,
+                                          bottom: 2,
+                                          left: 18,
+                                          right: 18),
+                                      leading: CircleAvatar(
+                                        child: Text(
+                                          contact.initials(),
+                                          style: TextStyle(
+                                              color: rvTheme.canvasColor),
+                                        ),
+                                        backgroundColor: rvTheme.primaryColor,
+                                      ),
+                                      title: Text(contact.displayName!),
+                                      //This can be further expanded to showing contacts detail
+                                      onTap: () {
+                                        contattoSelezionato.add(contact);
+                                        formResults[title] =
+                                            contattoSelezionato;
+                                        _handleChanged();
+                                        Navigator.pop(context);
+                                      })
+                                  : Container()
                               : Container();
                         },
                       )
@@ -864,90 +868,76 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
 
         if (widget.initialReport != null &&
             widget.initialReport!.prossimaVisita != null) {
-
-
           if (!widget.active &&
               trovaEventoRelativoAlReport(widget.initialReport!) is Event) {
-            if (checkboxExportValue[item['title']] == null) {
-              checkboxExportValue[item['title']] = true;
+            if (checkboxExportValue["descrizioneEvento"] == null) {
+              checkboxExportValue['descrizioneEvento'] = true;
             }
-            if (widget.export && checkboxExportValue[item['title']]!) {
-              checkboxExportValue[item['title']] = true;
+            if (widget.export && checkboxExportValue['descrizioneEvento']!) {
+              checkboxExportValue['descrizioneEvento'] = true;
             }
-            listWidget.add(
-              Column(
-                children:[
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "Descrizione Evento",
-                          style: homePageMainTextStyle,
-                        ),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 20),
-                            child: Divider(
-                              color: Colors.grey[700],
-                              thickness: 3,
-                            ),
-                          ),
-                        ),
-                      ],
+            listWidget.add(Column(children: [
+              Padding(
+                padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "Descrizione Evento",
+                      style: homePageMainTextStyle,
                     ),
-                  ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 20),
+                        child: Divider(
+                          color: Colors.grey[700],
+                          thickness: 3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               widget.export
                   ? Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * .78,
-                    child: TextFormField(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .78,
+                          child: TextFormField(
+                            readOnly: true,
+                            decoration: InputDecoration(
+                                fillColor: Colors.grey.shade300,
+                                filled: true,
+                                border: InputBorder.none,
+                                labelText: trovaEventoRelativoAlReport(
+                                        widget.initialReport!)
+                                    .descrizione),
+                          ),
+                        ),
+                        Checkbox(
+                          value: checkboxExportValue['descrizioneEvento'],
+                          activeColor: rvTheme.primaryColor,
+                          onChanged: (value) {
+                            setState(() {
+                              checkboxExportValue['descrizioneEvento'] = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    )
+                  : TextFormField(
                       readOnly: true,
                       decoration: InputDecoration(
                           fillColor: Colors.grey.shade300,
                           filled: true,
                           border: InputBorder.none,
-                          labelText: trovaEventoRelativoAlReport(
-                              widget.initialReport!)
-                              .descrizione),
+                          labelText:
+                              trovaEventoRelativoAlReport(widget.initialReport!)
+                                  .descrizione),
                     ),
-                  ),
-                  Checkbox(
-                    value: checkboxExportValue[item['title']],
-                    activeColor: rvTheme.primaryColor,
-                    onChanged: (value) {
-                      setState(() {
-                        checkboxExportValue[item['title']] =
-                        value!;
-                      });
-                    },
-                  ),
-                ],
-              )
-                  : TextFormField(
-                readOnly: true,
-                decoration: InputDecoration(
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                    border: InputBorder.none,
-                    labelText:
-                    trovaEventoRelativoAlReport(widget.initialReport!)
-                        .descrizione),
-              ),
-    ])
-            );
+            ]));
           }
-
         }
       }
-
-
-
-
-
-
-
 
       if (item['type'] == 'radio') {
         radioValueMap["${item["title"]}"] =
@@ -1762,8 +1752,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                                 color: Colors.black,
                                               )
                                             : SizedBox(
-                                                width: 30,
-                                                height: 30,
+                                                width: 1.w,
+                                                height: 10.h,
                                                 child:
                                                     CircularProgressIndicator(
                                                   color: Colors.red,
@@ -2131,8 +2121,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                           color: Colors.black,
                                         )
                                       : SizedBox(
-                                          width: 30,
-                                          height: 30,
+                                          width: 1.w,
+                                          height: 10.h,
                                           child: CircularProgressIndicator(
                                             color: Colors.red,
                                           )),
@@ -2288,13 +2278,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             noteInizialized = true;
           });
         }
-        if (checkboxExportValue[item['title']] == null) {
-          checkboxExportValue[item['title']] = true;
-        }
-        //qui gli cambia il valore alla checkbox
-        if (widget.export && checkboxExportValue[item['title']]!) {
-          checkboxExportValue[item['title']] = true;
-        }
+
         listWidget.add(Row(
           children: [
             SizedBox(
@@ -2329,6 +2313,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           itemCount: listaNote.length,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, i) {
+                            if (!checkboxExportValue
+                                .containsKey(item['label'][i])) {
+                              checkboxExportValue[item['label'][i]] = true;
+                            }
                             return Row(
                               children: [
                                 Padding(
@@ -2444,11 +2432,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   focusColor: Colors.red,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      checkboxExportValue[item['title']] =
+                                      checkboxExportValue[item['label'][i]] =
                                           value!;
                                     });
                                   },
-                                  value: checkboxExportValue[item['title']],
+                                  value: checkboxExportValue[item['label'][i]],
                                 ),
                               ],
                             );
@@ -2604,7 +2592,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           ],
         ));
       }
-
     }
 
     if (!widget.active && widget.export) {
@@ -2696,6 +2683,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     onPressed: () async {
                       File file = await PdfApi.generatePdf(generateExportText(),
                           widget.initialReport!.azienda.target!.nome!);
+                      print(checkboxExportValue);
                       Share.shareFiles([file.path]);
                     }),
               ),
@@ -2756,17 +2744,16 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         testoDaGenerare += cognome;
       }
     }
-    if (checkboxExportValue["note"] != null && checkboxExportValue["note"]!) {
-      String text =
-          AppLocalizations.of(context).translate('informazioni') + ": \n";
-      for (var nota in widget.initialReport!.note) {
-        if (nota.testo!.isNotEmpty || nota.testo != null) {
-          text += nota.titolo! + ": \n" + nota.testo! + "\n";
-        }
+
+    for (var indexNota in widget.initialReport!.note) {
+      if (checkboxExportValue[indexNota.titolo] != null &&
+          checkboxExportValue[indexNota.titolo]!) {
+        String? titoloNota = indexNota.titolo! + "\n";
+        String corpoNota = indexNota.testo! + "\n";
+        testoDaGenerare += titoloNota + corpoNota;
       }
-      if (text == null) text += campoNonPresente;
-      testoDaGenerare += text;
     }
+   
     return testoDaGenerare;
   }
 
@@ -2895,7 +2882,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       }
     }
     return null;
-   }
+  }
 
   getFileIcon() {
     final extension = p.extension(fileSelected!.path);
