@@ -40,6 +40,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447008297834:android:4b75d8472782b983754b13",
+        "android_client_info": {
+          "package_name": "org.fingerlinks.mobile.android.visit_report"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447008297834-c8imibrb5on38rggj02dru09jdegjnm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1uYNMz0CsdRtS1Y9UdCzMu9_-qo8QOCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447008297834-c8imibrb5on38rggj02dru09jdegjnm9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "447008297834-1qbtkihgh1k23e1ri8lu6qlnhfngr0jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reportvisita.rv"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

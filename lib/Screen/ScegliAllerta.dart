@@ -52,7 +52,7 @@ class ScegliAllertaState extends State<ScegliAllerta> {
             EdgeInsets.only(left: 16.w, right: 16.w, top: 52.h, bottom: 52.h),
         child: Card(
           child: Padding(
-            padding: EdgeInsets.only(left: 16.w, right: 16.w),
+            padding: EdgeInsets.only(left: 8.w, right: 8.w),
             child: FormBuilder(
               key: formKeyScegliAllerta,
               child: SingleChildScrollView(
