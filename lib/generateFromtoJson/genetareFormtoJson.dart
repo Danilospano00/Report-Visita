@@ -126,9 +126,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
-          title: Text(
-            AppLocalizations.of(context).translate('selezionaReferente'),
-            textAlign: TextAlign.center,
+          title: Column(
+            children: [
+              Text(
+                AppLocalizations.of(context).translate('selezionaReferente'),
+                textAlign: TextAlign.center,
+              ),
+              Divider(
+                color: Colors.red,
+                thickness: 2,
+              ),
+            ],
           ),
           content: Container(
             width: MediaQuery.of(context).size.width * .70,
@@ -180,20 +188,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             ),*/
           ),
           actions: [
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Annulla",
-                  style: TextStyle(color: rvTheme.canvasColor),
+                  AppLocalizations.of(context).translate('annulla'),
+                  style:
+                  TextStyle(color: Colors.grey[700], fontSize: 15.sp),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  //Navigator.pop(context);
-                },
               ),
             ),
           ],
@@ -209,12 +214,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          title: Text(
-            AppLocalizations.of(context)
-                .translate('aggiungiOSelezionaUnReferente'),
-            textAlign: TextAlign.center,
+          title: Column(
+            children: [
+              Text(
+                AppLocalizations.of(context).translate('aggiungiUnReferente'),
+                textAlign: TextAlign.center,
+              ),
+              Divider(
+                color: Colors.red,
+                thickness: 2,
+              ),
+            ],
           ),
           content: Container(
               width: MediaQuery.of(context).size.width * .60,
@@ -226,38 +236,38 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               ))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  AppLocalizations.of(context).translate('seleziona'),
-                  style: TextStyle(color: rvTheme.canvasColor),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    showReferente(title);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('seleziona'),
+                      style:
+                          TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  showReferente(title);
-                  //Navigator.pop(context);
-                },
-              ),
-            ),
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  AppLocalizations.of(context).translate('nuovo'),
-                  style: TextStyle(color: rvTheme.canvasColor),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    showAddReferente(title);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('nuovo'),
+                      style:
+                          TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  showAddReferente(title);
-                },
-              ),
+              ],
             ),
           ],
         );
@@ -273,11 +283,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         bool saveContact = false;
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15))),
-            title: Text(
-              "Aggiungi Referente",
-              textAlign: TextAlign.center,
+            title: Column(
+              children: [
+                Text(
+                  AppLocalizations.of(context).translate('aggiungiUnReferente'),
+                  textAlign: TextAlign.center,
+                ),
+                Divider(
+                  color: Colors.red,
+                  thickness: 2,
+                ),
+              ],
             ),
             content: Container(
               width: MediaQuery.of(context).size.width * .80,
@@ -392,67 +408,69 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
             ),
             actionsAlignment: MainAxisAlignment.center,
             actions: [
-              ButtonTheme(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                child: RaisedButton(
-                  color: rvTheme.primaryColor,
-                  elevation: 2,
-                  child: Text(
-                    "Annulla",
-                    style: TextStyle(color: rvTheme.canvasColor),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    //showReferente();
-                  },
-                ),
-              ),
-              ButtonTheme(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                child: RaisedButton(
-                  color: rvTheme.primaryColor,
-                  elevation: 2,
-                  child: Text(
-                    "Aggiungi",
-                    style: TextStyle(color: rvTheme.canvasColor),
-                  ),
-                  onPressed: () async {
-                    if (formKeyAddReferente.currentState?.validate() ?? false) {
-                      String nome = formKeyAddReferente
-                              .currentState?.fields['nome']!.value ??
-                          " ";
-                      String cognome = formKeyAddReferente
-                              .currentState?.fields['cognome']!.value ??
-                          " ";
-                      String ruolo = formKeyAddReferente
-                              .currentState?.fields['ruolo']!.value ??
-                          " ";
-                      String email = formKeyAddReferente
-                              .currentState?.fields['email']!.value ??
-                          " ";
-                      String telefono = formKeyAddReferente
-                              .currentState?.fields['telefono']!.value ??
-                          " ";
-
-                      Contact contact = Contact(
-                          givenName: nome,
-                          familyName: cognome,
-                          displayName: nome + " " + cognome,
-                          company: ruolo,
-                          emails: [Item(label: "email", value: email)],
-                          phones: [Item(label: "telefono", value: telefono)]);
-                      if (saveContact)
-                        await ContactsService.addContact(contact);
-                      contattoSelezionato.add(contact);
-
-                      formResults[title] = contattoSelezionato;
-                      _handleChanged();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
                       Navigator.pop(context);
-                    }
-                  },
-                ),
+
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('annulla'),
+                        style:
+                            TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (formKeyAddReferente.currentState?.validate() ??
+                          false) {
+                        String nome = formKeyAddReferente
+                                .currentState?.fields['nome']!.value ??
+                            " ";
+                        String cognome = formKeyAddReferente
+                                .currentState?.fields['cognome']!.value ??
+                            " ";
+                        String ruolo = formKeyAddReferente
+                                .currentState?.fields['ruolo']!.value ??
+                            " ";
+                        String email = formKeyAddReferente
+                                .currentState?.fields['email']!.value ??
+                            " ";
+                        String telefono = formKeyAddReferente
+                                .currentState?.fields['telefono']!.value ??
+                            " ";
+
+                        Contact contact = Contact(
+                            givenName: nome,
+                            familyName: cognome,
+                            displayName: nome + " " + cognome,
+                            company: ruolo,
+                            emails: [Item(label: "email", value: email)],
+                            phones: [Item(label: "telefono", value: telefono)]);
+                        if (saveContact)
+                          await ContactsService.addContact(contact);
+                        contattoSelezionato.add(contact);
+
+                        formResults[title] = contattoSelezionato;
+                        _handleChanged();
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('aggiungi'),
+                        style:
+                            TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           );
@@ -1539,16 +1557,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         );
       }
 
-      /*{
-      "title": "Azienda",
-"hint": "inserisci la tua azienda"
-"type": "autocomplete",
-"entity": "Azienda",
-"field": "name",
-"empty": false,
-"validation": true
-
-}*/
       if (item['type'] == 'autocomplete') {
         if (checkboxExportValue[item['title']] == null)
           checkboxExportValue[item['title']] = true;
@@ -2556,7 +2564,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                         ),
                   widget.active
                       ? Padding(
-                          padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
+                          padding: EdgeInsets.only(top: 4.h, bottom: 20.h),
                           child: GestureDetector(
                             onTap: () async {
                               FocusScope.of(context).unfocus();
@@ -2566,34 +2574,15 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               await addNote("Titolo");
                               //noteController.clear();
                             },
-                            child: Container(
-                              height: 56.w,
-                              width: 328.w,
-                              color: Colors.red,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 12.0,
-                                  right: 12,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text("Aggiungi Campo",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 0.15,
-                                        )),
-                                    Spacer(),
-                                    Icon(
-                                      Icons.unfold_more_outlined,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Aggiungi Campo +",
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.15,
+                                  )),
                             ),
                           ),
                         )
@@ -2725,9 +2714,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     }
     if (checkboxExportValue["partitaIva"] != null &&
         checkboxExportValue["partitaIva"]!) {
-      String textPartitaIva = AppLocalizations.of(context).translate('partitaIVA') + ": ";
+      String textPartitaIva =
+          AppLocalizations.of(context).translate('partitaIVA') + ": ";
       if (widget.initialReport!.azienda.target!.partitaIva != null) {
-        textPartitaIva += "${widget.initialReport!.azienda.target!.partitaIva}\n";
+        textPartitaIva +=
+            "${widget.initialReport!.azienda.target!.partitaIva}\n";
       } else {
         textPartitaIva += campoNonPresente;
       }
@@ -2748,19 +2739,19 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         checkboxExportValue["contatto"]! &&
         widget.initialReport!.referente.isNotEmpty) {
       for (var itemContatto in widget.initialReport!.referente) {
-        String textContatto = AppLocalizations.of(context).translate('contatto') + ": ";
+        String textContatto =
+            AppLocalizations.of(context).translate('contatto') + ": ";
         textContatto += "${itemContatto.nome} ${itemContatto.cognome} \n";
         textContatto += itemContatto.telefono ?? "";
         textContatto += itemContatto.email ?? "";
         textContatto += itemContatto.ruolo ?? "";
         textContatto += "; \n";
         testoDaGenerare += textContatto;
-        textContatto ="";
-
+        textContatto = "";
       }
     }
-    if(widget.initialReport!.note.isNotEmpty) {
-      testoDaGenerare +="Informazioni: \n";
+    if (widget.initialReport!.note.isNotEmpty) {
+      testoDaGenerare += "Informazioni: \n";
       for (var indexNota in widget.initialReport!.note) {
         if (checkboxExportValue[indexNota.titolo] != null &&
             checkboxExportValue[indexNota.titolo]!) {

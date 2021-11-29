@@ -103,49 +103,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: ScreenUtil().setHeight(16),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            child: InkWell(
-                              onTap: () {},
-                              child: AutoSizeText(
-                                AppLocalizations.of(context).translate('passwordDimenticata'),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(14),
-                                    fontWeight: FontWeight.w100),
-                                maxLines: 2,
-                              ),
-                            ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: InkWell(
+                          onTap: () {},
+                          child: AutoSizeText(
+                            AppLocalizations.of(context).translate('passwordDimenticata'),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                fontWeight: FontWeight.w100),
+                            maxLines: 2,
                           ),
-                          Container(
-                            // width: ScreenUtil().setWidth(100),
-                            child: MaterialButton(
-                              child: setUpButtonChild(AppLocalizations.of(context).translate('accedi'),),
-                              color: rvTheme.primaryColorDark,
-                              onPressed: () async {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  // _setFirstAccess();
-                                  setState(() {
-                                    _isLoading = true;
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top:8.h),
+                        child: MaterialButton(
+                          color: rvTheme.primaryColorDark,
+                          onPressed: () async {
+                            if (_formKey.currentState?.validate() ??
+                                false) {
+                              // _setFirstAccess();
+                              setState(() {
+                                _isLoading = true;
 
-                                    animateButton();
-                                  });
-                                  print('Valid');
-                                } else {
-                                  print('Invalid');
-                                }
-                              },
-                              elevation: 4.0,
-                              minWidth: ScreenUtil().setWidth(100),
-                              height: 48.0,
-                            ),
-                          ),
-                        ],
+                                animateButton();
+                              });
+                              print('Valid');
+                            } else {
+                              print('Invalid');
+                            }
+                          },
+                          child: setUpButtonChild( AppLocalizations.of(context).translate('accedi'),),
+                          elevation: 4.0,
+                          minWidth: double.infinity,
+                          height: 48.0.h,
+                        ),
                       ),
                       SizedBox(
                         height: ScreenUtil().setSp(16),

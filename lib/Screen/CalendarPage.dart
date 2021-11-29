@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +60,7 @@ class CalendarPageState extends State<CalendarPage> {
 
         loading = false;
       });
-      sogliaBassa =  prefs.getString("prioritaAlta");
+      sogliaBassa = prefs.getString("prioritaAlta");
       sogliaIntermedia = prefs.getString("prioritaMedia");
       sogliaAlta = prefs.getString("prioritaBassa");
     });
@@ -253,39 +254,27 @@ class CalendarPageState extends State<CalendarPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 16.w, bottom: 20.h),
+                        padding: EdgeInsets.only(bottom: 20.h, right: 16.w),
                         child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: ElevatedButton.icon(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.red,
-                            ),
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: RawMaterialButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => AggiungiEvento()));
                             },
-                            label: Text(
-                              "EVENT",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.25,
-                              ),
+                            elevation: 2.0,
+                            fillColor: Colors.white,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.red,
                             ),
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: Size(125.w, 56.h),
-                              primary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                            ),
+                            padding: EdgeInsets.all(16.0),
+                            shape: CircleBorder(),
                           ),
                         ),
-                      ),
+                      )
                     ],
                   );
                 }),
@@ -338,14 +327,12 @@ class CalendarPageState extends State<CalendarPage> {
         }
       }
 
-      if (differenzaGiorni >=
-          int.parse(sogliaAlta ?? "60")) {
+      if (differenzaGiorni >= int.parse(sogliaAlta ?? "60")) {
         return Icon(
           Icons.circle,
           color: Colors.redAccent,
         );
-      } else if (differenzaGiorni >=
-          int.parse(sogliaIntermedia ?? "30")) {
+      } else if (differenzaGiorni >= int.parse(sogliaIntermedia ?? "30")) {
         return Icon(
           Icons.circle,
           color: Colors.yellowAccent,
@@ -447,8 +434,7 @@ class CalendarPageState extends State<CalendarPage> {
               Event event = list[y - 1];
               differenzaGiorni = e.date!.difference(event.date!).inDays;
             }
-            if (differenzaGiorni >=
-                int.parse(sogliaAlta ?? "60")) {
+            if (differenzaGiorni >= int.parse(sogliaAlta ?? "60")) {
               soglia = "alta";
             } else if (differenzaGiorni >=
                 int.parse(sogliaIntermedia ?? "30")) {

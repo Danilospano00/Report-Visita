@@ -35,12 +35,14 @@ class AuthService {
           if (snapshot.hasData) {
             int meet = 0;
             List<Event> listaEventi = mainStore!.box<Event>().getAll();
-            List<Event> lista = TakeEventWithDate.takeEventFromList(listaEventi, DateTime.now());
-            meet=lista.length;
+            List<Event> lista = TakeEventWithDate.takeEventFromList(
+                listaEventi, DateTime.now());
+            meet = lista.length;
 
             dynamic user = snapshot.data;
             return Card(
-              margin: EdgeInsets.only(left: 16.w, right: 16.w),
+              elevation: 40,
+              margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 40.h, top: 10.h),
               child: Column(
                 children: [
                   Stack(
@@ -97,48 +99,48 @@ class AuthService {
                     ],
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  ListaAziendeConEventiOggi(
-                                      listaEventiDiOggi:
-                                      lista)));
+                              builder: (context) => ListaAziendeConEventiOggi(
+                                  listaEventiDiOggi: lista)));
                     },
                     child: Padding(
                       padding:
                           EdgeInsets.only(top: 20.0.h, left: 16.w, right: 16.w),
                       child: Row(
+                        children: [
+                          Column(
                             children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context).translate('hai') +"$meet"+ AppLocalizations.of(context).translate('meetingOggi'),
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.sp),
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 2, bottom: 2)),
-                                  Text(
-                                      AppLocalizations.of(context).translate('controllaIlPlanner'),
-                                      style: TextStyle(
-                                        fontSize: 18, color: Colors.grey[700]),
-                                  ),
-                                ],
+                              Text(
+                                AppLocalizations.of(context).translate('hai') +
+                                    "$meet" +
+                                    AppLocalizations.of(context)
+                                        .translate('meetingOggi'),
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.sp),
                               ),
-                              Spacer(),
-                              Icon(
-                                Icons.navigate_next_rounded,
-                                size: 30.sp,
-                                color: Colors.grey[700],
+                              Padding(
+                                  padding: EdgeInsets.only(top: 2, bottom: 2)),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('controllaIlPlanner'),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.grey[700]),
                               ),
                             ],
                           ),
-
+                          Spacer(),
+                          Icon(
+                            Icons.navigate_next_rounded,
+                            size: 30.sp,
+                            color: Colors.grey[700],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -238,52 +240,53 @@ class AuthService {
                           ),
                         )
                       : Container(),
-                  listaAziende.isEmpty?Divider():Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 8,
-                        child: Divider(),
-                      ),
-                      ElevatedButton(
-                        child: Text(
-                          AppLocalizations.of(context).translate('vediTutte'),
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5),
+                  listaAziende.isEmpty
+                      ? Divider()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 8,
+                              child: Divider(),
+                            ),
+                            ElevatedButton(
+                              child: Text(
+                                AppLocalizations.of(context)
+                                    .translate('vediTutte'),
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.5),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PaginaListaAziendeConSogliaRossa(
+                                              listaAziendaConSogliaRossa:
+                                                  listaAziende,
+                                            )));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                padding:
+                                    const EdgeInsets.only(right: 20, left: 20),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(32.0),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Divider(),
+                            ),
+                          ],
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      PaginaListaAziendeConSogliaRossa(
-                                        listaAziendaConSogliaRossa:
-                                            listaAziende,
-                                      )));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          padding: const EdgeInsets.only(right: 20, left: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(),
-                      ),
-                    ],
-                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 48.h),
-                    child: ElevatedButton.icon(
-                      icon: Icon(
-                        Icons.tune_outlined,
-                      ),
-                      label: Text(
-                        "Settings",
+                    child: ElevatedButton(
+                      child: Text(
+                        "Log out",
                         style: TextStyle(
                           fontSize: 18.748113.sp,
                           fontWeight: FontWeight.w700,
@@ -311,6 +314,7 @@ class AuthService {
                 Expanded(
                   child: SingleChildScrollView(
                     child: Card(
+                      elevation: 40,
                       margin: EdgeInsets.only(right: 16.w, left: 16.w),
                       child: Column(
                         children: [
@@ -361,7 +365,8 @@ class AuthService {
                                             padding: const EdgeInsets.only(
                                                 left: 20.0),
                                             child: Text(
-                                              AppLocalizations.of(context).translate('ciaoAccedi'),
+                                              AppLocalizations.of(context)
+                                                  .translate('ciaoAccedi'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 13.9.sp,
@@ -383,8 +388,8 @@ class AuthService {
                             child: RichText(
                               textAlign: TextAlign.start,
                               text: TextSpan(
-                                text:
-                                AppLocalizations.of(context).translate('vantaggiAccount'),
+                                text: AppLocalizations.of(context)
+                                    .translate('vantaggiAccount'),
                                 style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.bold,
@@ -420,7 +425,8 @@ class AuthService {
                           Container(
                             width: 200,
                             child: AutoSizeText(
-                              AppLocalizations.of(context).translate('funzionalitaComplete'),
+                              AppLocalizations.of(context)
+                                  .translate('funzionalitaComplete'),
                               maxLines: 2,
                               style: TextStyle(
                                   color: Colors.white,
@@ -431,9 +437,9 @@ class AuthService {
                           ),
                           RichText(
                               text: TextSpan(
-                            text:                               AppLocalizations.of(context).translate('contattaci'),
-
-                                style: new TextStyle(
+                            text: AppLocalizations.of(context)
+                                .translate('contattaci'),
+                            style: new TextStyle(
                               color: Colors.orange,
                               fontSize: ScreenUtil().setSp(13.748113),
                               fontWeight: FontWeight.w700,
@@ -615,6 +621,4 @@ class AuthService {
     UserCredential authResult =
         await FirebaseAuth.instance.signInWithCredential(credential);
   }
-
-
 }

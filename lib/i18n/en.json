@@ -72,8 +72,10 @@
   "contatto": "Contact",
   "note": "Notes",
   "informazioni": "Information",
-  "puoiSelezionareUnReferente": "You can select a contact person from your contacts or create a new contact person.",
-  "aggiungiOSelezionaUnReferente": "Add or select a contact person",
+  "puoiSelezionareUnReferente": "You can select a contact person from your contacts or create a new one.",
+  "aggiungiUnReferente": "Add contact",
   "nuovo": "New",
-  "selezionaReferente":"Select contact person","titoloListaAziendeConEventiOggi": "Companies with events today"
+  "selezionaReferente":"Select contact person","titoloListaAziendeConEventiOggi": "Companies with events today",
+  "annulla": "Back",
+  "aggiungi": "Add"
 }

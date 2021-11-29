@@ -70,6 +70,13 @@ class AccountEmptyState extends State<AccountEmpty> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            color: Colors.black,
+          ),
           iconTheme: IconThemeData(color: Colors.grey[700]),
           title: Text(
             "Account",

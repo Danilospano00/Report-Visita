@@ -72,9 +72,11 @@
   "contatto": "Contatto",
   "note": "Note",
   "informazioni": "Informazioni",
-  "puoiSelezionareUnReferente": "Puoi selezionare un referente dai tuoi contatti o creare un nuovo referente.",
-  "aggiungiOSelezionaUnReferente": "Aggiungi o seleziona un referente",
+  "puoiSelezionareUnReferente": "Puoi selezionare un referente dai tuoi contatti o crearne uno nuovo.",
+  "aggiungiUnReferente": "Aggiungi un referente",
   "nuovo": "Nuovo",
   "selezionaReferente": "Seleziona referente",
-  "titoloListaAziendeConEventiOggi": "Aziende con eventi oggi"
+  "titoloListaAziendeConEventiOggi": "Aziende con eventi oggi",
+  "annulla": "Annulla",
+  "aggiungi": "Aggiungi"
 }
