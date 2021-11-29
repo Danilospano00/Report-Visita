@@ -1,18 +1,27 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+
+
 
 import 'Models/factory/filter.dart';
 import 'Screen/splashScreen.dart';
 import 'i18n/AppLocalizations.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  /*if (Platform.isAndroid) {
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();  }*/
   runZonedGuarded(() {
     runApp(
         MultiProvider(

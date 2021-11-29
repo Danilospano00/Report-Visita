@@ -11,6 +11,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:places_service/places_service.dart';
 import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
@@ -1156,6 +1157,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 ),
                                 fileSelected != null
                                     ? GestureDetector(
+                                  onTap:widget.active? () async {
+                                    print(fileSelected!.path);
+                                    final _result =  await OpenFile.open(fileSelected!.path);
+                                    print(_result.message);
+                                  }:null,
                                         onLongPress: widget.active
                                             ? () {
                                                 setState(() {
@@ -1222,6 +1228,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 icon: Icon(Icons.add_circle_outlined),
                                 iconSize: 40,
                                 color: Colors.red,
+
                                 onPressed: widget.active
                                     ? () {
                                         FocusScope.of(context).unfocus();
@@ -1233,6 +1240,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           ),
                           fileSelected != null
                               ? GestureDetector(
+                            onTap: widget.active? () async {
+                              print(fileSelected!.path);
+                              final _result =  await OpenFile.open(fileSelected!.path);
+                              print(_result.message);
+                            }:null,
                                   onLongPress: widget.active
                                       ? () {
                                           setState(() {
