@@ -196,8 +196,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   AppLocalizations.of(context).translate('annulla'),
-                  style:
-                  TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                  style: TextStyle(color: Colors.grey[700], fontSize: 15.sp),
                 ),
               ),
             ),
@@ -216,9 +215,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
         return AlertDialog(
           title: Column(
             children: [
-              Text(
-                AppLocalizations.of(context).translate('aggiungiUnReferente'),
-                textAlign: TextAlign.center,
+              Row(
+                children: [
+                  Icon(
+                    Icons.perm_identity_outlined,
+                    color: Colors.black,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('aggiungiUnReferente'),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
               Divider(
                 color: Colors.red,
@@ -414,7 +421,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
-
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -1175,11 +1181,15 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 ),
                                 fileSelected != null
                                     ? GestureDetector(
-                                  onTap:widget.active? () async {
-                                    print(fileSelected!.path);
-                                    final _result =  await OpenFile.open(fileSelected!.path);
-                                    print(_result.message);
-                                  }:null,
+                                        onTap: widget.active
+                                            ? () async {
+                                                print(fileSelected!.path);
+                                                final _result =
+                                                    await OpenFile.open(
+                                                        fileSelected!.path);
+                                                print(_result.message);
+                                              }
+                                            : null,
                                         onLongPress: widget.active
                                             ? () {
                                                 setState(() {
@@ -1246,7 +1256,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 icon: Icon(Icons.add_circle_outlined),
                                 iconSize: 40,
                                 color: Colors.red,
-
                                 onPressed: widget.active
                                     ? () {
                                         FocusScope.of(context).unfocus();
@@ -1258,11 +1267,14 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                           ),
                           fileSelected != null
                               ? GestureDetector(
-                            onTap: widget.active? () async {
-                              print(fileSelected!.path);
-                              final _result =  await OpenFile.open(fileSelected!.path);
-                              print(_result.message);
-                            }:null,
+                                  onTap: widget.active
+                                      ? () async {
+                                          print(fileSelected!.path);
+                                          final _result = await OpenFile.open(
+                                              fileSelected!.path);
+                                          print(_result.message);
+                                        }
+                                      : null,
                                   onLongPress: widget.active
                                       ? () {
                                           setState(() {
@@ -2795,11 +2807,25 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          title: Text(
-            "Aggiungi File",
-            textAlign: TextAlign.center,
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.description_outlined,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).translate('aggiungiFile'),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              Divider(
+                color: Colors.red,
+                thickness: 2,
+              ),
+            ],
           ),
           content: Container(
               width: MediaQuery.of(context).size.width * .60,
@@ -2809,65 +2835,66 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       "Puoi selezionare un File presente sull'archivio o scattare una foto."))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  "Seleziona",
-                  style: TextStyle(color: rvTheme.canvasColor),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'pdf', 'doc', 'png']);
+
+                    if (result != null) {
+                      File file = File(result.files.single.path!);
+                      setState(() {
+                        fileSelected = file;
+                      });
+                      formResults[title] = file;
+                      _handleChanged();
+                      Navigator.pop(context);
+                    } else {
+                      // User canceled the picker
+                    }
+
+                    // Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('seleziona'),
+                      style:
+                          TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  FilePickerResult? result = await FilePicker.platform
-                      .pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: ['jpg', 'pdf', 'doc', 'png']);
+                GestureDetector(
+                  onTap: () async {
+                    final ImagePicker _picker = ImagePicker();
 
-                  if (result != null) {
-                    File file = File(result.files.single.path!);
-                    setState(() {
-                      fileSelected = file;
-                    });
-                    formResults[title] = file;
-                    _handleChanged();
-                    Navigator.pop(context);
-                  } else {
-                    // User canceled the picker
-                  }
+                    final XFile? photo =
+                        await _picker.pickImage(source: ImageSource.camera);
 
-                  // Navigator.pop(context);
-                },
-              ),
-            ),
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  "Scatta",
-                  style: TextStyle(color: rvTheme.canvasColor),
+                    if (photo != null) {
+                      File file = File(photo.path);
+                      setState(() {
+                        fileSelected = file;
+                      });
+                      formResults[title] = file;
+                      _handleChanged();
+                      Navigator.pop(context);
+                    } else {}
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('scatta'),
+                      style:
+                          TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  final ImagePicker _picker = ImagePicker();
-
-                  final XFile? photo =
-                      await _picker.pickImage(source: ImageSource.camera);
-
-                  if (photo != null) {
-                    File file = File(photo.path);
-                    setState(() {
-                      fileSelected = file;
-                    });
-                    formResults[title] = file;
-                    _handleChanged();
-                    Navigator.pop(context);
-                  } else {}
-                },
-              ),
+              ],
             ),
           ],
         );
