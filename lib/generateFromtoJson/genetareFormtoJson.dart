@@ -75,6 +75,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   List<FocusNode> focusList = [];
 
   List<Contact> contattoSelezionato = [];
+  List<Contact> contactsFiltered = [];
+  TextEditingController searchController = new TextEditingController();
+
+
 
   bool loadContact = false;
   List<Nota> listaNote = [];
@@ -101,6 +105,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   }
 
   Future<void> getContacts() async {
+
     final Iterable<Contact> contacts = await ContactsService.getContacts();
     setState(() {
       loadContact = true;
@@ -118,11 +123,35 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     });
   }
 
+
+  filterContacts() {
+    List<Contact> _contactsfiltrati = [];
+
+    if (searchController.text.isNotEmpty) {
+
+
+      _contacts.forEach((element) {
+        String searchTerm = searchController.text.toLowerCase();
+        String contactName = element.displayName!=null?element.displayName!.toLowerCase():"";
+        bool nameMatches = contactName.contains(searchTerm);
+        if (nameMatches == true) {
+          _contactsfiltrati.add(element);
+        }
+      });
+
+    }
+    setState(() {
+      contactsFiltered = _contactsfiltrati;
+    });
+  }
+
   void showReferente(String title) {
+    searchController.clear();
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
+
         return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -148,41 +177,66 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                 loadContact
                     //Build a list view of all contacts, displaying their avatar and
                     // display name
-                    ? ListView.builder(
-                        shrinkWrap: false,
-                        scrollDirection: Axis.vertical,
-                        itemCount: _contacts.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          late Contact contact = _contacts.elementAt(index);
-                          return contact.phones!.isNotEmpty
-                              ? contact.displayName != null
-                                  ? ListTile(
-                                      contentPadding: const EdgeInsets.only(
-                                          top: 2,
-                                          bottom: 2,
-                                          left: 18,
-                                          right: 18),
-                                      leading: CircleAvatar(
-                                        child: Text(
-                                          contact.initials(),
-                                          style: TextStyle(
-                                              color: rvTheme.canvasColor),
-                                        ),
-                                        backgroundColor: rvTheme.primaryColor,
-                                      ),
-                                      title: Text(contact.displayName!),
-                                      //This can be further expanded to showing contacts detail
-                                      onTap: () {
-                                        contattoSelezionato.add(contact);
-                                        formResults[title] =
-                                            contattoSelezionato;
-                                        _handleChanged();
-                                        Navigator.pop(context);
-                                      })
-                                  : Container()
-                              : Container();
-                        },
-                      )
+                    ? ListView(
+                      children: [
+                        Container(
+                          child: TextField(
+                            controller: searchController,
+                            decoration:
+                            InputDecoration(
+                                fillColor: Colors.grey.shade300,
+                                filled: true,
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                    Icons.search,
+                                    color: rvTheme.primaryColor
+                                )
+                                ),
+
+                            onChanged: (value){
+                              filterContacts();
+                            },
+                          ),
+                        ),
+                         ListView.builder(
+                            shrinkWrap: true,
+                            //scrollDirection: Axis.vertical,
+                           physics: NeverScrollableScrollPhysics(),
+                            itemCount: contactsFiltered.isNotEmpty?contactsFiltered.length:_contacts.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              late Contact contact = contactsFiltered.isNotEmpty
+                                  ?contactsFiltered.elementAt(index):_contacts.elementAt(index);
+                              return contact.phones!.isNotEmpty
+                                  ? contact.displayName != null
+                                      ? ListTile(
+                                          contentPadding: const EdgeInsets.only(
+                                              top: 2,
+                                              bottom: 2,
+                                              left: 18,
+                                              right: 18),
+                                          leading: CircleAvatar(
+                                            child: Text(
+                                              contact.initials(),
+                                              style: TextStyle(
+                                                  color: rvTheme.canvasColor),
+                                            ),
+                                            backgroundColor: rvTheme.primaryColor,
+                                          ),
+                                          title: Text(contact.displayName!),
+                                          //This can be further expanded to showing contacts detail
+                                          onTap: () {
+                                            contattoSelezionato.add(contact);
+                                            formResults[title] =
+                                                contattoSelezionato;
+                                            _handleChanged();
+                                            Navigator.pop(context);
+                                          })
+                                      : Container()
+                                  : Container();
+                            },
+                          ),
+                      ],
+                    )
                     : Center(child: Text("Nessun Contatto Presente")),
             /*  ],
             ),*/
