@@ -153,8 +153,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       builder: (BuildContext context) {
 
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
+
           title: Column(
             children: [
               Text(
@@ -2201,18 +2200,13 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   filled: true,
                                   labelStyle: homePageMainTextStyle,
                                   focusedBorder: formUnderlineInputBorder,
-                                  prefixIcon: !loadGeo
-                                      ? Icon(
+                                  prefixIcon: Icon(
                                           Icons.map_sharp,
                                           color: Colors.black,
-                                        )
-                                      : SizedBox(
-                                          width: 1.w,
-                                          height: 10.h,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.red,
-                                          )),
-                                  suffixIcon: IconButton(
+                                        ),
+
+                                  suffixIcon: !loadGeo
+                                      ? IconButton(
                                     icon: Icon(Icons.location_on),
                                     color: Colors.black,
                                     onPressed: widget.active
@@ -2287,6 +2281,11 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                             // recuperare adress dalla posizione attuale
                                           }
                                         : null,
+                                  ):Padding(
+                                    padding:  EdgeInsets.all(10.0),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
                               ),
