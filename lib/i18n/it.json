@@ -48,6 +48,7 @@
   "settimane": "Settimane",
   "anni": "Anni",
   "definisciSoglieAllerta": "Definisci le soglie di allerta",
+  "cambiaSoglieAllerta": "Cambia le soglie allerta",
   "testoScegliAllerta": "Seleziona l'intervallo di tempo che fà passare il report alla fascia di allerta successiva. Se non definiti saranno usati i valori preimpostati dal sistema.",
   "conferma": "Conferma",
   "hai": "Hai ",
@@ -80,5 +81,6 @@
   "annulla": "Annulla",
   "aggiungi": "Aggiungi",
   "aggiungiFile": "Aggiungi file",
-  "scatta": "Scatta"
+  "scatta": "Scatta",
+  "rimuovi": "Rimuovi"
 }

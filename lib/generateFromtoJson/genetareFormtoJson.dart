@@ -1430,17 +1430,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                                   padding:
                                                       EdgeInsets.all(4.0.h),
                                                   child: GestureDetector(
-                                                    onLongPress: widget.active
+                                                    onTap: widget.active
                                                         ? () {
-                                                            setState(() {
-                                                              contattoSelezionato
-                                                                  .removeAt(i);
-                                                              formResults[item[
-                                                                      "title"]] =
-                                                                  contattoSelezionato;
-                                                              _handleChanged();
-                                                            });
-                                                          }
+                                                      showPopUpContact(item, i);
+                                                    }
                                                         : null,
                                                     child: CircleAvatar(
                                                       backgroundImage:
@@ -1455,16 +1448,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                                   padding:
                                                       EdgeInsets.all(4.0.h),
                                                   child: GestureDetector(
-                                                    onLongPress: widget.active
+                                                    onTap: widget.active
                                                         ? () {
-                                                            setState(() {
-                                                              contattoSelezionato
-                                                                  .removeAt(i);
-                                                              formResults[item[
-                                                                      "title"]] =
-                                                                  contattoSelezionato;
-                                                              _handleChanged();
-                                                            });
+                                                      showPopUpContact(item, i);
                                                           }
                                                         : null,
                                                     child: CircleAvatar(
@@ -1564,17 +1550,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                         ? Padding(
                                             padding: EdgeInsets.all(4.0.h),
                                             child: GestureDetector(
-                                              onLongPress: widget.active
+                                              onTap: widget.active
                                                   ? () {
-                                                      setState(() {
-                                                        contattoSelezionato
-                                                            .removeAt(i);
-                                                        formResults[
-                                                                item["title"]] =
-                                                            contattoSelezionato;
-                                                        _handleChanged();
-                                                      });
-                                                    }
+                                                showPopUpContact(item, i);
+                                              }
                                                   : null,
                                               child: CircleAvatar(
                                                 backgroundImage: MemoryImage(
@@ -1586,17 +1565,10 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                         : Padding(
                                             padding: EdgeInsets.all(4.0.h),
                                             child: GestureDetector(
-                                              onLongPress: widget.active
+                                              onTap: widget.active
                                                   ? () {
-                                                      setState(() {
-                                                        contattoSelezionato
-                                                            .removeAt(i);
-                                                        formResults[
-                                                                item["title"]] =
-                                                            contattoSelezionato;
-                                                        _handleChanged();
-                                                      });
-                                                    }
+                                                showPopUpContact(item, i);
+                                              }
                                                   : null,
                                               child: CircleAvatar(
                                                 child: Text(
@@ -2526,7 +2498,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               ],
                             );
                           },
-                        )
+
+                  )
                       : ListView.builder(
                           addAutomaticKeepAlives: true,
                           shrinkWrap: true,
@@ -2700,13 +2673,62 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     setState(() {});
   }
 
+  void showPopUpContact(var item, int i){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          content: Text("Sei sicuro di voler rimuovere il contatto?"),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('annulla'),
+                      style:
+                      TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      contattoSelezionato
+                          .removeAt(i);
+                      formResults[item[
+                      "title"]] =
+                          contattoSelezionato;
+                      _handleChanged();
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      AppLocalizations.of(context).translate('rimuovi'),
+                      style:
+                      TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      }
+    );
+  }
   void showPopUpExport() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15))),
             title: Text(
               AppLocalizations.of(context).translate('esportaReport'),
               textAlign: TextAlign.center,

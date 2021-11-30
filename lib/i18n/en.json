@@ -48,6 +48,7 @@
   "settimane": "Weeks",
   "anni": "Years",
   "definisciSoglieAllerta": "Define the alert thresholds",
+  "cambiaSoglieAllerta": "Change the alert thresholds",
   "testoScegliAllerta": "Select the time interval that passes the report to the next alert band. If not defined, the system’s preset values will be used.",
   "conferma": "Confirm",
   "hai": "You have ",
@@ -79,5 +80,6 @@
   "annulla": "Back",
   "aggiungi": "Add",
   "aggiungiFile":"Add file",
-  "scatta": "Shoot"
+  "scatta": "Shoot",
+  "rimuovi": "Remove"
 }

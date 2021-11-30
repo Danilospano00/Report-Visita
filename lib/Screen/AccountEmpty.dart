@@ -48,7 +48,7 @@ class AccountEmptyState extends State<AccountEmpty> {
               list[list.length - 1].date!.difference(DateTime.now()).inDays;
         }
         if (differenzaGiorni >=
-            int.parse(prefs!.getString("prioritaAlta").toString())) {
+            int.parse(prefs!.getString("prioritaAlta") ?? "60") ) {
           listaAziende.add(a);
           differenzaGiorni = 0;
           print("evento aggiunto");

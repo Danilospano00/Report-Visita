@@ -18,6 +18,7 @@ import 'package:report_visita_danilo/Screen/CalendarPage.dart';
 import 'package:report_visita_danilo/Screen/ListaAziendeConEventiOggi.dart';
 import 'package:report_visita_danilo/Screen/LogInScreen.dart';
 import 'package:report_visita_danilo/Screen/PaginaListaAziendeConSogliaRossa.dart';
+import 'package:report_visita_danilo/Screen/ScegliAllerta.dart';
 import 'package:report_visita_danilo/Utils/TakeEventWithDate.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
@@ -42,7 +43,8 @@ class AuthService {
             dynamic user = snapshot.data;
             return Card(
               elevation: 40,
-              margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 40.h, top: 10.h),
+              margin: EdgeInsets.only(
+                  left: 16.w, right: 16.w, bottom: 40.h, top: 10.h),
               child: Column(
                 children: [
                   Stack(
@@ -283,7 +285,35 @@ class AuthService {
                           ],
                         ),
                   Padding(
-                    padding: EdgeInsets.only(top: 48.h),
+                    padding: EdgeInsets.only(top: 5.h),
+                    child: ElevatedButton(
+                      child: Text(
+          AppLocalizations.of(context)
+              .translate('cambiaSoglieAllerta'),
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.25,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ScegliAllerta()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                        fixedSize: Size(250.w, 30.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.h),
                     child: ElevatedButton(
                       child: Text(
                         "Log out",
@@ -298,7 +328,7 @@ class AuthService {
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.red,
-                        fixedSize: Size(163.w, 36.h),
+                        fixedSize: Size(163.w, 30.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
                         ),
@@ -354,7 +384,7 @@ class AuthService {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            Navigator.pushReplacement(
+                                            Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
@@ -415,7 +445,7 @@ class AuthService {
                   ),
                 ),
                 Container(
-                    height: ScreenUtil().setHeight(50),
+                    height: ScreenUtil().setHeight(70),
                     color: Colors.black,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
