@@ -213,7 +213,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             .replaceAll(new RegExp(r"\s+"), ""),
                                         user.password!)
                                     .then((userCredes) {
-                                  Navigator.pop(context);
                                 }).catchError((e) {
                                   setState(() {
                                     isLoading = false;
@@ -221,6 +220,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   showError(e.toString());
                                 });
                               }
+                              showPopUpRegistrazioneAvvenuta();
                             },
                       child: Text(
                           AppLocalizations.of(context).translate("registrati"),
@@ -246,28 +246,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
           title: Text(
             AppLocalizations.of(context).translate("attenzione"),
             textAlign: TextAlign.center,
           ),
           content: Text(mess),
           actions: [
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: RaisedButton(
-                color: rvTheme.primaryColor,
-                elevation: 2,
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: rvTheme.canvasColor),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("OK",
+                  style:
+                  TextStyle(color: Colors.grey[700], fontSize: 15.sp),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  //Navigator.pop(context);
-                },
               ),
             ),
           ],
@@ -275,4 +269,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
     );
   }
+
+  void showPopUpRegistrazioneAvvenuta() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Container(
+                width: MediaQuery.of(context).size.width * .60,
+                height: MediaQuery.of(context).size.height * .10,
+                child: Center(
+                    child: AutoSizeText(
+                      AppLocalizations.of(context).translate('registrazioneAvvenuta'),
+                    ))),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("OK",
+                    style:
+                    TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
 }

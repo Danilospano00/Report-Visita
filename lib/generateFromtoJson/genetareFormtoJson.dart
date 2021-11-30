@@ -78,8 +78,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   List<Contact> contactsFiltered = [];
   TextEditingController searchController = new TextEditingController();
 
-
-
   bool loadContact = false;
   List<Nota> listaNote = [];
   final noteKey = GlobalKey<FormBuilderState>();
@@ -105,7 +103,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   }
 
   Future<void> getContacts() async {
-
     final Iterable<Contact> contacts = await ContactsService.getContacts();
     setState(() {
       loadContact = true;
@@ -123,22 +120,20 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     });
   }
 
-
   filterContacts() {
     List<Contact> _contactsfiltrati = [];
 
     if (searchController.text.isNotEmpty) {
-
-
       _contacts.forEach((element) {
         String searchTerm = searchController.text.toLowerCase();
-        String contactName = element.displayName!=null?element.displayName!.toLowerCase():"";
+        String contactName = element.displayName != null
+            ? element.displayName!.toLowerCase()
+            : "";
         bool nameMatches = contactName.contains(searchTerm);
         if (nameMatches == true) {
           _contactsfiltrati.add(element);
         }
       });
-
     }
     setState(() {
       contactsFiltered = _contactsfiltrati;
@@ -151,9 +146,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-
         return AlertDialog(
-
           title: Column(
             children: [
               Text(
@@ -177,34 +170,32 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     //Build a list view of all contacts, displaying their avatar and
                     // display name
                     ? ListView(
-                      children: [
-                        Container(
-                          child: TextField(
-                            controller: searchController,
-                            decoration:
-                            InputDecoration(
-                                fillColor: Colors.grey.shade300,
-                                filled: true,
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                    Icons.search,
-                                    color: rvTheme.primaryColor
-                                )
-                                ),
-
-                            onChanged: (value){
-                              filterContacts();
-                            },
+                        children: [
+                          Container(
+                            child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                  fillColor: Colors.grey.shade300,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(Icons.search,
+                                      color: rvTheme.primaryColor)),
+                              onChanged: (value) {
+                                filterContacts();
+                              },
+                            ),
                           ),
-                        ),
-                         ListView.builder(
+                          ListView.builder(
                             shrinkWrap: true,
                             //scrollDirection: Axis.vertical,
-                           physics: NeverScrollableScrollPhysics(),
-                            itemCount: contactsFiltered.isNotEmpty?contactsFiltered.length:_contacts.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: contactsFiltered.isNotEmpty
+                                ? contactsFiltered.length
+                                : _contacts.length,
                             itemBuilder: (BuildContext context, int index) {
                               late Contact contact = contactsFiltered.isNotEmpty
-                                  ?contactsFiltered.elementAt(index):_contacts.elementAt(index);
+                                  ? contactsFiltered.elementAt(index)
+                                  : _contacts.elementAt(index);
                               return contact.phones!.isNotEmpty
                                   ? contact.displayName != null
                                       ? ListTile(
@@ -219,7 +210,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                               style: TextStyle(
                                                   color: rvTheme.canvasColor),
                                             ),
-                                            backgroundColor: rvTheme.primaryColor,
+                                            backgroundColor:
+                                                rvTheme.primaryColor,
                                           ),
                                           title: Text(contact.displayName!),
                                           //This can be further expanded to showing contacts detail
@@ -234,9 +226,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   : Container();
                             },
                           ),
-                      ],
-                    )
-                    : Center(child: Text("Nessun Contatto Presente")),
+                        ],
+                      )
+                    : Center(child: Text(AppLocalizations.of(context).translate('nessunContattoPresente'),)),
             /*  ],
             ),*/
           ),
@@ -275,7 +267,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                     color: Colors.black,
                   ),
                   Text(
-                    AppLocalizations.of(context).translate('aggiungiUnReferente'),
+                    AppLocalizations.of(context)
+                        .translate('aggiungiUnReferente'),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -1197,7 +1190,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                             Row(
                               children: <Widget>[
                                 Text(
-                                  "Allegati",
+                                  AppLocalizations.of(context).translate('allegati'),
                                   style: homePageMainTextStyle,
                                 ),
                                 Expanded(
@@ -1245,12 +1238,12 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                             : null,
                                         onLongPress: widget.active
                                             ? () {
-                                                setState(() {
-                                                  fileSelected = null;
-                                                  formResults[item["title"]] =
-                                                      fileSelected;
-                                                  _handleChanged();
-                                                });
+                                          setState(() {
+                                            fileSelected = null;
+                                            formResults[item["title"]] =
+                                                fileSelected;
+                                            _handleChanged();
+                                          });
                                               }
                                             : null,
                                         child: Container(
@@ -1283,7 +1276,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       Row(
                         children: <Widget>[
                           Text(
-                            "Allegati",
+                            AppLocalizations.of(context).translate('allegati'),
                             style: homePageMainTextStyle,
                           ),
                           Expanded(
@@ -1330,12 +1323,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                       : null,
                                   onLongPress: widget.active
                                       ? () {
-                                          setState(() {
-                                            fileSelected = null;
-                                            formResults[item["title"]] =
-                                                fileSelected;
-                                            _handleChanged();
-                                          });
+                                         showPopUpDeleteFile(item);
                                         }
                                       : null,
                                   child: Container(
@@ -1432,8 +1420,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                                   child: GestureDetector(
                                                     onTap: widget.active
                                                         ? () {
-                                                      showPopUpContact(item, i);
-                                                    }
+                                                            showPopUpDeleteContact(
+                                                                item, i);
+                                                          }
                                                         : null,
                                                     child: CircleAvatar(
                                                       backgroundImage:
@@ -1450,7 +1439,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                                   child: GestureDetector(
                                                     onTap: widget.active
                                                         ? () {
-                                                      showPopUpContact(item, i);
+                                                            showPopUpDeleteContact(
+                                                                item, i);
                                                           }
                                                         : null,
                                                     child: CircleAvatar(
@@ -1552,8 +1542,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                             child: GestureDetector(
                                               onTap: widget.active
                                                   ? () {
-                                                showPopUpContact(item, i);
-                                              }
+                                                      showPopUpDeleteContact(
+                                                          item, i);
+                                                    }
                                                   : null,
                                               child: CircleAvatar(
                                                 backgroundImage: MemoryImage(
@@ -1567,8 +1558,9 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                             child: GestureDetector(
                                               onTap: widget.active
                                                   ? () {
-                                                showPopUpContact(item, i);
-                                              }
+                                                      showPopUpDeleteContact(
+                                                          item, i);
+                                                    }
                                                   : null,
                                               child: CircleAvatar(
                                                 child: Text(
@@ -2173,92 +2165,106 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                   labelStyle: homePageMainTextStyle,
                                   focusedBorder: formUnderlineInputBorder,
                                   prefixIcon: Icon(
-                                          Icons.map_sharp,
-                                          color: Colors.black,
-                                        ),
-
+                                    Icons.map_sharp,
+                                    color: Colors.black,
+                                  ),
                                   suffixIcon: !loadGeo
                                       ? IconButton(
-                                    icon: Icon(Icons.location_on),
-                                    color: Colors.black,
-                                    onPressed: widget.active
-                                        ? () async {
-                                            try {
-                                              setState(() {
-                                                loadGeo = true;
-                                              });
+                                          icon: Icon(Icons.location_on),
+                                          color: Colors.black,
+                                          onPressed: widget.active
+                                              ? () async {
+                                                  try {
+                                                    setState(() {
+                                                      loadGeo = true;
+                                                    });
 
-                                              Position? _currentLocation;
+                                                    Position? _currentLocation;
 
-                                              LocationPermission permission =
-                                                  await Geolocator
-                                                      .checkPermission();
-                                              if (permission ==
-                                                  LocationPermission.denied) {
-                                                permission = await Geolocator
-                                                    .requestPermission();
-                                                if (permission ==
-                                                    LocationPermission.denied) {
-                                                  return Future.error(
-                                                      'Location permissions are denied');
+                                                    LocationPermission
+                                                        permission =
+                                                        await Geolocator
+                                                            .checkPermission();
+                                                    if (permission ==
+                                                        LocationPermission
+                                                            .denied) {
+                                                      permission = await Geolocator
+                                                          .requestPermission();
+                                                      if (permission ==
+                                                          LocationPermission
+                                                              .denied) {
+                                                        return Future.error(
+                                                            'Location permissions are denied');
+                                                      }
+                                                    }
+                                                    if (permission ==
+                                                        LocationPermission
+                                                            .deniedForever) {
+                                                      // Permissions are denied forever, handle appropriately.
+                                                      return Future.error(
+                                                          'Location permissions are permanently denied, we cannot request permissions.');
+                                                    }
+                                                    // When we reach here, permissions are granted and we can
+                                                    // continue accessing the position of the device.
+                                                    _currentLocation =
+                                                        await Geolocator
+                                                            .getCurrentPosition(
+                                                                desiredAccuracy:
+                                                                    LocationAccuracy
+                                                                        .high);
+
+                                                    if (_currentLocation !=
+                                                        null) {
+                                                      List<Placemark>
+                                                          placemarks =
+                                                          await placemarkFromCoordinates(
+                                                              _currentLocation
+                                                                  .latitude,
+                                                              _currentLocation
+                                                                  .longitude);
+                                                      Placemark place =
+                                                          placemarks[0];
+                                                      String address =
+                                                          '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+                                                      if (selectObject ==
+                                                          null) {
+                                                        formResults[
+                                                                item['field'][i]
+                                                                    ['label']] =
+                                                            address;
+                                                        controller[i]
+                                                          ..text = address;
+                                                      } else {
+                                                        controller[i]
+                                                          ..text = address;
+                                                        setNewValueObject(
+                                                            item['field'][i]
+                                                                ['label'],
+                                                            controller[i]
+                                                                .value
+                                                                .text,
+                                                            item['title']);
+                                                      }
+                                                    }
+                                                    setState(() {
+                                                      loadGeo = false;
+                                                    });
+                                                  } catch (e) {
+                                                    setState(() {
+                                                      loadGeo = false;
+                                                    });
+                                                  }
+
+                                                  // recuperare adress dalla posizione attuale
                                                 }
-                                              }
-                                              if (permission ==
-                                                  LocationPermission
-                                                      .deniedForever) {
-                                                // Permissions are denied forever, handle appropriately.
-                                                return Future.error(
-                                                    'Location permissions are permanently denied, we cannot request permissions.');
-                                              }
-                                              // When we reach here, permissions are granted and we can
-                                              // continue accessing the position of the device.
-                                              _currentLocation =
-                                                  await Geolocator
-                                                      .getCurrentPosition(
-                                                          desiredAccuracy:
-                                                              LocationAccuracy
-                                                                  .high);
-
-                                              if (_currentLocation != null) {
-                                                List<Placemark> placemarks =
-                                                    await placemarkFromCoordinates(
-                                                        _currentLocation
-                                                            .latitude,
-                                                        _currentLocation
-                                                            .longitude);
-                                                Placemark place = placemarks[0];
-                                                String address =
-                                                    '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-                                                if (selectObject == null) {
-                                                  formResults[item['field'][i]
-                                                      ['label']] = address;
-                                                  controller[i]..text = address;
-                                                } else {
-                                                  controller[i]..text = address;
-                                                  setNewValueObject(
-                                                      item['field'][i]['label'],
-                                                      controller[i].value.text,
-                                                      item['title']);
-                                                }
-                                              }
-                                              setState(() {
-                                                loadGeo = false;
-                                              });
-                                            } catch (e) {
-                                              setState(() {
-                                                loadGeo = false;
-                                              });
-                                            }
-
-                                            // recuperare adress dalla posizione attuale
-                                          }
-                                        : null,
-                                  ):Padding(
-                                    padding:  EdgeInsets.all(10.0),
-                                    child: CircularProgressIndicator(
-                                      color: Colors.red,
-                                    ),
-                                  ),
+                                              : null,
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: CircularProgressIndicator(
+                                            color: Colors.red,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
@@ -2498,8 +2504,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               ],
                             );
                           },
-
-                  )
+                        )
                       : ListView.builder(
                           addAutomaticKeepAlives: true,
                           shrinkWrap: true,
@@ -2673,57 +2678,102 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     setState(() {});
   }
 
-  void showPopUpContact(var item, int i){
+  void showPopUpDeleteContact(var item, int i) {
     showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-          content: Text("Sei sicuro di voler rimuovere il contatto?"),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('annulla'),
-                      style:
-                      TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text( AppLocalizations.of(context).translate('popUpRimozioneContatto')),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('annulla'),
+                        style:
+                            TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      contattoSelezionato
-                          .removeAt(i);
-                      formResults[item[
-                      "title"]] =
-                          contattoSelezionato;
-                      _handleChanged();
-                    });
-                    Navigator.pop(context);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('rimuovi'),
-                      style:
-                      TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        contattoSelezionato.removeAt(i);
+                        formResults[item["title"]] = contattoSelezionato;
+                        _handleChanged();
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('rimuovi'),
+                        style:
+                            TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        );
-      }
-    );
+                ],
+              ),
+            ],
+          );
+        });
   }
+
+  void showPopUpDeleteFile(var item) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text(AppLocalizations.of(context).translate('popUpRimozioneFile'),),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('annulla'),
+                        style:
+                            TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        fileSelected = null;
+                        formResults[item["title"]] = fileSelected;
+                        _handleChanged();
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('rimuovi'),
+                        style:
+                            TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
   void showPopUpExport() {
     showDialog(
         context: context,
@@ -2885,7 +2935,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           title: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(
                     Icons.description_outlined,
@@ -2907,7 +2957,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
               height: MediaQuery.of(context).size.height * .20,
               child: Center(
                   child: AutoSizeText(
-                      "Puoi selezionare un File presente sull'archivio o scattare una foto."))),
+                      "Puoi selezionare un file presente sull'archivio o scattare una foto."))),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             Row(

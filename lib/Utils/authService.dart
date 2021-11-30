@@ -44,7 +44,7 @@ class AuthService {
             return Card(
               elevation: 40,
               margin: EdgeInsets.only(
-                  left: 16.w, right: 16.w, bottom: 40.h, top: 10.h),
+                  left: 16.w, right: 16.w, bottom: 20.h, top: 10.h),
               child: Column(
                 children: [
                   Stack(
@@ -183,6 +183,56 @@ class AuthService {
                       ),
                     ],
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Divider(),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16.w, top:4.h),
+                        child: Text("Ci sono ${listaAziende.length} allerte attive",textAlign: TextAlign.start,
+                            maxLines: 2,
+                            style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Colors.grey[700])),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 8,
+                            child: Divider(),
+                          ),
+                          ElevatedButton(
+                            child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('cambiaSoglie'),
+                              style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.5),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ScegliAllerta()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding:
+                                  const EdgeInsets.only(right: 20, left: 20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   listaAziende.isNotEmpty
                       ? GestureDetector(
                           onTap: () {
@@ -195,13 +245,12 @@ class AuthService {
                           },
                           child: Padding(
                             padding: EdgeInsets.only(
-                                top: 14.h, right: 16.w, left: 16.w),
+                                right: 16.w, left: 16.w),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Flexible(
                                   child: Column(
-                                    mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -285,35 +334,7 @@ class AuthService {
                           ],
                         ),
                   Padding(
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: ElevatedButton(
-                      child: Text(
-          AppLocalizations.of(context)
-              .translate('cambiaSoglieAllerta'),
-                        maxLines: 1,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.25,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ScegliAllerta()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        fixedSize: Size(250.w, 30.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.h),
+                    padding: EdgeInsets.only(top:8.h),
                     child: ElevatedButton(
                       child: Text(
                         "Log out",
@@ -394,14 +415,30 @@ class AuthService {
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 20.0),
-                                            child: Text(
-                                              AppLocalizations.of(context)
-                                                  .translate('ciaoAccedi'),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 13.9.sp,
-                                                fontWeight: FontWeight.w700,
-                                                letterSpacing: 1.25,
+                                            child: RichText(
+                                              text: TextSpan(
+                                                text:
+                                                    AppLocalizations.of(context)
+                                                            .translate('ciao') +
+                                                        "\n",
+                                                children: [
+                                                  TextSpan(
+                                                    text: AppLocalizations.of(
+                                                            context)
+                                                        .translate(
+                                                            'accediAlTuoAccount'),
+                                                    style: TextStyle(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    ),
+                                                  ),
+                                                ],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13.9.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                  letterSpacing: 1.25,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -427,8 +464,8 @@ class AuthService {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text:
-                                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie ullamcorper leo porta cursus. Curabitur convallis et dolor a faucibus. Maecenas suscipit, orci faucibus porttitor pretium, tellus libero eleifend massa, eget pharetra magna enim quis arcu. Sed tempus tincidunt viverra. Phasellus nisi ligula, malesuada ut ullamcorper eget, rutrum id tortor. Donec nisl mi, iaculis ut maximus vitae, feugiat vel nunc. Aliquam varius ullamcorper nunc, sit amet mattis leo vulputate a.",
+                                    text: AppLocalizations.of(context)
+                                        .translate('testoAccountEmpty'),
                                     style: TextStyle(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.bold,
@@ -445,10 +482,10 @@ class AuthService {
                   ),
                 ),
                 Container(
-                    height: ScreenUtil().setHeight(70),
+                    height: ScreenUtil().setHeight(65),
                     color: Colors.black,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.only(bottom: 16.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
