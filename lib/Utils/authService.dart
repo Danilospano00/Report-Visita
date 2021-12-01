@@ -183,18 +183,53 @@ class AuthService {
                       ),
                     ],
                   ),
+                  Divider(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(),
-                      Padding(
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              child: AutoSizeText(
+                                listaAziende.length.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 94.272766.sp,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              children: [
+                                Text(
+                                 "allerte attive",
+                                  textAlign: TextAlign.start,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 18),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                    /*  Padding(
                         padding: EdgeInsets.only(left: 16.w, top:4.h),
-                        child: Text("Ci sono ${listaAziende.length} allerte attive",textAlign: TextAlign.start,
+                        child: Text("${listaAziende.length} allerte attive",textAlign: TextAlign.start,
                             maxLines: 2,
                             style: TextStyle(
                                 fontSize: 18.sp,
                                 color: Colors.grey[700])),
-                      ),
+                      ),*/
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
@@ -231,6 +266,7 @@ class AuthService {
                           ),
                         ],
                       ),
+
                     ],
                   ),
                   listaAziende.isNotEmpty
@@ -292,7 +328,7 @@ class AuthService {
                         )
                       : Container(),
                   listaAziende.isEmpty
-                      ? Divider()
+                      ? Container()
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
@@ -482,10 +518,10 @@ class AuthService {
                   ),
                 ),
                 Container(
-                    height: ScreenUtil().setHeight(65),
+                    height: ScreenUtil().setHeight(80),
                     color: Colors.black,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
+                      padding: EdgeInsets.only(bottom: 26.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -502,7 +538,34 @@ class AuthService {
                                   letterSpacing: 0.25),
                             ),
                           ),
-                          RichText(
+                          GestureDetector(
+                            onTap: (){
+                              print("avvio e,mail ");
+                              final Uri _emailLaunchUri = Uri(
+                                  scheme: 'mailto',
+                                  path: emailAdress,
+                                  queryParameters: {
+                                    'subject': subjectEmail,
+                                    'body': bodyEmail,
+                                  });
+
+
+                              String url = _emailLaunchUri.toString();
+                              url = url.replaceAll("+", " ");
+
+                              launch(url);
+                            },
+                            child: Text(AppLocalizations.of(context)
+                                .translate('contattaci'),
+                                style: new TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: ScreenUtil().setSp(13.748113),
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.25,
+                                )),
+                          ),
+
+                        /*  RichText(
                               text: TextSpan(
                             text: AppLocalizations.of(context)
                                 .translate('contattaci'),
@@ -527,7 +590,7 @@ class AuthService {
 
                                 launch(url);
                               },
-                          ))
+                          ))*/
                         ],
                       ),
                     ))

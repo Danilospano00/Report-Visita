@@ -66,6 +66,8 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
   late Iterable<Contact> _contacts = [];
   dynamic selectObject;
   final formKeyAddReferente = GlobalKey<FormBuilderState>();
+  final formKeyEditReferente = GlobalKey<FormBuilderState>();
+
   final formKeyBody = GlobalKey<FormBuilderState>();
 
   TextEditingController formFieldController = TextEditingController();
@@ -1540,11 +1542,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                         ? Padding(
                                             padding: EdgeInsets.all(4.0.h),
                                             child: GestureDetector(
-                                              onTap: widget.active
+                                              onLongPress: widget.active
                                                   ? () {
                                                       showPopUpDeleteContact(
                                                           item, i);
                                                     }
+                                                  : null,
+                                              onTap: widget.active
+                                                  ? () {
+                                                showPopUpEditContact(
+                                                    item, i);
+                                              }
                                                   : null,
                                               child: CircleAvatar(
                                                 backgroundImage: MemoryImage(
@@ -1556,11 +1564,17 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                         : Padding(
                                             padding: EdgeInsets.all(4.0.h),
                                             child: GestureDetector(
-                                              onTap: widget.active
+                                                onLongPress: widget.active
                                                   ? () {
                                                       showPopUpDeleteContact(
                                                           item, i);
                                                     }
+                                                  : null,
+                                              onTap: widget.active
+                                                  ? () {
+                                                showPopUpEditContact(
+                                                    item, i);
+                                              }
                                                   : null,
                                               child: CircleAvatar(
                                                 child: Text(
@@ -3051,4 +3065,234 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
     if (extension == ".png") return Image.asset("assets/png.png");
     if (extension == ".jpg") return Image.asset("assets/jpg.png");
   }
-}
+
+
+  void showPopUpEditContact(item, int i) {
+    bool isSave=_contacts.contains(contattoSelezionato[i]);
+    //check gia esistente
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        bool saveContact = false;
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            title: Column(
+              children: [
+                Text(
+                  AppLocalizations.of(context).translate('modificaReferente'),
+                  textAlign: TextAlign.center,
+                ),
+                Divider(
+                  color: Colors.red,
+                  thickness: 2,
+                ),
+              ],
+            ),
+            content: Container(
+              width: MediaQuery.of(context).size.width * .80,
+              height: MediaQuery.of(context).size.height * .50,
+              child: SingleChildScrollView(
+                  child: FormBuilder(
+                      key: formKeyEditReferente,
+                      child: Padding(
+                          padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
+                          child: Column(children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "nome",
+                                enabled: !isSave,
+                                initialValue: contattoSelezionato[i].givenName,
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Nome"),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                ]),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "cognome",
+                                enabled: !isSave,
+
+                                initialValue: contattoSelezionato[i].familyName,
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Cognome"),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                ]),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "ruolo",
+                                enabled: !isSave,
+
+                                initialValue:contattoSelezionato[i].company,
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Ruolo"),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: FormBuilderTextField(
+                                name: "telefono",
+                                enabled: !isSave,
+
+                                initialValue:contattoSelezionato[i].phones!.isNotEmpty?
+                                contattoSelezionato[i].phones!.elementAt(0).value:null,
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.shade300,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    labelText: "Telefono"),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(context),
+                                ]),
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: ScreenUtil().setHeight(6)),
+                                child: FormBuilderTextField(
+                                  name: "email",
+                                  enabled: !isSave,
+
+                                  initialValue:contattoSelezionato[i].emails!.isNotEmpty?
+                                  contattoSelezionato[i].emails!.elementAt(0).value:null,
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.grey.shade300,
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      labelText: "E-mail"),
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.email(context),
+                                  ]),
+                                )),
+                          if(!isSave)
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(6),
+                                  bottom: ScreenUtil().setHeight(6)),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: saveContact,
+                                    activeColor: rvTheme.primaryColor,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        saveContact = value as bool;
+                                      });
+                                    },
+                                  ),
+                                  Flexible(
+                                      child: Container(
+                                        child: AutoSizeText(
+                                          "Salvare il contatto nella rubrica",
+                                          style: new TextStyle(
+                                            color: Colors.black,
+                                            fontSize: ScreenUtil().setSp(12),
+                                          ),
+                                          maxLines: 2,
+                                        ),
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ])))),
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('annulla'),
+                        style:
+                        TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
+                    ),
+                  ),
+                  if(!isSave)
+                  GestureDetector(
+                    onTap: () async {
+                      if (formKeyEditReferente.currentState?.validate() ??
+                          false) {
+                        String nome = formKeyEditReferente
+                            .currentState?.fields['nome']!.value ??
+                            " ";
+                        String cognome = formKeyEditReferente
+                            .currentState?.fields['cognome']!.value ??
+                            " ";
+                        String ruolo = formKeyEditReferente
+                            .currentState?.fields['ruolo']!.value ??
+                            " ";
+                        String email = formKeyEditReferente
+                            .currentState?.fields['email']!.value ??
+                            " ";
+                        String telefono = formKeyEditReferente
+                            .currentState?.fields['telefono']!.value ??
+                            " ";
+
+                        contattoSelezionato[i] = Contact(
+                            givenName: nome,
+                            familyName: cognome,
+                            displayName: nome + " " + cognome,
+                            company: ruolo,
+                            emails: [Item(label: "email", value: email)],
+                            phones: [Item(label: "telefono", value: telefono)]);
+                        if (saveContact)
+                          await ContactsService.addContact(contattoSelezionato[i]);
+                       // contattoSelezionato.add(contattoSelezionato[i]);
+
+                        formResults[item["title"]] = contattoSelezionato;
+                        _handleChanged();
+                        print(contattoSelezionato.length.toString());
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).translate('aggiungi'),
+                        style:
+                        TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+      },
+    ).then((value) {
+      setState(() {});
+    });
+  }
+
+
+  }
+

@@ -90,5 +90,7 @@
   "popUpRimozioneContatto":"Are you sure you want to remove contact?",
   "allegati": "Attached",
   "nessunContattoPresente":"There is no contact",
-  "cambiaSoglie": "Change thresholds"
+  "cambiaSoglie": "Change thresholds",
+  "modificaReferente": "Contact"
+
 }
