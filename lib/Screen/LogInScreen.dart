@@ -159,26 +159,25 @@ class _LoginScreenState extends State<LoginScreen> {
                               backgroundColor: Colors.blue,
                               child: IconButton(
                                   onPressed: () {
-                                    AuthService().googleLogIn();
+                                    dynamic res = AuthService().googleLogIn();
+                                    if (res != null){
+                                      print(res.toString());
+                                      Navigator.pop(context);}
                                   },
                                   icon: Image.asset(
                                     "assets/icons8-google-24.png",
                                     color: Colors.white,
                                   ))),
-                          CircleAvatar(
-                              radius: 24,
-                              backgroundColor: Colors.blue[800],
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    "assets/icons8-facebook-f-24.png",
-                                    color: Colors.white,
-                                  ))),
+
                           CircleAvatar(
                               radius: 24,
                               backgroundColor: Colors.black,
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: ()  {
+                                   AuthService().appleLogIn();
+
+
+                                  },
                                   icon: Image.asset(
                                     "assets/icons8-apple-logo-24.png",
                                     color: Colors.white,

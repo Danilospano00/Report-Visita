@@ -1,4 +1,4 @@
-package org.fingerlinks.mobile.android.visit_report
+package com.reportvisita.rv
 
 import io.flutter.embedding.android.FlutterActivity
 
