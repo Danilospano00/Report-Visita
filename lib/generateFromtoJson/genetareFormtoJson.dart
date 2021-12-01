@@ -263,6 +263,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           title: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Icon(
                     Icons.perm_identity_outlined,
@@ -2949,7 +2950,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
           title: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:  MainAxisAlignment.spaceAround,
                 children: [
                   Icon(
                     Icons.description_outlined,

@@ -32,7 +32,7 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).translate('dettaglioAzienda'),
+          widget.azienda.nome!,
         ),
         centerTitle: true,
         backgroundColor: Colors.red,
@@ -45,23 +45,12 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(8.h),
-                  child: AutoSizeText(
-                    widget.azienda.nome.toString(),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 20.126488.sp,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.25,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                ),
-                widget.azienda.indirizzo != null ?
-                Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
-                    AppLocalizations.of(context).translate('indirizzo')+": " +widget.azienda.indirizzo!,
+                    AppLocalizations.of(context).translate('indirizzo') +
+                        ": " +(
+                      widget.azienda.indirizzo != null?
+                            widget.azienda.indirizzo! : "--"),
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.075892.sp,
@@ -70,11 +59,12 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                       color: Colors.grey[700],
                     ),
                   ),
-                ): Container(),
+                ),
                 Padding(
                   padding: EdgeInsets.all(8.0.h),
                   child: AutoSizeText(
-                    AppLocalizations.of(context).translate('partitaIVA')+" ${widget.azienda.partitaIva??"--"} ",
+                    AppLocalizations.of(context).translate('partitaIVA') +
+                        " ${widget.azienda.partitaIva ?? "--"} ",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 12.075892.sp,
@@ -113,75 +103,84 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: report.length,
                     itemBuilder: (context, index) {
-                      if (report[index].azienda.target!.id ==
-                          widget.azienda.id) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DettaglioReport(
+                                        report: report[index],
+                                      )));
+                        },
+                        child: Column(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 8.h),
-                                      child: Container(
-                                        width: MediaQuery.of(context).size.width * .75,
-                                        child: AutoSizeText(
-                                          AppLocalizations.of(context).translate('dataCreazioneEvento') +": "+
-                                              FormatDate.fromDateTimeToString(
+                            Card(
+                              elevation: 5,
+                              shadowColor: Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              margin: EdgeInsets.only(top: 8.h, bottom: 8.h),
+                              child: Container(
+                                height: 60.h,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 16.w, right: 16.w),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            AppLocalizations.of(context)
+                                                    .translate(
+                                                        'dataCreazioneEvento') +
+                                                ": " +
+                                                FormatDate.fromDateTimeToString(
                                                   report[index].compilazione!,
-                                                  "data"),
-                                          maxLines: 1,
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w400,
-                                            letterSpacing: 0.25,
-                                            color: Colors.grey[700],
+                                                  "data",
+                                                ),
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.grey[700]),
                                           ),
+                                          Text(
+                                            AppLocalizations.of(context)
+                                                    .translate('dataEvento') +
+                                                ": " +
+                                                (report[index].prossimaVisita !=
+                                                        null
+                                                    ? report[index]
+                                                        .prossimaVisita
+                                                        .toString()
+                                                    : "--"),
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.grey[700]),
+                                          ),
+                                        ],
+                                      ),
+                                      CircleAvatar(
+                                        backgroundColor: Colors.red,
+                                        child: Icon(
+                                          Icons.arrow_forward_outlined,
+                                          color: Colors.white,
                                         ),
                                       ),
-                                    ),
-                                    ElevatedButton(
-                                      child: Text(
-                                        AppLocalizations.of(context).translate('vedi'),
-                                        style: TextStyle(
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DettaglioReport(
-                                                      report: report[index],
-                                                    )));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        minimumSize: Size(18.w, 25.h),
-                                        primary: Colors.red,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(32.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                            Divider(
-                              height: 1,
-                              thickness: 2,
+                              ),
                             ),
                           ],
-                        );
-                      } else
-                        return Container();
+                        ),
+                      );
                     },
                   ),
                 ],

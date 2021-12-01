@@ -91,6 +91,6 @@
   "allegati": "Attached",
   "nessunContattoPresente":"There is no contact",
   "cambiaSoglie": "Change thresholds",
-  "modificaReferente": "Contact"
-
+  "modificaReferente": "Contact",
+  "dataEvento": "Event date"
 }
