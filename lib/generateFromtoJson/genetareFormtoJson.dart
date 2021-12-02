@@ -2818,6 +2818,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () {
+                      Navigator.pop(context);
                       print(widget.initialReport!.toMap().toString());
                       print(checkboxExportValue.toString());
                       Share.share(generateExportText());

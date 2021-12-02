@@ -25,36 +25,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey,
-          shadowColor: Colors.grey,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            color: Colors.black,
-          ),
-        ),
-        resizeToAvoidBottomInset: false,
+      appBar: AppBar(
         backgroundColor: Colors.grey,
-        body: Padding(
-          padding: EdgeInsets.only(
-              top: ScreenUtil().setHeight(40),
-              left: ScreenUtil().setWidth(16),
-              right: ScreenUtil().setWidth(16),
-              bottom: ScreenUtil().setHeight(60)),
-          child: Container(
-            color: rvTheme.canvasColor,
-            child: FormBuilder(
-                key: _formKey,
-                child: SingleChildScrollView(
-                    child: Column(children: <Widget>[
+        shadowColor: Colors.grey,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          color: Colors.black,
+        ),
+      ),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.grey,
+      body: Padding(
+        padding: EdgeInsets.only(
+            top: ScreenUtil().setHeight(40),
+            left: ScreenUtil().setWidth(16),
+            right: ScreenUtil().setWidth(16),
+            bottom: ScreenUtil().setHeight(60)),
+        child: Container(
+          color: rvTheme.canvasColor,
+          child: FormBuilder(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
                     child: AutoSizeText(
-                      AppLocalizations.of(context).translate('registrati'),                      maxLines: 1,
+                      AppLocalizations.of(context).translate('registrati'),
+                      maxLines: 1,
                       style: TextStyle(fontSize: ScreenUtil().setSp(24)),
                     ),
                   ),
@@ -65,7 +67,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       controller: emailController,
 
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context).translate('indirizzoEmail'),
+                        labelText: AppLocalizations.of(context)
+                            .translate('indirizzoEmail'),
                         prefixIcon:
                             Icon(Icons.account_box, color: rvTheme.hintColor),
                       ),
@@ -75,9 +78,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return AppLocalizations.of(context).translate('indirizzoEmail');
+                          return AppLocalizations.of(context)
+                              .translate('indirizzoEmail');
                         } else if (!value.contains('@')) {
-                          return AppLocalizations.of(context).translate("inserisciEmailValida");
+                          return AppLocalizations.of(context)
+                              .translate("inserisciEmailValida");
                         }
                         return null;
                       },
@@ -101,9 +106,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return AppLocalizations.of(context).translate("inserisciPassword");
+                          return AppLocalizations.of(context)
+                              .translate("inserisciPassword");
                         } else if (value.length < 6) {
-                          return AppLocalizations.of(context).translate("passwordTroppoCorta");
+                          return AppLocalizations.of(context)
+                              .translate("passwordTroppoCorta");
                         }
                         return null;
                       },
@@ -116,7 +123,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       obscureText: true,
                       controller: passwordRepeatController,
                       decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context).translate("confermaPassword"),
+                          labelText: AppLocalizations.of(context)
+                              .translate("confermaPassword"),
                           prefixIcon: Icon(
                             Icons.vpn_key_outlined,
                             color: rvTheme.hintColor,
@@ -127,11 +135,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return AppLocalizations.of(context).translate("inserisciPassword");
+                          return AppLocalizations.of(context)
+                              .translate("inserisciPassword");
                         } else if (value.length < 6) {
-                          return AppLocalizations.of(context).translate("passwordTroppoCorta");
+                          return AppLocalizations.of(context)
+                              .translate("passwordTroppoCorta");
                         } else if (value != passwordController.text) {
-                          return AppLocalizations.of(context).translate("passwordNonUguale");
+                          return AppLocalizations.of(context)
+                              .translate("passwordNonUguale");
                         }
                         return null;
                       },
@@ -154,14 +165,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           child: Container(
                               child: RichText(
                                   text: new TextSpan(
-                            text: AppLocalizations.of(context).translate("hoPresoVisione"),
+                            text: AppLocalizations.of(context)
+                                .translate("hoPresoVisione"),
                             style: new TextStyle(
                               color: Colors.black,
                               fontSize: ScreenUtil().setSp(12),
                             ),
                             children: [
                               new TextSpan(
-                                text: AppLocalizations.of(context).translate("terminiECondizioni"),
+                                text: AppLocalizations.of(context)
+                                    .translate("terminiECondizioni"),
                                 style: new TextStyle(
                                     color: Colors.black,
                                     fontSize: ScreenUtil().setSp(12),
@@ -170,7 +183,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ..onTap = () {},
                               ),
                               new TextSpan(
-                                text: AppLocalizations.of(context).translate("e"),
+                                text:
+                                    AppLocalizations.of(context).translate("e"),
                                 style: new TextStyle(
                                   color: Colors.black,
                                   fontSize: ScreenUtil().setSp(12),
@@ -212,26 +226,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         user.email!
                                             .replaceAll(new RegExp(r"\s+"), ""),
                                         user.password!)
-                                    .then((userCredes) {
-                                }).catchError((e) {
+                                    .then((userCredes) {showPopUpRegistrazioneAvvenuta();})
+                                    .catchError((e) {
                                   setState(() {
                                     isLoading = false;
                                   });
                                   showError(e.toString());
                                 });
                               }
-                              showPopUpRegistrazioneAvvenuta();
                             },
                       child: Text(
-                          AppLocalizations.of(context).translate("registrati"),
+                        AppLocalizations.of(context).translate("registrati"),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                   Padding(padding: EdgeInsets.all(ScreenUtil().setWidth(24)))
-                ]))),
+                ],
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   bool buttonDisabled() {
@@ -258,9 +275,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("OK",
-                  style:
-                  TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                child: Text(
+                  "OK",
+                  style: TextStyle(color: Colors.grey[700], fontSize: 15.sp),
                 ),
               ),
             ),
@@ -280,8 +297,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: MediaQuery.of(context).size.height * .10,
                 child: Center(
                     child: AutoSizeText(
-                      AppLocalizations.of(context).translate('registrazioneAvvenuta'),
-                    ))),
+                  AppLocalizations.of(context)
+                      .translate('registrazioneAvvenuta'),
+                ))),
             actionsAlignment: MainAxisAlignment.center,
             actions: [
               GestureDetector(
@@ -291,9 +309,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("OK",
-                    style:
-                    TextStyle(color: Colors.grey[700], fontSize: 15.sp),
+                  child: Text(
+                    "OK",
+                    style: TextStyle(color: Colors.grey[700], fontSize: 15.sp),
                   ),
                 ),
               ),
@@ -301,5 +319,4 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           );
         });
   }
-
 }

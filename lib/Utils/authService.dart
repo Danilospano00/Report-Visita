@@ -167,7 +167,7 @@ class AuthService {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.red,
-                              fontSize: 94.272766.sp,
+                              fontSize: 60.sp,
                               fontWeight: FontWeight.w700,
                               letterSpacing: -1.5,
                             ),
@@ -203,7 +203,7 @@ class AuthService {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.red,
-                                  fontSize: 94.272766.sp,
+                                  fontSize: 60.sp,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -1.5,
                                 ),
