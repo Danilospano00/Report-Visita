@@ -27,11 +27,6 @@ import 'package:in_app_purchase_ios/store_kit_wrappers.dart';
 import 'package:in_app_purchase_ios/in_app_purchase_ios.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
-
-
-
-
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({
     Key? key,
@@ -95,7 +90,7 @@ class MyHomePageState extends State<MyHomePage> {
         hasBeenInitialized = true;
       });
     }
-   /* final Stream<List<PurchaseDetails>> purchaseUpdated =
+    /* final Stream<List<PurchaseDetails>> purchaseUpdated =
         _inAppPurchase.purchaseStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) {
       _listenToPurchaseUpdated(purchaseDetailsList);
@@ -479,7 +474,7 @@ class MyHomePageState extends State<MyHomePage> {
           hint: 'Search...',
           openAxisAlignment: 0,
           axisAlignment: 0.0,
-          elevation: 4,
+          elevation: 10,
           automaticallyImplyDrawerHamburger: false,
           closeOnBackdropTap: true,
           transitionCurve: Curves.easeInOut,
@@ -487,8 +482,12 @@ class MyHomePageState extends State<MyHomePage> {
           transition: CircularFloatingSearchBarTransition(),
           debounceDelay: Duration(milliseconds: 500),
           actions: [
+
+            FloatingSearchBarAction.back(
+              color: Colors.red,
+            ),
             FloatingSearchBarAction(
-              showIfOpened: false,
+              showIfOpened: true,
               child: CircularButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -498,9 +497,7 @@ class MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ),
-            FloatingSearchBarAction.searchToClear(
-              showIfClosed: false,
-            ),
+
           ],
           onQueryChanged: (query) {
             searchresult.clear();
@@ -539,8 +536,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
- /* @override
+/* @override
   void dispose() {
     if (Platform.isIOS) {
       var iosPlatformAddition = _inAppPurchase
@@ -552,11 +548,9 @@ class MyHomePageState extends State<MyHomePage> {
   }
 */
 
+// pagamento implementazione
 
-
-  // pagamento implementazione
-
- /* Future<void> initStoreInfo() async {
+/* Future<void> initStoreInfo() async {
     final bool isAvailable = await _inAppPurchase.isAvailable();
     if (!isAvailable) {
       setState(() {
@@ -688,7 +682,5 @@ class MyHomePageState extends State<MyHomePage> {
       }
     });
   }*/
-
-
 
 }

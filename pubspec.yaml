@@ -88,7 +88,7 @@ dependencies:
   sign_in_with_apple: ^3.3.0
   crypto: ^3.0.1
   linkedin_login: ^2.0.1
-  #sign_in_apple: ^2.0.0
+  sign_in_apple: ^2.0.0
 
 
 

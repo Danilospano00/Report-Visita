@@ -40,56 +40,65 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+            Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(8.0.h),
-                  child: AutoSizeText(
-                    AppLocalizations.of(context).translate('indirizzo') +
-                        ": " +(
-                      widget.azienda.indirizzo != null?
-                            widget.azienda.indirizzo! : "--"),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 12.075892.sp,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.4,
-                      color: Colors.grey[700],
-                    ),
+                  padding: EdgeInsets.only(left:16.w),
+                  child: Image.asset(
+                    "assets/palazzo.png",
+                    height: 50.h,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(8.0.h),
-                  child: AutoSizeText(
-                    AppLocalizations.of(context).translate('partitaIVA') +
-                        " ${widget.azienda.partitaIva ?? "--"} ",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 12.075892.sp,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.4,
-                      color: Colors.grey[700],
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0.h),
+                      child: AutoSizeText(
+                        AppLocalizations.of(context).translate('indirizzo') +
+                            ": " +(
+                          widget.azienda.indirizzo != null?
+                                widget.azienda.indirizzo! : "--"),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.4,
+                          color: Colors.grey[700],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Divider(
-                  height: 1,
-                  thickness: 2,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0.h),
-                  child: AutoSizeText(
-                    "REPORT",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 12.075892.sp,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.4,
-                      color: Colors.grey[700],
+                    Padding(
+                      padding: EdgeInsets.all(8.0.h),
+                      child: AutoSizeText(
+                        AppLocalizations.of(context).translate('partitaIVA') +
+                            " ${widget.azienda.partitaIva ?? "--"} ",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.4,
+                          color: Colors.grey[700],
+                        ),
+                      ),
                     ),
-                  ),
+                    Divider(
+                      height: 1,
+                      thickness: 2,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0.h),
+                      child: AutoSizeText(
+                        "REPORT",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.4,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

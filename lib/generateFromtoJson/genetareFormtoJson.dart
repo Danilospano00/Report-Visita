@@ -2834,6 +2834,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       style: TextStyle(color: rvTheme.canvasColor),
                     ),
                     onPressed: () async {
+                      Navigator.pop(context);
                       File file = await PdfApi.generatePdf(generateExportText(),
                           widget.initialReport!.azienda.target!.nome!);
                       print(checkboxExportValue);
