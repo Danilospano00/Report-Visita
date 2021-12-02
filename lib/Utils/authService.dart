@@ -25,6 +25,8 @@ import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shape_of_view_null_safe/shape_of_view_null_safe.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 import '../costanti.dart';
 
 class AuthService {
@@ -539,21 +541,27 @@ class AuthService {
                             ),
                           ),
                           GestureDetector(
-                            onTap: (){
+                            onTap: () async {
                               print("avvio e,mail ");
                               final Uri _emailLaunchUri = Uri(
                                   scheme: 'mailto',
                                   path: emailAdress,
-                                  queryParameters: {
+                                  query: encodeQueryParameters(<String, String>{
                                     'subject': subjectEmail,
                                     'body': bodyEmail,
-                                  });
+                                  }),
+                                /*  queryParameters: {
+                                    'subject': subjectEmail,
+                                    'body': bodyEmail,
+                                  }*/
+                                  );
 
 
                               String url = _emailLaunchUri.toString();
                               url = url.replaceAll("+", " ");
 
-                              launch(url);
+                            bool res= await  launch(url);
+                            print(res.toString());
                             },
                             child: Text(AppLocalizations.of(context)
                                 .translate('contattaci'),
@@ -600,6 +608,13 @@ class AuthService {
         });
   }
 
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+
   singOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -639,6 +654,24 @@ class AuthService {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: nonce,
+    );
+
+    // Create an `OAuthCredential` from the credential returned by Apple.
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      rawNonce: rawNonce,
+    );
+
+    // Sign in the user with Firebase. If the nonce we generated earlier does
+    // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
     /* try {
       // Request credential for the currently signed in Apple account.
       final appleCredential = await SignInWithApple.getAppleIDCredential(
@@ -675,51 +708,33 @@ class AuthService {
     } catch (exception) {
       print(exception);
     }*/
+
+    /*late OAuthCredential oauthCredential;
+    try {
+       oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: user.identifyToken,
+        accessToken: user.authorizationCode,
+         rawNonce: nonce
+
+      );
+    }catch(e){
+      print(e.toString());
+    }
+
+    final authResult =
+    await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
+
+    final firebaseUser = authResult.user;
+
+    print(authResult.user.toString());*/
+
+    //   await firebaseUser.updateProfile(displayName: displayName);
+    //  await firebaseUser.updateEmail(userEmail);
+
   }
 
-  fbLogIn() async {
-    /* final fb = FacebookLogin();
 
-// Log in
-    final res = await fb.logIn(permissions: [
-      FacebookPermission.publicProfile,
-      FacebookPermission.email,
-    ]);
-
-// Check result status
-    switch (res.status) {
-      case FacebookLoginStatus.success:
-      // Logged in
-
-      // Send access token to server for validation and auth
-        final FacebookAccessToken? accessToken = res.accessToken;
-        print('Access token: ${accessToken!.token}');
-        final AuthCredential authCredential=FacebookAuthProvider.credential(accessToken.token);
-        final result= await FirebaseAuth.instance.signInWithCredential(authCredential);
-        // Get profile data
-        final profile = await fb.getUserProfile();
-        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
-
-        // Get user profile image url
-        final imageUrl = await fb.getProfileImageUrl(width: 100);
-        print('Your profile image: $imageUrl');
-
-        // Get email (since we request email permission)
-        final email = await fb.getUserEmail();
-        // But user can decline permission
-        if (email != null)
-          print('And your email is $email');
-
-        break;
-      case FacebookLoginStatus.cancel:
-      // User cancel log in
-        break;
-      case FacebookLoginStatus.error:
-      // Log in failed
-        print('Error while log in: ${res.error}');
-        break;
-    }*/
-  }
 
   googleLogIn() async {
     /* GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();

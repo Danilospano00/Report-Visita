@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -8,8 +10,10 @@ import 'package:report_visita_danilo/Utils/horizontaldivider.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:linkedin_login/linkedin_login.dart';
+import 'package:sign_in_apple/sign_in_apple.dart';
+import 'package:sign_in_apple/apple_id_user.dart';
 
-import '../costanti.dart';
 import 'Preferences.dart';
 import 'Registration.dart';
 
@@ -24,6 +28,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   bool _isLoading = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,16 +178,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                     "assets/icons8-google-24.png",
                                     color: Colors.white,
                                   ))),
-
+                          if(Platform.isIOS)
                           CircleAvatar(
                               radius: 24,
                               backgroundColor: Colors.black,
                               child: IconButton(
                                   onPressed: ()  {
-                                   AuthService().appleLogIn();
-
-
-                                  },
+                                    //SignInApple.clickAppleSignIn();
+                                    dynamic res =  AuthService().appleLogIn();
+                                    if (res != null){
+                                      print(res.toString());
+                                      Navigator.pop(context);}
+                                   },
                                   icon: Image.asset(
                                     "assets/icons8-apple-logo-24.png",
                                     color: Colors.white,
@@ -186,7 +198,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               radius: 24,
                               backgroundColor: Colors.blue,
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    lnkLogIn();
+                                  },
                                   icon: Image.asset(
                                     "assets/icons8-linkedin-24.png",
                                     color: Colors.white,
@@ -254,6 +268,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+
+
+
+
+
   Future<void> animateButton() async {
     User user = User.init(_formKey.currentState!.fields);
 
@@ -281,4 +300,63 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = false;
     });
   }
+
+  lnkLogIn()async{
+
+    String redirectUrl = "https://url.com";
+    String clientId = ""; /// Your linkedin client id
+    String clientSecret = "";
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            LinkedInUserWidget(
+              redirectUrl: redirectUrl,
+              clientId: clientId,
+              clientSecret: clientSecret,
+              onGetUserProfile: (UserSucceededAction linkedInUser) async{
+                /// This api call retrives profile picture
+              /*  Response response = await dio.get(
+                    "https://api.linkedin.com/v2/me?projection=(profilePicture(displayImage~:playableStreams))",
+                    options: Options(
+                        responseType: ResponseType.json,
+                        sendTimeout: 60000,
+                        receiveTimeout: 60000,
+                        headers: {
+                          HttpHeaders.authorizationHeader: "Bearer ${linkedInUser.token.accessToken}"
+                        }
+                    )
+                );
+                var profilePic = response.data["profilePicture"]["displayImage~"]["elements"][0]["identifiers"][0]["identifier"];
+*/
+                Map<String, dynamic> postJson = {
+                  "user_id": linkedInUser.user.userId,
+                  "email": linkedInUser.user.email!.elements![0].handleDeep!.emailAddress,
+                  //"pic_url": profilePic,
+                  "name": linkedInUser.user.firstName!.localized!.label! + ' ' + linkedInUser.user.lastName!.localized!.label!,
+                  "token": linkedInUser.user.token.accessToken,
+                  "expires_in": linkedInUser.user.token.expiresIn
+                };
+                setState(() {
+                 // result = postJson;
+                });
+                Navigator.of(context).pop();
+              },
+              onError: (UserFailedAction e) {
+                print('Error: ${e.toString()}');
+                print('Error: ${e.stackTrace.toString()}');
+              },
+            ),
+        fullscreenDialog: false,
+      ),
+    );
+
+
+
+  }
+
+
+
+
 }
