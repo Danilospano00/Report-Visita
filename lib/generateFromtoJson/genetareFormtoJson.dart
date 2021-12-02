@@ -1724,7 +1724,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, i) {
                         controller.add(TextEditingController());
-                        if (item['field'][i]['label'] == "indirizzo") {
+                        if (item['field'][i]['label'].toString().toLowerCase() == "indirizzo") {
                           if (checkboxExportValue[item['field'][0]['label']] ==
                               null)
                             checkboxExportValue[item['field'][0]['label']] =
@@ -1805,7 +1805,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                             }
                                           : null,
                                       decoration: InputDecoration(
-                                        labelText: item['field'][i]['label'],
+                                        labelText: item['field'][i]['title'],
                                         fillColor: Colors.grey.shade300,
                                         filled: true,
                                         labelStyle: homePageMainTextStyle,
@@ -1989,7 +1989,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                       fillColor: Colors.grey.shade300,
                                       filled: true,
                                       border: InputBorder.none,
-                                      labelText: item['field'][i]['label'],
+                                      labelText: item['field'][i]['title'],
                                       focusedBorder: formUnderlineInputBorder,
                                       labelStyle: homePageMainTextStyle,
                                     ),
@@ -2174,7 +2174,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                       }
                                     : null,
                                 decoration: InputDecoration(
-                                  labelText: item['field'][i]['label'],
+                                  labelText: item['field'][i]['title'],
                                   fillColor: Colors.grey.shade300,
                                   filled: true,
                                   labelStyle: homePageMainTextStyle,
@@ -2323,7 +2323,7 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                                 fillColor: Colors.grey.shade300,
                                 filled: true,
                                 border: InputBorder.none,
-                                labelText: item['field'][i]['label'],
+                                labelText: item['field'][i]['title'],
                                 focusedBorder: formUnderlineInputBorder,
                                 labelStyle: homePageMainTextStyle,
                               ),

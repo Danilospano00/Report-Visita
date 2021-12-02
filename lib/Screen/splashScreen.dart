@@ -35,6 +35,7 @@ class SplashPage extends StatelessWidget {
       print(urlremote);
       dynamic configurazioniPreferences = remoteConfig.getString("configurazioni");
       configPreferences = await json.decode(configurazioniPreferences);
+      config= json.encode(configPreferences[0]["jsonConfig"]);
       print("JSON CONFIGURAZIONI PREFERENCES : " + configPreferences.toString());
 
       final PermissionStatus permissionStatus = await _getPermission();

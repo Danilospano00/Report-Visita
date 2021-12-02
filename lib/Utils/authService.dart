@@ -74,7 +74,9 @@ class AuthService {
                                   child: CircleAvatar(
                                     backgroundColor: Colors.white,
                                     radius: 45,
-                                    child: Icon(
+                                    child:user.photoURL!=null?
+                                        Image.network(user.photoURL)
+                                        : Icon(
                                       Icons.perm_identity_outlined,
                                       size: 48,
                                       color: Colors.grey[700],
@@ -86,8 +88,9 @@ class AuthService {
                                       MediaQuery.of(context).size.width * 0.5,
                                   padding: EdgeInsets.only(left: 20.0),
                                   child: AutoSizeText(
+                                    user.displayName!=null?user.displayName.toString():
                                     user.email.toString(),
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18.sp,
@@ -650,13 +653,6 @@ class AuthService {
     return digest.toString();
   }
 
-
-
-
-
-
-
-
   appleLogIn() async {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
@@ -677,7 +673,12 @@ class AuthService {
 
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+
+
+
     return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
+
 
     /* try {
       // Request credential for the currently signed in Apple account.
@@ -736,7 +737,7 @@ class AuthService {
 
     print(authResult.user.toString());*/
 
-    //   await firebaseUser.updateProfile(displayName: displayName);
+
     //  await firebaseUser.updateEmail(userEmail);
 
   }
