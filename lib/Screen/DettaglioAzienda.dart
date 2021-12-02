@@ -57,32 +57,38 @@ class AziendaDettaglioPageState extends State<AziendaDettaglio> {
                     children: [
                       Padding(
                         padding: EdgeInsets.all(8.0.h),
-                        child: AutoSizeText(
-                          AppLocalizations.of(context).translate('indirizzo') +
-                              ": " +(
-                            widget.azienda.indirizzo != null?
-                                  widget.azienda.indirizzo! : "--"),
-                          textAlign: TextAlign.left,
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.4,
-                            color: Colors.grey[700],
+                        child: Container(
+                          width: MediaQuery.of(context).size.width*.70,
+                          child: AutoSizeText(
+                            AppLocalizations.of(context).translate('indirizzo') +
+                                ": " +(
+                              widget.azienda.indirizzo != null?
+                                    widget.azienda.indirizzo! : "--"),
+                            textAlign: TextAlign.left,
+                            maxLines: 2,
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.4,
+                              color: Colors.grey[700],
+                            ),
                           ),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: AutoSizeText(
-                          AppLocalizations.of(context).translate('partitaIVA') +
-                              " ${widget.azienda.partitaIva ?? "--"} ",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.4,
-                            color: Colors.grey[700],
+                        child: Container(
+                          width: MediaQuery.of(context).size.width*.70,
+                          child: AutoSizeText(
+                            AppLocalizations.of(context).translate('partitaIVA') +
+                                " ${widget.azienda.partitaIva ?? "--"} ",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0.4,
+                              color: Colors.grey[700],
+                            ),
                           ),
                         ),
                       ),
