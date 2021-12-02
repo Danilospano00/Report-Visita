@@ -15,6 +15,8 @@ import 'package:report_visita_danilo/Models/Azienda.dart';
 import 'package:report_visita_danilo/Models/Event.dart';
 import 'package:report_visita_danilo/Models/Referente.dart';
 import 'package:report_visita_danilo/Models/Report.dart';
+import 'package:report_visita_danilo/Screen/DettaglioAzienda.dart';
+import 'package:report_visita_danilo/Screen/DettaglioReport.dart';
 import 'package:report_visita_danilo/Utils/consumablre_store.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/costanti.dart';
@@ -70,6 +72,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   List<Azienda> listaAziendePerRicerca = [];
   List<Report> listaReportPerRicerca = [];
+  FloatingSearchBarController? searchBarController;
 
   @override
   initState() {
@@ -105,6 +108,7 @@ class MyHomePageState extends State<MyHomePage> {
       configurazione = config;
       formKeyBodyMain = formKeyBody;
     });
+    searchBarController = FloatingSearchBarController();
   }
 
   @override
@@ -245,6 +249,7 @@ class MyHomePageState extends State<MyHomePage> {
         //se non è cambiata setto la config nel report
         addToDBReport(config, "report salvato");
         mappaJsonConfigurazione = [];
+        response=[];
       }
     } else {}
   }
@@ -431,34 +436,59 @@ class MyHomePageState extends State<MyHomePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           searchresult[i] is Azienda
-                              ? Column(
-                                  children: [
-                                    ListTile(
-                                      dense: true,
-                                      title: Text(searchresult[i].nome),
-                                      subtitle:
-                                          Text(searchresult[i].indirizzo ?? ""),
-                                      leading: Icon(
-                                        Icons.location_city_outlined,
-                                      ),
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AziendaDettaglio(
+                                                  azienda: searchresult[i],
+                                                )));
+                                  },
+                                  child: Card(
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          dense: true,
+                                          title: Text(searchresult[i].nome),
+                                          subtitle: Text(
+                                              searchresult[i].indirizzo ?? ""),
+                                          leading: Icon(
+                                            Icons.location_city_outlined,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Divider(),
-                                  ],
+                                  ),
                                 )
-                              : Column(
-                                  children: [
-                                    ListTile(
-                                      dense: true,
-                                      title: Text(searchresult[i]
-                                              .nome
-                                              .toString() +
-                                          searchresult[i].cognome.toString()),
-                                      leading: Icon(
-                                        Icons.people_outlined,
-                                      ),
+                              : GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AziendaDettaglio(
+                                                  azienda: searchresult[i].azienda.target!,
+                                                )));
+                                  },
+                                  child: Card(
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          dense: true,
+                                          title: Text(
+                                              searchresult[i].nome.toString() +
+                                                  searchresult[i]
+                                                      .cognome
+                                                      .toString()),
+                                          leading: Icon(
+                                            Icons.people_outlined,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Divider(),
-                                  ],
+                                  ),
                                 )
                         ],
                       );
@@ -482,7 +512,6 @@ class MyHomePageState extends State<MyHomePage> {
           transition: CircularFloatingSearchBarTransition(),
           debounceDelay: Duration(milliseconds: 500),
           actions: [
-
             FloatingSearchBarAction.back(
               color: Colors.red,
             ),
@@ -497,7 +526,6 @@ class MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ),
-
           ],
           onQueryChanged: (query) {
             searchresult.clear();
@@ -522,7 +550,7 @@ class MyHomePageState extends State<MyHomePage> {
                   if (data[i].nome!.toLowerCase().contains(query) ||
                       data[i].cognome!.toLowerCase().contains(query)) {
                     setState(() {
-                      searchresult.add(data[i]);
+                      searchresult.add(data[i]..azienda.target = listaReportPerRicerca[i].azienda.target!);
                     });
                   } else {
                     print("Non contiene");
