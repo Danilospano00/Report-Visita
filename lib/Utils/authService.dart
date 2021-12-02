@@ -650,6 +650,13 @@ class AuthService {
     return digest.toString();
   }
 
+
+
+
+
+
+
+
   appleLogIn() async {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
