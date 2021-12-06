@@ -30,7 +30,7 @@ class ViewPageState extends State<ViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: controller,
