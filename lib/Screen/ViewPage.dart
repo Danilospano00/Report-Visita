@@ -48,6 +48,7 @@ class ViewPageState extends State<ViewPage> {
                 icon: Icon(Icons.perm_identity_outlined),
                 color: Colors.white,
                 onPressed: () {
+
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => AccountEmpty()));
                 },
