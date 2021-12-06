@@ -8,6 +8,8 @@ import 'package:report_visita_danilo/Utils/authService.dart';
 import 'package:report_visita_danilo/Utils/theme.dart';
 import 'package:report_visita_danilo/i18n/AppLocalizations.dart';
 
+import 'Preferences.dart';
+
 class RegistrationScreen extends StatefulWidget {
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
@@ -226,7 +228,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         user.email!
                                             .replaceAll(new RegExp(r"\s+"), ""),
                                         user.password!)
-                                    .then((userCredes) {showPopUpRegistrazioneAvvenuta();})
+                                    .then((userCredes) {showPopUpRegistrazioneAvvenuta();
+                                ;})
                                     .catchError((e) {
                                   setState(() {
                                     isLoading = false;
@@ -305,7 +308,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pop(context);
+                  Navigator.pop(context);Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Preferences()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

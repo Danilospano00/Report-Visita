@@ -3157,7 +3157,6 @@ class _GeneratorFromToJsonState extends State<GeneratorFormToJson> {
                               child: FormBuilderTextField(
                                 name: "telefono",
                                 enabled: !isSave,
-
                                 initialValue:contattoSelezionato[i].phones!.isNotEmpty?
                                 contattoSelezionato[i].phones!.elementAt(0).value:null,
                                 decoration: InputDecoration(
