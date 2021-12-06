@@ -194,7 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     "assets/icons8-apple-logo-24.png",
                                     color: Colors.white,
                                   ))),
-                          CircleAvatar(
+                        /* accesso linkedin
+
+                        CircleAvatar(
                               radius: 24,
                               backgroundColor: Colors.blue,
                               child: IconButton(
@@ -204,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   icon: Image.asset(
                                     "assets/icons8-linkedin-24.png",
                                     color: Colors.white,
-                                  ))),
+                                  ))),*/
                         ],
                       ),
                       SizedBox(
@@ -303,9 +305,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   lnkLogIn()async{
 
-    String redirectUrl = "https://url.com";
-    String clientId = ""; /// Your linkedin client id
-    String clientSecret = "";
+    String redirectUrl = "https://www.google.com";
+    String clientId = "771vmwcv3fsdzk"; /// Your linkedin client id
+    String clientSecret = "5QiwPbljingBf72X";
 
     Navigator.push(
       context,
@@ -330,17 +332,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
                 var profilePic = response.data["profilePicture"]["displayImage~"]["elements"][0]["identifiers"][0]["identifier"];
 */
+
+                AuthService().customLogIn( linkedInUser);
                 Map<String, dynamic> postJson = {
                   "user_id": linkedInUser.user.userId,
                   "email": linkedInUser.user.email!.elements![0].handleDeep!.emailAddress,
-                  //"pic_url": profilePic,
+
                   "name": linkedInUser.user.firstName!.localized!.label! + ' ' + linkedInUser.user.lastName!.localized!.label!,
                   "token": linkedInUser.user.token.accessToken,
                   "expires_in": linkedInUser.user.token.expiresIn
                 };
-                setState(() {
-                 // result = postJson;
-                });
+
                 Navigator.of(context).pop();
               },
               onError: (UserFailedAction e) {
